@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Todaytime
+# key: now
+# --
+`(format-time-string "%Y年%m月%d日 %H:%M" (current-time))`
