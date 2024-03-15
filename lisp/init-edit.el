@@ -17,7 +17,7 @@
 :ensure t
 :after evil
 :config
-(setq evil-collection-mode-list '(dashboard dired ibuffer calendar vterm))
+(setq evil-collection-mode-list '(dashboard dired ibuffer calendar vterm eshell magit))
 (evil-collection-init))
 
 (use-package evil-surround
@@ -72,19 +72,35 @@
     "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
     "e r" '(eval-region :wk "Evaluate elisp in region"))
 
+
+(defun my-load-config ()
+"Load Emacs configuration."
+(interactive)
+(load-file "~/.config/emacs/init.el"))
+
+(defun my-open-termial-kitty ()
+"open kitty terminal in load filepath"
+(interactive)
+(let ((directory (eshell/pwd)))
+(async-shell-command (format "kitty --directory %s" directory))
+))
+
    (dt/leader-keys
     "h" '(:ignore t :wk "Help")
     "h f" '(describe-function :wk "Describe function")
-    "h v" '(describe-variable :wk "Describe variable"))
+    "h v" '(describe-variable :wk "Describe variable")
+    "h r r" '(my-load-config :wk "Reload Emacs config")
+)
 
    (dt/leader-keys
     "t" '(:ignore t :wk "Toggle")
     "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
+    "t e" '(aweshell-dedicated-toggle :wk "aweshell")
     "t t" '(visual-line-mode :wk "Toggle truncated lines"))
 
    (dt/leader-keys
     "o" '(:ignore t :wk "open")
-    "o t" '(vterm :wk "open terminal")
+    "o t" '(my-open-termial-kitty :wk "open terminal")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda"))
 
@@ -126,10 +142,6 @@
   :hook (after-init . electric-pair-mode)
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
-(define-key acm-mode-map (kbd "<tab>") nil)
-(define-key acm-mode-map (kbd "RET") 'acm-complete)
-
-
 ;; 定义快捷键在 rust-mode 下生效
 (with-eval-after-load 'rust-mode
   (evil-define-key 'normal rust-mode-map (kbd "C-k") 'lsp-bridge-popup-documentation)
@@ -148,6 +160,7 @@
   (evil-define-key 'normal python-mode-map (kbd "gd") 'lsp-bridge-find-def)
   (evil-define-key 'normal python-mode-map (kbd "gi") 'lsp-bridge-find-imp)
   (evil-define-key 'normal python-mode-map (kbd "go") 'lsp-bridge-find-def-return)
+  (define-key python-mode-map (kbd"<tab>") #'yas-expand)
   (general-evil-define-key 'normal python-mode-map
   :prefix "SPC"
   "5" 'quickrun)
@@ -157,8 +170,6 @@
 
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
-(evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-j") #'acm-select-next)
-(evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-k") #'acm-select-prev)
 ;; agenda
 
 (add-hook 'org-agenda-mode-hook

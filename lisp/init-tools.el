@@ -133,16 +133,6 @@
 (setq make-backup-files nil)                                  ; 不自动备份
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
 
-(use-package magit
-  :ensure t
-  :hook (git-commit-mode)
-  :bind (("C-x g"   . magit-status)
-         ("C-x M-g" . magit-dispatch)
-         ("C-c M-g" . magit-file-dispatch))
-  :custom
-  (magit-diff-refine-hunk t)
-  (magit-ediff-dwim-show-on-hunks t))
-
 (use-package projectile
   :ensure t
   :init
@@ -155,11 +145,14 @@
   :load-path "~/.config/emacs/site-lisp/flycheck"
   :config
   (setq truncate-lines nil) ; 如果单行信息很长会自动换行
-  (flycheck-add-mode 'javascript-eslint 'js-mode)
+  (flycheck-add-mode 'javascript-eslint 'js2-mode)
   (flycheck-add-mode 'rust-clippy 'rust-mode)
-  (flycheck-add-mode 'haskell-ghc 'haskell-mode)
-  :hook
-  (prog-mode . flycheck-mode))
+  (flycheck-add-mode 'haskell-ghc 'haskell-mode))
+  ;; :hook
+  ;; (prog-mode . flycheck-mode))
+
+(with-eval-after-load 'flycheck
+  (setq flycheck-check-syntax-automatically '(idle-change new-line mode-enabled)))
 
 (use-package format-all
   :commands format-all-mode
@@ -196,6 +189,7 @@
           "Output\\*$"
           "\\*Async Shell Command\\*"
           "\\*quickrun\\*"
+          "Aweshell"
           help-mode
           compilation-mode))
   (popper-mode +1)

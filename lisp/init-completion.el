@@ -66,7 +66,9 @@
     (setq lsp-bridge-enable-org-babel t)
     (setq lsp-bridge-enable-hover-diagnostic t)
     (setq lsp-bridge-org-babel-lang-list '(emacs-lisp))
+    ;;(setq acm-quick-access-use-number-select t)
     (global-lsp-bridge-mode)
+    (define-key acm-mode-map (kbd "<tab>") 'nil)
 )
 
 (provide 'init-completion)
