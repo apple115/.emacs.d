@@ -28,6 +28,7 @@
  (require 'init-centaur-tabs)
  (require 'init-rime)
  (require 'init-aweshell)
+ (require 'init-hexo)
 ;; (require 'init-js2)
   )
 

@@ -2,5 +2,15 @@
 # name: doc
 # key: d
 # --
-"""$0
+"""
+$0
+Args:
+    $1
+
+Return:
+    $2
+
+Raises:
+    $3
+
 """

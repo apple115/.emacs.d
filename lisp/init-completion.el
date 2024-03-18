@@ -66,9 +66,22 @@
     (setq lsp-bridge-enable-org-babel t)
     (setq lsp-bridge-enable-hover-diagnostic t)
     (setq lsp-bridge-org-babel-lang-list '(emacs-lisp))
-    ;;(setq acm-quick-access-use-number-select t)
+    (setq acm-quick-access-use-number-select t)
     (global-lsp-bridge-mode)
-    (define-key acm-mode-map (kbd "<tab>") 'nil)
+;; (define-key acm-mode-map (kbd "M-1") (lambda () (interactive) (insert "1")))
+;; (define-key acm-mode-map (kbd "M-2") (lambda () (interactive) (insert "2")))
+;; (define-key acm-mode-map (kbd "M-3") (lambda () (interactive) (insert "3")))
+;; (define-key acm-mode-map (kbd "M-4") (lambda () (interactive) (insert "4")))
+;; (define-key acm-mode-map (kbd "M-5") (lambda () (interactive) (insert "5")))
+;; (define-key acm-mode-map (kbd "M-6") (lambda () (interactive) (insert "6")))
+;; (define-key acm-mode-map (kbd "M-7") (lambda () (interactive) (insert "7")))
+;; (define-key acm-mode-map (kbd "M-8") (lambda () (interactive) (insert "8")))
+;; (define-key acm-mode-map (kbd "M-9") (lambda () (interactive) (insert "9")))
+;; (define-key acm-mode-map (kbd "M-0") (lambda () (interactive) (insert "0")))
+
+    (define-key acm-mode-map (kbd "<tab>") 'acm-hide)
+
+
 )
 
 (provide 'init-completion)

@@ -168,13 +168,6 @@
                   ("Python" (black))
 )))
 
-(use-package exec-path-from-shell
-  :ensure t
-  :when (or (memq window-system '(mac ns x))
-        (unless cabins--os-win
-          (daemonp)))
-  :init (exec-path-from-shell-initialize))
-
 (use-package envrc
   :ensure t
   :config
@@ -190,6 +183,7 @@
           "\\*Async Shell Command\\*"
           "\\*quickrun\\*"
           "Aweshell"
+         "\\*compilation\\*"
           help-mode
           compilation-mode))
   (popper-mode +1)

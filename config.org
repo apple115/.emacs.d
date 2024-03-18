@@ -92,6 +92,7 @@
  (require 'init-centaur-tabs)
  (require 'init-rime)
  (require 'init-aweshell)
+ (require 'init-hexo)
 ;; (require 'init-js2)
   )
 #+END_SRC
@@ -150,6 +151,8 @@
 )
 
 
+(setq x-select-request-type nil)
+
 
 #+end_src
 ** avy
@@ -173,8 +176,9 @@
 
   (dt/leader-keys
     "." '(find-file :wk "Find file")
-   "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "Edit emacs config")
-   "f s" '((lambda () (interactive) (find-file "~/.config/emacs/snippets")) :wk "Edit emacs snippet"))
+   "f c" '((lambda () (interactive) (find-file "~/.config/emacs")) :wk "Edit emacs config")
+   "f s" '((lambda () (interactive) (find-file "~/.config/emacs/snippets")) :wk "Edit emacs snippet")
+   "f b" '((lambda () (interactive) (find-file "~/Public/website")) :wk "blog"))
 
   (dt/leader-keys
    "c f" '((lambda () (interactive) (format-all-buffer)) :wk "current buffer format"))
@@ -185,8 +189,8 @@
     "b i" '(ibuffer :wk "Ibuffer")
     "b k" '(kill-buffer :wk "Kill this buffer")
     "b r" '(revert-buffer :wk "Reload buffer")
-    "bn" '(next-buffer :wk "Next buffer")
-    "bp" '(previous-buffer :wk "Previous buffer"))
+    "b n" '(next-buffer :wk "Next buffer")
+    "b p" '(previous-buffer :wk "Previous buffer"))
 
   (dt/leader-keys
     "e" '(:ignore t :wk "Evaluate")
@@ -217,8 +221,13 @@
 )
 
    (dt/leader-keys
+    "5" '(projectile-run-project :wk "run project")
+    "6" '(projectile-test-project :wk "test project")
+    "9" '(projectile-compile-project :wk "compile project")
+)
+
+   (dt/leader-keys
     "t" '(:ignore t :wk "Toggle")
-    "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
     "t e" '(aweshell-dedicated-toggle :wk "aweshell")
     "t t" '(visual-line-mode :wk "Toggle truncated lines"))
 
@@ -300,18 +309,17 @@
 ** keymap
 #+begin_src emacs-lisp
 
-
-
 ;; 定义快捷键在 rust-mode 下生效
 (with-eval-after-load 'rust-mode
   (evil-define-key 'normal rust-mode-map (kbd "C-k") 'lsp-bridge-popup-documentation)
   (evil-define-key 'normal rust-mode-map (kbd "gd") 'lsp-bridge-find-def)
   (evil-define-key 'normal rust-mode-map (kbd "gi") 'lsp-bridge-find-imp)
   (evil-define-key 'normal rust-mode-map (kbd "go") 'lsp-bridge-find-def-return)
-  (general-evil-define-key 'normal rust-mode-map
-  :prefix "SPC"
-  "5" 'rust-run
-  "9" 'rust-compile)
+  ;; (general-evil-define-key 'normal rust-mode-map
+  ;; :prefix "SPC"
+  ;; "5" 'rust-run
+  ;; "9" 'rust-compile
+  ;; "6" 'rust-test)
 )
 
 ;; 定义快捷键在 python-mode 下生效
@@ -320,10 +328,11 @@
   (evil-define-key 'normal python-mode-map (kbd "gd") 'lsp-bridge-find-def)
   (evil-define-key 'normal python-mode-map (kbd "gi") 'lsp-bridge-find-imp)
   (evil-define-key 'normal python-mode-map (kbd "go") 'lsp-bridge-find-def-return)
-  (define-key python-mode-map (kbd"<tab>") #'yas-expand)
-  (general-evil-define-key 'normal python-mode-map
-  :prefix "SPC"
-  "5" 'quickrun)
+ ;; (evil-define-key 'insert python-mode-map (kbd "<tab>") ')
+  ;; (general-evil-define-key 'normal python-mode-map
+  ;; :prefix "SPC"
+  ;; "5" 'quickrun
+  ;; "6" 'python-pytest)
 )
 
 ;; 可以继续为其他模式添加类似的代码
@@ -528,9 +537,13 @@
  (setq confirm-kill-emacs 'y-or-n-p)
 
  ;; 在模式栏上显示当前光标的列号
- (column-number-mode t)
+(defun display-line-numbers-equalize ()
+  "Equalize The width"
+  (setq display-line-numbers-width (length (number-to-string (line-number-at-pos (point-max))))))
+(add-hook 'find-file-hook 'display-line-numbers-equalize)
+ (setq column-number-mode t)
   ;; 显示行号 和 文本显示中的截断或省略
-  ;;(global-display-line-numbers-mode 1)
+  (global-display-line-numbers-mode 1)
   (global-visual-line-mode t)
 #+end_src
 ** 编码设置
@@ -569,7 +582,7 @@
 ;;; init-ui.el ends here
 #+END_SRC
 
-* init-completion.el
+*projectile init-completion.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle lisp/init-completion.el :mkdirp yes
 :END:
@@ -657,9 +670,22 @@ Emacs的补全系统
     (setq lsp-bridge-enable-org-babel t)
     (setq lsp-bridge-enable-hover-diagnostic t)
     (setq lsp-bridge-org-babel-lang-list '(emacs-lisp))
-    ;;(setq acm-quick-access-use-number-select t)
+    (setq acm-quick-access-use-number-select t)
     (global-lsp-bridge-mode)
-    (define-key acm-mode-map (kbd "<tab>") 'nil)
+;; (define-key acm-mode-map (kbd "M-1") (lambda () (interactive) (insert "1")))
+;; (define-key acm-mode-map (kbd "M-2") (lambda () (interactive) (insert "2")))
+;; (define-key acm-mode-map (kbd "M-3") (lambda () (interactive) (insert "3")))
+;; (define-key acm-mode-map (kbd "M-4") (lambda () (interactive) (insert "4")))
+;; (define-key acm-mode-map (kbd "M-5") (lambda () (interactive) (insert "5")))
+;; (define-key acm-mode-map (kbd "M-6") (lambda () (interactive) (insert "6")))
+;; (define-key acm-mode-map (kbd "M-7") (lambda () (interactive) (insert "7")))
+;; (define-key acm-mode-map (kbd "M-8") (lambda () (interactive) (insert "8")))
+;; (define-key acm-mode-map (kbd "M-9") (lambda () (interactive) (insert "9")))
+;; (define-key acm-mode-map (kbd "M-0") (lambda () (interactive) (insert "0")))
+
+    (define-key acm-mode-map (kbd "<tab>") 'acm-hide)
+
+
 )
 #+end_src
 ** init-completion.el 文件尾
@@ -1399,14 +1425,14 @@ This function makes sure that dates are aligned for easy reading."
 #+end_src
 
 ** emacs的exec-path
-#+begin_src emacs-lisp
+##+begin_src emacs-lisp
 (use-package exec-path-from-shell
   :ensure t
   :when (or (memq window-system '(mac ns x))
         (unless cabins--os-win
           (daemonp)))
   :init (exec-path-from-shell-initialize))
-#+end_src
+##+end_src
 ** emacs的shell 的 环境设置
 #+begin_src emacs-lisp
 (use-package envrc
@@ -1428,6 +1454,7 @@ This function makes sure that dates are aligned for easy reading."
           "\\*Async Shell Command\\*"
           "\\*quickrun\\*"
           "Aweshell"
+         "\\*compilation\\*"
           help-mode
           compilation-mode))
   (popper-mode +1)
@@ -1484,7 +1511,6 @@ This function makes sure that dates are aligned for easy reading."
 #+begin_src emacs-lisp
 (use-package python-mode
 :ensure t
-:config
 )
 #+end_src
 ** init-langs.el 文件尾

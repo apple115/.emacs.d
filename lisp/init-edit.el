@@ -32,6 +32,9 @@
   (define-key evil-visual-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
 )
 
+
+(setq x-select-request-type nil)
+
 (use-package avy
  :ensure t)
 
@@ -49,8 +52,9 @@
 
   (dt/leader-keys
     "." '(find-file :wk "Find file")
-   "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "Edit emacs config")
-   "f s" '((lambda () (interactive) (find-file "~/.config/emacs/snippets")) :wk "Edit emacs snippet"))
+   "f c" '((lambda () (interactive) (find-file "~/.config/emacs")) :wk "Edit emacs config")
+   "f s" '((lambda () (interactive) (find-file "~/.config/emacs/snippets")) :wk "Edit emacs snippet")
+   "f b" '((lambda () (interactive) (find-file "~/Public/website")) :wk "blog"))
 
   (dt/leader-keys
    "c f" '((lambda () (interactive) (format-all-buffer)) :wk "current buffer format"))
@@ -61,8 +65,8 @@
     "b i" '(ibuffer :wk "Ibuffer")
     "b k" '(kill-buffer :wk "Kill this buffer")
     "b r" '(revert-buffer :wk "Reload buffer")
-    "bn" '(next-buffer :wk "Next buffer")
-    "bp" '(previous-buffer :wk "Previous buffer"))
+    "b n" '(next-buffer :wk "Next buffer")
+    "b p" '(previous-buffer :wk "Previous buffer"))
 
   (dt/leader-keys
     "e" '(:ignore t :wk "Evaluate")
@@ -93,8 +97,13 @@
 )
 
    (dt/leader-keys
+    "5" '(projectile-run-project :wk "run project")
+    "6" '(projectile-test-project :wk "test project")
+    "9" '(projectile-compile-project :wk "compile project")
+)
+
+   (dt/leader-keys
     "t" '(:ignore t :wk "Toggle")
-    "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
     "t e" '(aweshell-dedicated-toggle :wk "aweshell")
     "t t" '(visual-line-mode :wk "Toggle truncated lines"))
 
@@ -148,10 +157,11 @@
   (evil-define-key 'normal rust-mode-map (kbd "gd") 'lsp-bridge-find-def)
   (evil-define-key 'normal rust-mode-map (kbd "gi") 'lsp-bridge-find-imp)
   (evil-define-key 'normal rust-mode-map (kbd "go") 'lsp-bridge-find-def-return)
-  (general-evil-define-key 'normal rust-mode-map
-  :prefix "SPC"
-  "5" 'rust-run
-  "9" 'rust-compile)
+  ;; (general-evil-define-key 'normal rust-mode-map
+  ;; :prefix "SPC"
+  ;; "5" 'rust-run
+  ;; "9" 'rust-compile
+  ;; "6" 'rust-test)
 )
 
 ;; 定义快捷键在 python-mode 下生效
@@ -160,10 +170,11 @@
   (evil-define-key 'normal python-mode-map (kbd "gd") 'lsp-bridge-find-def)
   (evil-define-key 'normal python-mode-map (kbd "gi") 'lsp-bridge-find-imp)
   (evil-define-key 'normal python-mode-map (kbd "go") 'lsp-bridge-find-def-return)
-  (define-key python-mode-map (kbd"<tab>") #'yas-expand)
-  (general-evil-define-key 'normal python-mode-map
-  :prefix "SPC"
-  "5" 'quickrun)
+ ;; (evil-define-key 'insert python-mode-map (kbd "<tab>") ')
+  ;; (general-evil-define-key 'normal python-mode-map
+  ;; :prefix "SPC"
+  ;; "5" 'quickrun
+  ;; "6" 'python-pytest)
 )
 
 ;; 可以继续为其他模式添加类似的代码
