@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: fastdef
+# key: fsdef
+# group : fastapi
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+@app.${1:get}(${2:path})
+async def ${3:methodname}(${4:arg}):
+      ${5:pass}
+      return $0

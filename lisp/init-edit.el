@@ -56,8 +56,6 @@
    "f s" '((lambda () (interactive) (find-file "~/.config/emacs/snippets")) :wk "Edit emacs snippet")
    "f b" '((lambda () (interactive) (find-file "~/Public/website")) :wk "blog"))
 
-  (dt/leader-keys
-   "c f" '((lambda () (interactive) (format-all-buffer)) :wk "current buffer format"))
 
   (dt/leader-keys
     "b" '(:ignore t :wk "buffer")
@@ -100,6 +98,7 @@
     "5" '(projectile-run-project :wk "run project")
     "6" '(projectile-test-project :wk "test project")
     "9" '(projectile-compile-project :wk "compile project")
+    "=" '((lambda () (interactive) (format-all-buffer)) :wk "current buffer format")
 )
 
    (dt/leader-keys
@@ -127,12 +126,12 @@
 
    (dt/leader-keys
     "d" '(:ignore t :wk "denote")
-    "d n" '(denote :wk "show diagnostic list")
-    "d d" '(denote-date :wk "copy diagnostic list")
-    "d t" '(denote-type :wk "copy diagnostic list")
-    "d s" '(denote-subdirectory :wk "copy diagnostic list")
-    "d f" '(denote-open-or-create :wk "copy diagnostic list")
-    "d r" '(denote-dired-rename-file :wk "copy diagnostic list"))
+    "d n" '(denote :wk "create denote")
+    "d d" '(denote-date :wk "create date note")
+    "d t" '(denote-type :wk "creates a note while prompting for a file type")
+    "d s" '(denote-subdirectory :wk "create note ")
+    "d f" '(denote-open-or-create :wk "find denote")
+    "d r" '(denote-dired-rename-file :wk "rename denote"))
 )
 
 (use-package sudo-edit
@@ -152,29 +151,25 @@
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
 ;; 定义快捷键在 rust-mode 下生效
+(with-eval-after-load 'prog-mode
+  (evil-define-key 'normal prog-mode-map (kbd "C-k") 'lsp-bridge-popup-documentation)
+  (evil-define-key 'normal prog-mode-map (kbd "gd") 'lsp-bridge-find-def)
+  (evil-define-key 'normal prog-mode-map (kbd "gi") 'lsp-bridge-find-imp)
+  (evil-define-key 'normal prog-mode-map (kbd "go") 'lsp-bridge-find-def-return)
+)
+
 (with-eval-after-load 'rust-mode
-  (evil-define-key 'normal rust-mode-map (kbd "C-k") 'lsp-bridge-popup-documentation)
-  (evil-define-key 'normal rust-mode-map (kbd "gd") 'lsp-bridge-find-def)
-  (evil-define-key 'normal rust-mode-map (kbd "gi") 'lsp-bridge-find-imp)
-  (evil-define-key 'normal rust-mode-map (kbd "go") 'lsp-bridge-find-def-return)
-  ;; (general-evil-define-key 'normal rust-mode-map
-  ;; :prefix "SPC"
-  ;; "5" 'rust-run
-  ;; "9" 'rust-compile
-  ;; "6" 'rust-test)
 )
 
 ;; 定义快捷键在 python-mode 下生效
 (with-eval-after-load 'python-mode
-  (evil-define-key 'normal python-mode-map (kbd "C-k") 'lsp-bridge-popup-documentation)
-  (evil-define-key 'normal python-mode-map (kbd "gd") 'lsp-bridge-find-def)
-  (evil-define-key 'normal python-mode-map (kbd "gi") 'lsp-bridge-find-imp)
-  (evil-define-key 'normal python-mode-map (kbd "go") 'lsp-bridge-find-def-return)
- ;; (evil-define-key 'insert python-mode-map (kbd "<tab>") ')
-  ;; (general-evil-define-key 'normal python-mode-map
-  ;; :prefix "SPC"
-  ;; "5" 'quickrun
-  ;; "6" 'python-pytest)
+)
+
+(with-eval-after-load 'org-mode
+  (general-evil-define-key 'normal python-mode-map
+  :prefix "SPC"
+  "c c" 'org-toggle-checkbox
+  )
 )
 
 ;; 可以继续为其他模式添加类似的代码
@@ -206,7 +201,10 @@
 
 
 ;; vim keymap setting
- (evil-define-key  'normal global-map (kbd "f") 'avy-goto-char-timer)
+  (evil-define-key  'normal global-map (kbd "s") 'avy-goto-char-2)
+
+  (evil-define-key  'insert prog-mode-map (kbd "C-y") 'yas-expand)
+  (evil-define-key  'insert text-mode-map (kbd "C-y") 'yas-expand)
 
   (evil-define-key 'normal org-mode-map (kbd "<tab>") 'org-cycle)
 

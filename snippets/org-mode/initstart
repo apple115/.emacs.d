@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: initstart
+# key: initstart
+# --
+;;; init-${1}.el --- Langs settings -*- lexical-binding: t -*-
+;;; Commentary: ${1}
+
+;;; Code:
+${0}
+
+(provide 'init-${1})
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; init-${1}.el ends here

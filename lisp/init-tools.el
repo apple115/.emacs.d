@@ -29,9 +29,6 @@
 (setq auto-save-delete-trailing-whitespace t)
 )
 
-(use-package vterm
-    :ensure t)
-
 (require 'treesit)
   (setq treesit-language-source-alist
         '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
@@ -78,7 +75,11 @@
         (sh-mode         . bash-ts-mode)
         (typescript-mode . typescript-ts-mode)))
 
+
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (treesit-parser-create 'elisp)))
+(add-to-list 'auto-mode-alist '("\\.ts\\'". typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'". tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'". js-ts-mode))
 
 (use-package fingertip
 :load-path "~/.config/emacs/site-lisp/fingertip"
@@ -162,7 +163,9 @@
                 '(("C"     (astyle "--mode=c"))
                   ("Shell" (shfmt "-i" "4" "-ci"))
                   ("JavaScript" (prettier "-w"))
+                  ("TypeScript" (prettier "-w"))
                   ("JSX" (prettier "-w"))
+                  ("TSX" (prettier "-w"))
                   ("Haskell" (stylish-haskell))
                   ("Rust" (rustfmt))
                   ("Python" (black))

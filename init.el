@@ -20,15 +20,31 @@
  (require 'init-tools)
  (require 'init-ui)                    ; 加载UI交互的模块化配置文件
  (require 'init-completion) ; 加载完成的模块文件
+
  (require 'init-org)
+ (require 'init-org-set)
+ (require 'init-org-capture)
+ (require 'init-org-agenda)
+
  (require 'init-langs)
  (require 'init-edit)
  (require 'init-flyspell)
  (require 'init-mind-wave)
- (require 'init-centaur-tabs)
+;; (require 'init-centaur-tabs)
  (require 'init-rime)
  (require 'init-aweshell)
  (require 'init-hexo)
+ (require 'init-auto-yas)
+ (require 'init-sort-tab)
+
+
+ (require 'init-vertico)
+ (require 'init-consult)
+ (require 'init-embark)
+ (require 'init-marginalia)
+ (require 'init-orderless)
+;; (require 'init-magit)
+;; (require 'init-eaf)
 ;; (require 'init-js2)
   )
 

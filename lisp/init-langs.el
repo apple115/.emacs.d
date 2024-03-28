@@ -16,7 +16,10 @@
 
 (use-package python-mode
 :ensure t
+:config
 )
+
+
 
 (provide 'init-langs)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
