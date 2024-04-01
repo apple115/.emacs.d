@@ -38,6 +38,23 @@
 (use-package avy
  :ensure t)
 
+(use-package sudo-edit
+  :ensure t
+)
+
+(use-package saveplace
+  :ensure nil
+  :hook (after-init . save-place-mode))
+
+(use-package so-long
+  :ensure nil
+  :config (global-so-long-mode 1))
+
+(use-package elec-pair
+  :ensure nil
+  :hook (after-init . electric-pair-mode)
+  :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
+
 (use-package general
   :ensure t
   :config
@@ -51,10 +68,22 @@
     :global-prefix "M-SPC") ;; access leader in insert mode
 
   (dt/leader-keys
-    "." '(find-file :wk "Find file")
-   "f c" '((lambda () (interactive) (find-file "~/.config/emacs")) :wk "Edit emacs config")
-   "f s" '((lambda () (interactive) (find-file "~/.config/emacs/snippets")) :wk "Edit emacs snippet")
-   "f b" '((lambda () (interactive) (find-file "~/Public/website")) :wk "blog"))
+   "." '(find-file :wk "find file")
+   "g"'(:ignore t :wk "goto")
+   "g c" '((lambda () (interactive) (find-file "~/.config/emacs")) :wk "Edit emacs config")
+   "g s" '((lambda () (interactive) (find-file "~/.config/emacs/snippets")) :wk "Edit emacs snippet")
+   "g b" '((lambda () (interactive) (find-file "~/Public/website")) :wk "blog")
+   )
+
+  (dt/leader-keys
+    "f" '(:ignore t :wk "Find")
+    "f f" '(consult-fd :wk "find file")
+    "f w" '(consult-ripgrep :wk "find word")
+    "f m" '(consult-man :wk "find man")
+    "f n" '(consult-notes :wk "find notes")
+    "f u" '(sudo-edit-find-file :wk "Sudo find file")
+    "f U" '(sudo-edit :wk "Sudo edit file")
+  )
 
 
   (dt/leader-keys
@@ -103,17 +132,18 @@
 
    (dt/leader-keys
     "t" '(:ignore t :wk "Toggle")
-    "t e" '(aweshell-dedicated-toggle :wk "aweshell")
-    "t t" '(visual-line-mode :wk "Toggle truncated lines"))
+    "t t" '(my-open-termial-kitty :wk "open terminal")
+   )
 
    (dt/leader-keys
     "o" '(:ignore t :wk "open")
-    "o t" '(my-open-termial-kitty :wk "open terminal")
+    "o t" '(ansi-term :wk "open terminal")
+    "o e" '(aweshell-dedicated-toggle :wk "aweshell")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda"))
 
    (dt/leader-keys
-    "x" '(:ignore t :wk "open")
+    "x" '(:ignore t :wk "fix")
     "x x" '(lsp-bridge-diagnostic-list :wk "show diagnostic list")
     "x c" '(lsp-bridge-diagnostic-copy :wk "copy diagnostic list"))
 
@@ -133,22 +163,6 @@
     "d f" '(denote-open-or-create :wk "find denote")
     "d r" '(denote-dired-rename-file :wk "rename denote"))
 )
-
-(use-package sudo-edit
-  :ensure t
-  :config
-    (dt/leader-keys
-      "fu" '(sudo-edit-find-file :wk "Sudo find file")
-      "fU" '(sudo-edit :wk "Sudo edit file")))
-
-(use-package saveplace
-  :ensure nil
-  :hook (after-init . save-place-mode))
-
-(use-package elec-pair
-  :ensure nil
-  :hook (after-init . electric-pair-mode)
-  :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
 ;; 定义快捷键在 rust-mode 下生效
 (with-eval-after-load 'prog-mode

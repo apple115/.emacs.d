@@ -169,6 +169,7 @@
                   ("Haskell" (stylish-haskell))
                   ("Rust" (rustfmt))
                   ("Python" (black))
+                  ("C++" (clang-format "-style=Google"))
 )))
 
 (use-package envrc
@@ -189,6 +190,7 @@
          "\\*compilation\\*"
           help-mode
           compilation-mode))
+
   (popper-mode +1)
   (popper-echo-mode +1))                ; For echo area hints
 
@@ -196,6 +198,10 @@
   :ensure t
   :config
 )
+
+(use-package diredfl
+  :ensure t
+  :hook (dired-mode . diredfl-mode))
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

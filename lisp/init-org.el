@@ -3,8 +3,6 @@
 
 ;;; Code:
 
-(electric-indent-mode -1)
-
 (use-package org-modern
   :ensure t
   :hook (after-init . (lambda ()
@@ -153,6 +151,11 @@
   ;; 设置日历的节日，通用节日已经包含了所有节日
   (setq calendar-holidays (append cal-china-x-general-holidays)))
 
+(defun add-list-to-list (dst src)
+  "Similar to `add-to-list', but accepts a list as 2nd argument"
+  (set dst
+       (append (eval dst) src)))
+
 (use-package denote
   :ensure t
   :hook (dired-mode . denote-dired-mode-in-directories)
@@ -162,17 +165,6 @@
          ("C-c d s" . denote-subdirectory)
          ("C-c d f" . denote-open-or-create)
          ("C-c d r" . denote-dired-rename-file))
-  :init
-  (with-eval-after-load 'org-capture
-    (setq denote-org-capture-specifiers "%l\n%i\n%?")
-    (add-to-list 'org-capture-templates
-                 '("N" "New note (with denote.el)" plain
-                   (file denote-last-path)
-                   #'denote-org-capture
-                   :no-save t
-                   :immediate-finish nil
-                   :kill-buffer t
-                   :jump-to-captured t)))
   :config
   (setq denote-directory (expand-file-name "~/Nutstore Files/Nutstore/org/denote"))
   (setq denote-known-keywords '("emacs" "entertainment" "reading" "studying"))
@@ -246,6 +238,17 @@
 
 (require 'ob-python)
 (require 'ob-C)
+
+(use-package org-appear
+  :ensure t
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq org-appear-autolinks t)
+  (setq org-appear-autosubmarkers t)
+  (setq org-appear-autoentities t)
+  (setq org-appear-autokeywords t)
+  (setq org-appear-inside-latex t)
+  )
 
 (provide 'init-org)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

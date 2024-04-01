@@ -30,7 +30,7 @@
  (require 'init-edit)
  (require 'init-flyspell)
  (require 'init-mind-wave)
-;; (require 'init-centaur-tabs)
+;;( require 'init-centaur-tabs)
  (require 'init-rime)
  (require 'init-aweshell)
  (require 'init-hexo)
@@ -43,11 +43,29 @@
  (require 'init-embark)
  (require 'init-marginalia)
  (require 'init-orderless)
+ (require 'init-shackle)
+ (require 'init-dashboard)
+
+(require 'init-consult-notes)
+;; (require 'init-awesome-tray)
 ;; (require 'init-magit)
-;; (require 'init-eaf)
+ ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )
 
 (provide 'init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(consult-notes wucuo which-key web-mode vertico undo-tree super-save sudo-edit sis shrink-path shackle rust-mode rime reformatter rainbow-delimiters quickrun pyvenv python-mode projectile popper plantuml-mode ox-gfm org-modern org-contrib org-auto-tangle org-appear orderless nerd-icons markdown-mode marginalia magit js2-mode highlight-indentation haskell-mode gruvbox-theme general format-all flycheck-rust exec-path-from-shell evil-surround evil-nerd-commenter evil-collection eshell-prompt-extras envrc embark-consult diredfl denote dashboard counsel centaur-tabs calibredb cal-china-x avy auto-yasnippet amx all-the-icons-ivy-rich)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

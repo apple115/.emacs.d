@@ -32,6 +32,17 @@
                               "* %?\n%T\n\n%i"
                               :empty-lines 1
                               :jump-to-captured t)
+
+                             ("l" "live")
+                             ("lm" "watch movies" entry (file "20240328T131822--movies__entertainment.org")
+                              "* "
+                              :empty-lines 1
+                              :jump-to-captured t)
+
+                             ("lb" "read books" entry (file "20240328T131944--book__entertainment.org")
+                              "* "
+                              :empty-lines 1
+                              :jump-to-captured t)
                              ))
     )
 

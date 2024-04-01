@@ -26,10 +26,9 @@
 ;;    (setq acm-quick-access-use-number-select t)
     (setq lsp-bridge-python-command "~/.config/emacs/site-lisp/myemacs/bin/python3")
     ;;(setq lsp-bridge-enable-auto-format-code t);;自动格式化
-    (setq lsp-bridge-enable-inlay-hint nil)
     (setq lsp-bridge-enable-completion-in-string t)
     (setq lsp-bridge-enable-search-words  t)
-    (setq lsp-bridge-enable-org-babel t)
+    ;;(setq lsp-bridge-enable-org-babel t)
     (setq lsp-bridge-enable-hover-diagnostic t)
     (setq acm-enable-copilot t)
     (global-lsp-bridge-mode)

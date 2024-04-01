@@ -82,7 +82,7 @@ This function makes sure that dates are aligned for easy reading."
   ;; =====================
   ;; 自定义日程视图，分别显示TODO，WIP，WIAT中的任务
   ;; n键显示自定义视图，p键纯文本视图，a键默认视图
-  ;; =====================
+  ;; ;; =====================
   (defvar my-org-custom-daily-agenda
     `((todo "TODO"
             ((org-agenda-block-separator nil)
@@ -119,7 +119,8 @@ This function makes sure that dates are aligned for easy reading."
   (org-agenda-files
    (list (expand-file-name "tasks.org" org-directory)
          (expand-file-name "diary.org" org-directory)
-         (expand-file-name "config.org" user-emacs-directory)
+         (expand-file-name "habits.org" org-directory)
+         ;; (expand-file-name "config.org" user-emacs-directory)
          ))
   ;; 设置org的日记文件
   (org-agenda-diary-file (expand-file-name "diary.org" org-directory))
@@ -130,7 +131,7 @@ This function makes sure that dates are aligned for easy reading."
   ;; 日程视图的块分隔符
   (org-agenda-block-separator ?─)
   ;; 日视图还是周视图，通过 v-d, v-w, v-m, v-y 切换视图，默认周视图
-  (org-agenda-span 'day)
+  (org-agenda-span 'week)
   ;; q退出时删除agenda缓冲区
   (org-agenda-sticky t)
   ;; 是否包含直接日期
@@ -144,7 +145,7 @@ This function makes sure that dates are aligned for easy reading."
   ;; 日程同时启动log mode
   (org-agenda-start-with-log-mode t)
   ;; 日程同时启动任务时间记录报告模式
-  (org-agenda-start-with-clockreport-mode t)
+  ;;(org-agenda-start-with-clockreport-mode t)
   ;; 截止的任务完成后不显示
   ;; (org-agenda-skip-deadline-if-done t)
   ;; 当计划的任务完成后不显示
@@ -173,8 +174,20 @@ This function makes sure that dates are aligned for easy reading."
   (org-agenda-search-headline-for-time nil)
   ;; 提前3天截止日期到期告警
   (org-deadline-warning-days 3)
-  )
+ )
 
+(use-package org-habit
+  :ensure nil
+  :defer t
+  :custom
+  (org-habit-show-habits t)
+  (org-habit-graph-column 70)
+  (org-habit-show-all-today t)
+  (org-habit-show-done-always-green t)
+  (org-habit-scheduled-past-days t)
+  ;; org habit show 7 days before today and 7 days after today. ! means not done. * means done.
+  (org-habit-preceding-days 7)
+  )
 
 
 (provide 'init-org-agenda)
