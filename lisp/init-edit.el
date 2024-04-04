@@ -88,12 +88,12 @@
 
   (dt/leader-keys
     "b" '(:ignore t :wk "buffer")
-    "b b" '(switch-to-buffer :wk "Switch buffer")
+    "b b" '(consult-buffer :wk "Switch buffer")
     "b i" '(ibuffer :wk "Ibuffer")
-    "b k" '(kill-buffer :wk "Kill this buffer")
+    "b k" '(sort-tab-close-current-tab :wk "Kill this buffer")
     "b r" '(revert-buffer :wk "Reload buffer")
-    "b n" '(next-buffer :wk "Next buffer")
-    "b p" '(previous-buffer :wk "Previous buffer"))
+    "b n" '(sort-tab-select-next-tab :wk "Next buffer")
+    "b p" '(sort-tab-select-prev-tab :wk "Previous buffer"))
 
   (dt/leader-keys
     "e" '(:ignore t :wk "Evaluate")
@@ -138,6 +138,7 @@
    (dt/leader-keys
     "o" '(:ignore t :wk "open")
     "o t" '(ansi-term :wk "open terminal")
+    "o s" '(async-shell-command :wk "open async shell command")
     "o e" '(aweshell-dedicated-toggle :wk "aweshell")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda"))

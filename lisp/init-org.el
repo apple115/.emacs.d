@@ -20,10 +20,10 @@
   ;; 设置表格横线为0，默认为0.1
   (setq org-modern-table-horizontal 0)
   ;; 复选框美化
-  (setq org-modern-checkbox
-        '((?X . #("▢ ✓" 0 2 (composition ((2)))))
-          (?- . #("▢–" 0 2 (composition ((2)))))
-          (?\s . #("▢" 0 1 (composition ((1)))))))
+  ;; (setq org-modern-checkbox
+  ;;       '((?X . #("▢✓" 0 2 (composition ((2)))))
+  ;;         (?- . #("▢–" 0 2 (composition ((2)))))
+  ;;         (?\s . #("▢" 0 1 (composition ((1)))))))
   ;; 列表符号美化
   (setq org-modern-list
         '((?- . "•")
@@ -32,9 +32,9 @@
   ;; 代码块左边加上一条竖边线（需要Org mode顶头，如果启用了 `visual-fill-column-mode' 会很难看）
   (setq org-modern-block-fringe t)
   ;; 代码块类型美化，我们使用了 `prettify-symbols-mode'
-  (setq org-modern-block-name nil)
+  (setq org-modern-block-name t)
   ;; #+关键字美化，我们使用了 `prettify-symbols-mode'
-  (setq org-modern-keyword nil)
+  (setq org-modern-keyword t)
   )
 
 (use-package calendar

@@ -95,12 +95,13 @@
  (require 'init-flyspell)
  (require 'init-mind-wave)
 ;;( require 'init-centaur-tabs)
+
  (require 'init-rime)
  (require 'init-aweshell)
  (require 'init-hexo)
  (require 'init-auto-yas)
  (require 'init-sort-tab)
-
+ ;;(require 'init-tabspaces)
 
  (require 'init-vertico)
  (require 'init-consult)
@@ -111,6 +112,7 @@
  (require 'init-dashboard)
 
 (require 'init-consult-notes)
+;;(require 'init-smart-input-source)
 ;; (require 'init-awesome-tray)
 ;; (require 'init-magit)
  ;;(require 'init-eaf)
@@ -265,12 +267,12 @@
 
   (dt/leader-keys
     "b" '(:ignore t :wk "buffer")
-    "b b" '(switch-to-buffer :wk "Switch buffer")
+    "b b" '(consult-buffer :wk "Switch buffer")
     "b i" '(ibuffer :wk "Ibuffer")
-    "b k" '(kill-buffer :wk "Kill this buffer")
+    "b k" '(sort-tab-close-current-tab :wk "Kill this buffer")
     "b r" '(revert-buffer :wk "Reload buffer")
-    "b n" '(next-buffer :wk "Next buffer")
-    "b p" '(previous-buffer :wk "Previous buffer"))
+    "b n" '(sort-tab-select-next-tab :wk "Next buffer")
+    "b p" '(sort-tab-select-prev-tab :wk "Previous buffer"))
 
   (dt/leader-keys
     "e" '(:ignore t :wk "Evaluate")
@@ -315,6 +317,7 @@
    (dt/leader-keys
     "o" '(:ignore t :wk "open")
     "o t" '(ansi-term :wk "open terminal")
+    "o s" '(async-shell-command :wk "open async shell command")
     "o e" '(aweshell-dedicated-toggle :wk "aweshell")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda"))
@@ -781,10 +784,10 @@ org的配置
   ;; 设置表格横线为0，默认为0.1
   (setq org-modern-table-horizontal 0)
   ;; 复选框美化
-  (setq org-modern-checkbox
-        '((?X . #("▢ ✓" 0 2 (composition ((2)))))
-          (?- . #("▢–" 0 2 (composition ((2)))))
-          (?\s . #("▢" 0 1 (composition ((1)))))))
+  ;; (setq org-modern-checkbox
+  ;;       '((?X . #("▢✓" 0 2 (composition ((2)))))
+  ;;         (?- . #("▢–" 0 2 (composition ((2)))))
+  ;;         (?\s . #("▢" 0 1 (composition ((1)))))))
   ;; 列表符号美化
   (setq org-modern-list
         '((?- . "•")
@@ -793,9 +796,9 @@ org的配置
   ;; 代码块左边加上一条竖边线（需要Org mode顶头，如果启用了 `visual-fill-column-mode' 会很难看）
   (setq org-modern-block-fringe t)
   ;; 代码块类型美化，我们使用了 `prettify-symbols-mode'
-  (setq org-modern-block-name nil)
+  (setq org-modern-block-name t)
   ;; #+关键字美化，我们使用了 `prettify-symbols-mode'
-  (setq org-modern-keyword nil)
+  (setq org-modern-keyword t)
   )
 #+end_src
 
