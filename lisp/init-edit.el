@@ -70,9 +70,9 @@
   (dt/leader-keys
    "." '(find-file :wk "find file")
    "g"'(:ignore t :wk "goto")
-   "g c" '((lambda () (interactive) (find-file "~/.config/emacs")) :wk "Edit emacs config")
-   "g s" '((lambda () (interactive) (find-file "~/.config/emacs/snippets")) :wk "Edit emacs snippet")
-   "g b" '((lambda () (interactive) (find-file "~/Public/website")) :wk "blog")
+   "g c" '((lambda () (interactive) (find-file "~/.emacs.d")) :wk "Edit emacs config")
+   "g s" '((lambda () (interactive) (find-file "~/.emacs.d/snippets")) :wk "Edit emacs snippet")
+   "g b" '((lambda () (interactive) (find-file "~/blog")) :wk "blog")
    )
 
   (dt/leader-keys
@@ -137,7 +137,7 @@
 
    (dt/leader-keys
     "o" '(:ignore t :wk "open")
-    "o t" '(ansi-term :wk "open terminal")
+    "o t" '(vterm-toggle :wk "open terminal")
     "o s" '(async-shell-command :wk "open async shell command")
     "o e" '(aweshell-dedicated-toggle :wk "aweshell")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")

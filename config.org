@@ -93,7 +93,7 @@
  (require 'init-langs)
  (require 'init-edit)
  (require 'init-flyspell)
- (require 'init-mind-wave)
+;; (require 'init-mind-wave)
 ;;( require 'init-centaur-tabs)
 
  (require 'init-rime)
@@ -112,6 +112,7 @@
  (require 'init-dashboard)
 
 (require 'init-consult-notes)
+(require 'init-vterm)
 ;;(require 'init-smart-input-source)
 ;; (require 'init-awesome-tray)
 ;; (require 'init-magit)
@@ -249,9 +250,9 @@
   (dt/leader-keys
    "." '(find-file :wk "find file")
    "g"'(:ignore t :wk "goto")
-   "g c" '((lambda () (interactive) (find-file "~/.config/emacs")) :wk "Edit emacs config")
-   "g s" '((lambda () (interactive) (find-file "~/.config/emacs/snippets")) :wk "Edit emacs snippet")
-   "g b" '((lambda () (interactive) (find-file "~/Public/website")) :wk "blog")
+   "g c" '((lambda () (interactive) (find-file "~/.emacs.d")) :wk "Edit emacs config")
+   "g s" '((lambda () (interactive) (find-file "~/.emacs.d/snippets")) :wk "Edit emacs snippet")
+   "g b" '((lambda () (interactive) (find-file "~/blog")) :wk "blog")
    )
 
   (dt/leader-keys
@@ -316,7 +317,7 @@
 
    (dt/leader-keys
     "o" '(:ignore t :wk "open")
-    "o t" '(ansi-term :wk "open terminal")
+    "o t" '(vterm-toggle :wk "open terminal")
     "o s" '(async-shell-command :wk "open async shell command")
     "o e" '(aweshell-dedicated-toggle :wk "aweshell")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
@@ -440,7 +441,7 @@
 
 ** gruvbox 主题
 #+begin_src emacs-lisp
-(load-theme 'gruvbox-dark-soft t)
+(load-theme 'gruvbox-light-soft t)
 #+end_src
 ** 字体设置
 #+begin_src emacs-lisp
@@ -645,6 +646,7 @@ Emacs的补全系统
 :HEADER-ARGS: :tangle lisp/init-completion.el :mkdirp yes
 :END:
 ** init-completion.el 文件头
+
 #+BEGIN_SRC emacs-lisp
 ;;; init-completion.el --- Completion settings -*- lexical-binding: t -*-
 ;;; Commentary:
@@ -715,19 +717,16 @@ Emacs的补全系统
 ** lsp-bridge
 #+begin_src emacs-lisp
  (use-package lsp-bridge
- :load-path "~/.config/emacs/site-lisp/lsp-bridge"
- :hook (js-jsx-mode . (lambda ()
-                    (require 'lsp-bridge)
-                    (lsp-bridge-enable)))
+ :load-path "./site-lisp/lsp-bridge"
  :config
 ;;    (setq acm-quick-access-use-number-select t)
-    (setq lsp-bridge-python-command "~/.config/emacs/site-lisp/myemacs/bin/python3")
+    (setq lsp-bridge-python-command "/home/apple115/.emacs.d/site-lisp/my-emacs-python/bin/python3.11")
+    (setq acm-enable-copilot t)
     ;;(setq lsp-bridge-enable-auto-format-code t);;自动格式化
     (setq lsp-bridge-enable-completion-in-string t)
     (setq lsp-bridge-enable-search-words  t)
     ;;(setq lsp-bridge-enable-org-babel t)
     (setq lsp-bridge-enable-hover-diagnostic t)
-    (setq acm-enable-copilot t)
     (global-lsp-bridge-mode)
 ;; (define-key acm-mode-map (kbd "M-1") (lambda () (interactive) (insert "1")))
 ;; (define-key acm-mode-map (kbd "M-2") (lambda () (interactive) (insert "2")))
@@ -1076,7 +1075,7 @@ org的配置
 ** auto-save
 #+begin_src emacs-lisp
   (use-package auto-save
-  :load-path "~/.config/emacs/site-lisp/auto-save"
+  :load-path "./site-lisp/auto-save"
   :config
 (auto-save-enable)
 (setq auto-save-silent t)
@@ -1141,12 +1140,14 @@ org的配置
 (add-to-list 'auto-mode-alist '("\\.ts\\'". typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'". tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'". js-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'". json-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.yml\\'".yaml-ts-mode))
 
 #+end_src
 ** fingertip
 #+begin_src emacs-lisp
   (use-package fingertip
-  :load-path "~/.config/emacs/site-lisp/fingertip"
+  :load-path "./site-lisp/fingertip"
   :config
   (dolist (hook (list
                  'c-mode-common-hook
@@ -1227,7 +1228,7 @@ org的配置
 ** flycheck
 #+begin_src emacs-lisp
 (use-package flycheck
-  :load-path "~/.config/emacs/site-lisp/flycheck"
+  :ensure t
   :config
   (setq truncate-lines nil) ; 如果单行信息很长会自动换行
   (flycheck-add-mode 'javascript-eslint 'js2-mode)
@@ -1243,6 +1244,7 @@ org的配置
 ** formatter-all
 #+begin_src emacs-lisp
 (use-package format-all
+  :ensure t
   :commands format-all-mode
   ;;:hook (prog-mode . format-all-mode)
   :config
@@ -1251,6 +1253,7 @@ org的配置
                   ("Shell" (shfmt "-i" "4" "-ci"))
                   ("JavaScript" (prettier "-w"))
                   ("TypeScript" (prettier "-w"))
+                  ("YAML" (prettier "-w"))
                   ("JSX" (prettier "-w"))
                   ("TSX" (prettier "-w"))
                   ("Haskell" (stylish-haskell))
@@ -1299,12 +1302,12 @@ org的配置
 
 #+end_src
 ** quickrun
-#+begin_src emacs-lisp
+##+begin_src emacs-lisp
 (use-package quickrun
   :ensure t
   :config
 )
-#+end_src
+##+end_src
 ** undo-tree
 ##+begin_src emacs-lisp
 (use-package undo-tree
@@ -1382,6 +1385,12 @@ org的配置
   (sh-basic-offset 2)
   (sh-indentation 2))
 #+end_src
+** commonlisp-mode
+##+begin_src emacs-lisp
+(use-package slime
+  :ensure t
+)
+##+end_src
 ** 前端
 #+begin_src emacs-lisp
 

@@ -4,7 +4,7 @@
 ;;; Code:
 ;;; coade
 (use-package hexo
- :load-path "~/.config/emacs/site-lisp/hexo.el"
+ :load-path "./site-lisp/hexo.el"
  :config
 )
 

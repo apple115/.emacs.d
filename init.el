@@ -29,7 +29,7 @@
  (require 'init-langs)
  (require 'init-edit)
  (require 'init-flyspell)
- (require 'init-mind-wave)
+;; (require 'init-mind-wave)
 ;;( require 'init-centaur-tabs)
 
  (require 'init-rime)
@@ -48,6 +48,7 @@
  (require 'init-dashboard)
 
 (require 'init-consult-notes)
+(require 'init-vterm)
 ;;(require 'init-smart-input-source)
 ;; (require 'init-awesome-tray)
 ;; (require 'init-magit)

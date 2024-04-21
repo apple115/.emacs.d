@@ -18,19 +18,16 @@
        ("C-c C-e" . markdown-do)))
 
 (use-package lsp-bridge
- :load-path "~/.config/emacs/site-lisp/lsp-bridge"
- :hook (js-jsx-mode . (lambda ()
-                    (require 'lsp-bridge)
-                    (lsp-bridge-enable)))
+ :load-path "./site-lisp/lsp-bridge"
  :config
 ;;    (setq acm-quick-access-use-number-select t)
-    (setq lsp-bridge-python-command "~/.config/emacs/site-lisp/myemacs/bin/python3")
+    (setq lsp-bridge-python-command "/home/apple115/.emacs.d/site-lisp/my-emacs-python/bin/python3.11")
+    (setq acm-enable-copilot t)
     ;;(setq lsp-bridge-enable-auto-format-code t);;自动格式化
     (setq lsp-bridge-enable-completion-in-string t)
     (setq lsp-bridge-enable-search-words  t)
     ;;(setq lsp-bridge-enable-org-babel t)
     (setq lsp-bridge-enable-hover-diagnostic t)
-    (setq acm-enable-copilot t)
     (global-lsp-bridge-mode)
 ;; (define-key acm-mode-map (kbd "M-1") (lambda () (interactive) (insert "1")))
 ;; (define-key acm-mode-map (kbd "M-2") (lambda () (interactive) (insert "2")))

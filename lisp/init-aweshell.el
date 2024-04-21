@@ -4,7 +4,7 @@
 ;;; Code:
 ;;; coade
 (use-package aweshell
- :load-path "~/.config/emacs/site-lisp/aweshell"
+ :load-path "./site-lisp/aweshell"
 )
 
 (use-package eshell-prompt-extras

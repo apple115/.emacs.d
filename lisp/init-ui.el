@@ -3,7 +3,7 @@
 
 ;;; Code:
 
-(load-theme 'gruvbox-dark-soft t)
+(load-theme 'gruvbox-light-soft t)
 
 (defun my-apply-font()
 (set-face-attribute 'default nil :font (font-spec :family "Inconsolata" :size 18 :weight 'bold))

@@ -5,7 +5,7 @@
 ;;; coade
 
 (use-package sort-tab
-  :load-path "~/.config/emacs/site-lisp/sort-tab"
+  :load-path "./site-lisp/sort-tab"
   :config
   (sort-tab-mode 1)
 (define-key evil-normal-state-map (kbd "g t") 'sort-tab-select-next-tab)

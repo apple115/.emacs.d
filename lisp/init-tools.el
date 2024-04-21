@@ -22,7 +22,7 @@
         which-key-separator " → " ))
 
 (use-package auto-save
-  :load-path "~/.config/emacs/site-lisp/auto-save"
+  :load-path "./site-lisp/auto-save"
   :config
 (auto-save-enable)
 (setq auto-save-silent t)
@@ -80,9 +80,11 @@
 (add-to-list 'auto-mode-alist '("\\.ts\\'". typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'". tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'". js-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'". json-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.yml\\'".yaml-ts-mode))
 
 (use-package fingertip
-:load-path "~/.config/emacs/site-lisp/fingertip"
+:load-path "./site-lisp/fingertip"
 :config
 (dolist (hook (list
                'c-mode-common-hook
@@ -143,7 +145,7 @@
               ("C-c p" . projectile-command-map)))
 
 (use-package flycheck
-  :load-path "~/.config/emacs/site-lisp/flycheck"
+  :ensure t
   :config
   (setq truncate-lines nil) ; 如果单行信息很长会自动换行
   (flycheck-add-mode 'javascript-eslint 'js2-mode)
@@ -156,6 +158,7 @@
   (setq flycheck-check-syntax-automatically '(idle-change new-line mode-enabled)))
 
 (use-package format-all
+  :ensure t
   :commands format-all-mode
   ;;:hook (prog-mode . format-all-mode)
   :config
@@ -164,6 +167,7 @@
                   ("Shell" (shfmt "-i" "4" "-ci"))
                   ("JavaScript" (prettier "-w"))
                   ("TypeScript" (prettier "-w"))
+                  ("YAML" (prettier "-w"))
                   ("JSX" (prettier "-w"))
                   ("TSX" (prettier "-w"))
                   ("Haskell" (stylish-haskell))
@@ -193,11 +197,6 @@
 
   (popper-mode +1)
   (popper-echo-mode +1))                ; For echo area hints
-
-(use-package quickrun
-  :ensure t
-  :config
-)
 
 (use-package diredfl
   :ensure t
