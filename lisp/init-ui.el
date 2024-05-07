@@ -141,7 +141,7 @@
 (add-hook 'find-file-hook 'display-line-numbers-equalize)
  (setq column-number-mode t)
   ;; 显示行号 和 文本显示中的截断或省略
-  (global-display-line-numbers-mode 1)
+  (global-display-line-numbers-mode -1)
   (global-visual-line-mode t)
 
 ;; 配置所有的编码为UTF-8，参考：

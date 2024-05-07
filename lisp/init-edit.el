@@ -17,7 +17,7 @@
 :ensure t
 :after evil
 :config
-(setq evil-collection-mode-list '(dashboard dired ibuffer calendar vterm eshell magit))
+(setq evil-collection-mode-list '(dashboard dired ibuffer calendar vterm eshell magit realgud))
 (evil-collection-init))
 
 (use-package evil-surround
@@ -31,7 +31,6 @@
   (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
   (define-key evil-visual-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
 )
-
 
 (setq x-select-request-type nil)
 
@@ -89,11 +88,10 @@
   (dt/leader-keys
     "b" '(:ignore t :wk "buffer")
     "b b" '(consult-buffer :wk "Switch buffer")
+    "b k" '(kill-buffer :wk "kill buffer")
     "b i" '(ibuffer :wk "Ibuffer")
-    "b k" '(sort-tab-close-current-tab :wk "Kill this buffer")
     "b r" '(revert-buffer :wk "Reload buffer")
-    "b n" '(sort-tab-select-next-tab :wk "Next buffer")
-    "b p" '(sort-tab-select-prev-tab :wk "Previous buffer"))
+   )
 
   (dt/leader-keys
     "e" '(:ignore t :wk "Evaluate")
@@ -102,6 +100,8 @@
     "e e" '(eval-expression :wk "Evaluate and elisp expression")
     "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
     "e r" '(eval-region :wk "Evaluate elisp in region"))
+
+
 
 
 (defun my-load-config ()
@@ -163,11 +163,16 @@
     "d s" '(denote-subdirectory :wk "create note ")
     "d f" '(denote-open-or-create :wk "find denote")
     "d r" '(denote-dired-rename-file :wk "rename denote"))
+
+
 )
+
+(evil-define-key 'normal global-map (kbd "C-.") 'popper-toggle)
+  (evil-define-key 'normal global-map (kbd "M-.") 'popper-cycle)
 
 ;; 定义快捷键在 rust-mode 下生效
 (with-eval-after-load 'prog-mode
-  (evil-define-key 'normal prog-mode-map (kbd "C-k") 'lsp-bridge-popup-documentation)
+  (evil-define-key 'normal prog-mode-map (kbd "K") 'lsp-bridge-show-documentation)
   (evil-define-key 'normal prog-mode-map (kbd "gd") 'lsp-bridge-find-def)
   (evil-define-key 'normal prog-mode-map (kbd "gi") 'lsp-bridge-find-imp)
   (evil-define-key 'normal prog-mode-map (kbd "go") 'lsp-bridge-find-def-return)
@@ -180,17 +185,32 @@
 (with-eval-after-load 'python-mode
 )
 
-(with-eval-after-load 'org-mode
-  (general-evil-define-key 'normal python-mode-map
-  :prefix "SPC"
-  "c c" 'org-toggle-checkbox
-  )
+
+(general-define-key
+ :states '(normal visual)
+ :keymaps 'org-mode-map
+ :prefix "SPC"
+  "c" '(:ignore t :wk "mode define command")
+  "c c" '(org-toggle-checkbox  :wk"toggle-checkbox")
 )
+
+(general-define-key
+ :states '(normal visual)
+ :keymaps 'override
+ :prefix "SPC"
+  "c" '(:ignore t :wk "mode define command")
+  "c o" '(xah-open-in-external-app :wk"open the file with xopen")
+  "c p" '(my-paste-to-dired  :wk "past some in the dired")
+)
+
+
+
 
 ;; 可以继续为其他模式添加类似的代码
 
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
+
 ;; agenda
 
 (add-hook 'org-agenda-mode-hook
@@ -214,9 +234,9 @@
           (lambda ()
             (evil-set-initial-state 'org-capture-mode 'normal)))
 
-
 ;; vim keymap setting
-  (evil-define-key  'normal global-map (kbd "s") 'avy-goto-char-2)
+  (evil-define-key  'normal prog-mode-map (kbd "s") 'avy-goto-char-2)
+  (evil-define-key  'normal text-mode-map (kbd "s") 'avy-goto-char-2)
 
   (evil-define-key  'insert prog-mode-map (kbd "C-y") 'yas-expand)
   (evil-define-key  'insert text-mode-map (kbd "C-y") 'yas-expand)
@@ -227,8 +247,6 @@
   (evil-define-key 'normal global-map (kbd "L") 'evil-end-of-line)
   (evil-define-key 'visual global-map (kbd "H") 'evil-beginning-of-line)
   (evil-define-key 'visual global-map (kbd "L") 'evil-end-of-line)
-  (evil-define-key 'normal global-map (kbd "C-.") 'popper-toggle)
-  (evil-define-key 'normal global-map (kbd "M-.") 'popper-cycle)
 
 ;; (message "init-base configuration: %.2fs"
 ;;          (float-time (time-subtract (current-time) my/init-base-start-time)))
