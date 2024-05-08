@@ -116,6 +116,7 @@
 ;; (require 'init-awesome-tray)
 (require 'init-magit)
 (require 'init-realgud)
+;;(require 'init-doom-modeline)
  ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )
@@ -386,9 +387,6 @@
   "c o" '(xah-open-in-external-app :wk"open the file with xopen")
   "c p" '(my-paste-to-dired  :wk "past some in the dired")
 )
-
-
-
 
 ;; 可以继续为其他模式添加类似的代码
 

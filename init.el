@@ -53,6 +53,7 @@
 ;; (require 'init-awesome-tray)
 (require 'init-magit)
 (require 'init-realgud)
+;;(require 'init-doom-modeline)
  ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )

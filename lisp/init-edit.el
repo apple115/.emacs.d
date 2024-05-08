@@ -203,9 +203,6 @@
   "c p" '(my-paste-to-dired  :wk "past some in the dired")
 )
 
-
-
-
 ;; 可以继续为其他模式添加类似的代码
 
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
