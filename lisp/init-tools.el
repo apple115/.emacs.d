@@ -193,6 +193,7 @@
           "\\*quickrun\\*"
           "Aweshell"
          "\\*compilation\\*"
+         "\\*vterm\\*"
          "\\*lsp-bridge-doc\\*"
           help-mode
           compilation-mode))

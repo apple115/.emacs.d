@@ -13,7 +13,8 @@
         ;; CONDITION(:regexp)            :select     :inhibit-window-quit   :size+:align|:other     :same|:popup
         '((compilation-mode              :ignore t)
           ;; ("\\*Async Shell.*\\*" :regexp t :ignore t)
-          ("\\*Async Shell.*\\*"                    :select t                          :size 0.4  :align t     :popup t)
+          ("*Async Shell Command*"         :select t                          :size 0.4  :align t     :popup t)
+          ("*vterm*"                 :select t                          :size 0.4  :align t     :popup t)
           ("*lsp-bridge-doc*"            :select nil                         :size 0.4  :align t     :popup t)
 ;;          ("\\*corfu.*\\*"       :regexp t :ignore t)
           ("*eshell*"                    :select t                          :size 0.4  :align t     :popup t)

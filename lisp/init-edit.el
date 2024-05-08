@@ -170,6 +170,9 @@
 (evil-define-key 'normal global-map (kbd "C-.") 'popper-toggle)
   (evil-define-key 'normal global-map (kbd "M-.") 'popper-cycle)
 
+  (evil-define-key 'insert global-map (kbd "C-.") 'popper-toggle)
+  (evil-define-key 'insert global-map (kbd "M-.") 'popper-cycle)
+
 ;; 定义快捷键在 rust-mode 下生效
 (with-eval-after-load 'prog-mode
   (evil-define-key 'normal prog-mode-map (kbd "K") 'lsp-bridge-show-documentation)
