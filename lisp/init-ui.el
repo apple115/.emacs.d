@@ -83,29 +83,30 @@
  (setq-default tab-width 4)
 
  ;; yes或no提示设置，通过下面这个函数设置当缓冲区名字匹配到预设的字符串时自动回答yes
-;; (setq original-y-or-n-p 'y-or-n-p)
-;; (defalias 'original-y-or-n-p (symbol-function 'y-or-n-p))
-;; (defun default-yes-sometimes (prompt)
-;;   "automatically say y when buffer name match following string"
-;;   (if (or
-;;            (string-match "has a running process" prompt)
-;;            (string-match "does not exist; create" prompt)
-;;            (string-match "modified; kill anyway" prompt)
-;;            (string-match "Delete buffer using" prompt)
-;;            (string-match "Kill buffer of" prompt)
-;;            (string-match "still connected.  Kill it?" prompt)
-;;            (string-match "Shutdown the client's kernel" prompt)
-;;            (string-match "kill them and exit anyway" prompt)
-;;            (string-match "Revert buffer from file" prompt)
-;;            (string-match "Kill Dired buffer of" prompt)
-;;            (string-match "delete buffer using" prompt)
-;;        (string-match "Kill all pass entry" prompt)
-;;        (string-match "for all cursors" prompt)
-;;            (string-match "Do you want edit the entry" prompt))
-;;           t
-;;     (original-y-or-n-p prompt)))
-;; (defalias 'yes-or-no-p 'default-yes-sometimes)
-;; (defalias 'y-or-n-p 'default-yes-sometimes)
+(setq original-y-or-n-p 'y-or-n-p)
+(defalias 'original-y-or-n-p (symbol-function 'y-or-n-p))
+(defun default-yes-sometimes (prompt)
+  "automatically say y when buffer name match following string"
+  (if (or
+           (string-match "has a running process" prompt)
+           ;; (string-match "does not exist; create" prompt)
+           ;; (string-match "modified; kill anyway" prompt)
+           ;; (string-match "Delete buffer using" prompt)
+           ;; (string-match "Kill buffer of" prompt)
+           ;; (string-match "still connected.  Kill it?" prompt)
+           ;; (string-match "Shutdown the client's kernel" prompt)
+           ;; (string-match "kill them and exit anyway" prompt)
+           ;; (string-match "Revert buffer from file" prompt)
+           ;; (string-match "Kill Dired buffer of" prompt)
+           ;; (string-match "delete buffer using" prompt)
+           ;; (string-match "Kill all pass entry" prompt)
+           ;; (string-match "for all cursors" prompt)
+           ;; (string-match "Do you want edit the entry" prompt)
+)
+          t
+    (original-y-or-n-p prompt)))
+(defalias 'yes-or-no-p 'default-yes-sometimes)
+(defalias 'y-or-n-p 'default-yes-sometimes)
 
  ;; 设置剪贴板历史长度300，默认为60
  (setq kill-ring-max 200)

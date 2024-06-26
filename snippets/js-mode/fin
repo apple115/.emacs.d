@@ -1,10 +1,8 @@
-# -*- mode: snippet -*-
-# uuid: 8d343f0b-28ae-4e2c-84a4-2e557603f28b
-# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
-# name: forIn
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Iterating over property values of iterable objects
 # key: fin
+# uuid: fin
 # --
-
-for(let ${1:item} in ${2:object}) {
-  $0
+for(let ${item} in ${object}) {
+ $0
 }

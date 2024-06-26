@@ -21,16 +21,20 @@
  :load-path "./site-lisp/lsp-bridge"
  :config
 
-(setq acm-backend-copilot-network-proxy '(:host "127.0.0.1" :port 20171))
+;;(setq acm-backend-copilot-network-proxy '(:host "127.0.0.1" :port 20171))
 
-;;    (setq lsp-bridge-enable-log t)
-
+ ;;   (setq lsp-bridge-enable-log t)
 ;;    (setq acm-quick-access-use-number-select t)
     (setq lsp-bridge-python-command "/home/apple115/.emacs.d/site-lisp/my-emacs-python/bin/python3.11")
     (setq acm-enable-copilot t)
+    (setq acm-candidate-match-function 'orderless-flex)
     ;;(setq lsp-bridge-enable-auto-format-code t);;自动格式化
     (setq lsp-bridge-enable-completion-in-string t)
     (setq lsp-bridge-enable-search-words  t)
+    (setq lsp-bridge-multi-lang-server-extension-list '(
+    (("jsx") . "typescript_tailwindcss")
+    (("html") . "html_tailwindcss")
+    ))
     ;;(setq lsp-bridge-enable-org-babel t)
     (setq lsp-bridge-enable-hover-diagnostic t)
     (global-lsp-bridge-mode)

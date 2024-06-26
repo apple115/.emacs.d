@@ -1,8 +1,6 @@
-# -*- mode: snippet -*-
-# uuid: 13efbfa8-12d3-4570-9602-6d64717d75e3
-# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
-# name: importEverything
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ime
 # key: ime
+# uuid: ime
 # --
-
-import * as ${2:alias} from '${1:module}'$0
+import * as ${2:alias} from '${1:module}'`(if (eolp) (js-react-redux-yasnippets-semicolon))`

@@ -17,7 +17,7 @@
 :ensure t
 :after evil
 :config
-(setq evil-collection-mode-list '(dashboard dired ibuffer calendar vterm eshell magit realgud))
+(setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud bufler))
 (evil-collection-init))
 
 (use-package evil-surround
@@ -89,7 +89,7 @@
     "b" '(:ignore t :wk "buffer")
     "b b" '(consult-buffer :wk "Switch buffer")
     "b k" '(kill-buffer :wk "kill buffer")
-    "b i" '(ibuffer :wk "Ibuffer")
+    "b i" '(bufler :wk "Ibuffer")
     "b r" '(revert-buffer :wk "Reload buffer")
    )
 

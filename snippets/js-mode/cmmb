@@ -1,10 +1,9 @@
-# -*- mode: snippet -*-
-# uuid: 983d648f-a7de-4e22-bab9-bca5cd6188a6
-# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
-# name: Comment Big Block
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: cmmb
 # key: cmmb
+# uuid: cmmb
+# expand-env: ((yas-indent-line 'fixed))
 # --
-
 /**
 |--------------------------------------------------
 | $1

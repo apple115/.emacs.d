@@ -1,8 +1,6 @@
-# -*- mode: snippet -*-
-# uuid: 19643fe0-3063-41cd-b384-9f0a51b2f809
-# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
-# name: exportDefault
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: exp
 # key: exp
+# uuid: exp
 # --
-
-export default $1$0
+export default $1`(if (eolp) (js-react-redux-yasnippets-semicolon))`

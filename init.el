@@ -5,7 +5,7 @@
 
 (require 'package)
 (setq package-archives
-      '(("melpa"  . "https://melpa.org/packages/")
+  '(("melpa"  . "https://melpa.org/packages/")
 	("gnu"    . "https://elpa.gnu.org/packages/")
 	("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (package-initialize)
@@ -53,10 +53,16 @@
 ;; (require 'init-awesome-tray)
 (require 'init-magit)
 (require 'init-realgud)
+(require 'init-colorful-mode)
+(require 'init-devdocs)
+(require 'init-bufler)
+(require 'init-dired)
 ;;(require 'init-doom-modeline)
  ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 (provide 'init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

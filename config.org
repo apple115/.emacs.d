@@ -19,7 +19,8 @@
 (setq gc-cons-percentage 0.6)
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold 50000000)
+(setq gc-cons-threshold 80000000) ;; original value * 100
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;; 启动早期不加载`package.el'包管理器
 (setq package-enable-at-startup nil)
@@ -64,12 +65,14 @@
 #+END_SRC
 ** package 包管理器
 #+begin_src emacs-lisp
-    (require 'package)
-    (setq package-archives
-	  '(("melpa"  . "https://melpa.org/packages/")
-	    ("gnu"    . "https://elpa.gnu.org/packages/")
-	    ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
-    (package-initialize)
+(require 'package)
+(setq package-archives
+  '(("melpa"  . "https://melpa.org/packages/")
+	("gnu"    . "https://elpa.gnu.org/packages/")
+	("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+(package-initialize)
+
+
 #+end_src
 ** 加模块化配
 #+BEGIN_SRC emacs-lisp
@@ -116,10 +119,16 @@
 ;; (require 'init-awesome-tray)
 (require 'init-magit)
 (require 'init-realgud)
+(require 'init-colorful-mode)
+(require 'init-devdocs)
+(require 'init-bufler)
+(require 'init-dired)
 ;;(require 'init-doom-modeline)
  ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 #+END_SRC
 ** init.el 文件尾
 #+BEGIN_SRC emacs-lisp
@@ -160,7 +169,7 @@
 :ensure t
 :after evil
 :config
-(setq evil-collection-mode-list '(dashboard dired ibuffer calendar vterm eshell magit realgud))
+(setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud bufler))
 (evil-collection-init))
 
 (use-package evil-surround
@@ -270,7 +279,7 @@
     "b" '(:ignore t :wk "buffer")
     "b b" '(consult-buffer :wk "Switch buffer")
     "b k" '(kill-buffer :wk "kill buffer")
-    "b i" '(ibuffer :wk "Ibuffer")
+    "b i" '(bufler :wk "Ibuffer")
     "b r" '(revert-buffer :wk "Reload buffer")
    )
 
@@ -552,29 +561,30 @@
  (setq-default tab-width 4)
 
  ;; yes或no提示设置，通过下面这个函数设置当缓冲区名字匹配到预设的字符串时自动回答yes
-;; (setq original-y-or-n-p 'y-or-n-p)
-;; (defalias 'original-y-or-n-p (symbol-function 'y-or-n-p))
-;; (defun default-yes-sometimes (prompt)
-;;   "automatically say y when buffer name match following string"
-;;   (if (or
-;;            (string-match "has a running process" prompt)
-;;            (string-match "does not exist; create" prompt)
-;;            (string-match "modified; kill anyway" prompt)
-;;            (string-match "Delete buffer using" prompt)
-;;            (string-match "Kill buffer of" prompt)
-;;            (string-match "still connected.  Kill it?" prompt)
-;;            (string-match "Shutdown the client's kernel" prompt)
-;;            (string-match "kill them and exit anyway" prompt)
-;;            (string-match "Revert buffer from file" prompt)
-;;            (string-match "Kill Dired buffer of" prompt)
-;;            (string-match "delete buffer using" prompt)
-;;        (string-match "Kill all pass entry" prompt)
-;;        (string-match "for all cursors" prompt)
-;;            (string-match "Do you want edit the entry" prompt))
-;;           t
-;;     (original-y-or-n-p prompt)))
-;; (defalias 'yes-or-no-p 'default-yes-sometimes)
-;; (defalias 'y-or-n-p 'default-yes-sometimes)
+(setq original-y-or-n-p 'y-or-n-p)
+(defalias 'original-y-or-n-p (symbol-function 'y-or-n-p))
+(defun default-yes-sometimes (prompt)
+  "automatically say y when buffer name match following string"
+  (if (or
+           (string-match "has a running process" prompt)
+           ;; (string-match "does not exist; create" prompt)
+           ;; (string-match "modified; kill anyway" prompt)
+           ;; (string-match "Delete buffer using" prompt)
+           ;; (string-match "Kill buffer of" prompt)
+           ;; (string-match "still connected.  Kill it?" prompt)
+           ;; (string-match "Shutdown the client's kernel" prompt)
+           ;; (string-match "kill them and exit anyway" prompt)
+           ;; (string-match "Revert buffer from file" prompt)
+           ;; (string-match "Kill Dired buffer of" prompt)
+           ;; (string-match "delete buffer using" prompt)
+           ;; (string-match "Kill all pass entry" prompt)
+           ;; (string-match "for all cursors" prompt)
+           ;; (string-match "Do you want edit the entry" prompt)
+)
+          t
+    (original-y-or-n-p prompt)))
+(defalias 'yes-or-no-p 'default-yes-sometimes)
+(defalias 'y-or-n-p 'default-yes-sometimes)
 
  ;; 设置剪贴板历史长度300，默认为60
  (setq kill-ring-max 200)
@@ -700,16 +710,20 @@ Emacs的补全系统
  :load-path "./site-lisp/lsp-bridge"
  :config
 
-(setq acm-backend-copilot-network-proxy '(:host "127.0.0.1" :port 20171))
+;;(setq acm-backend-copilot-network-proxy '(:host "127.0.0.1" :port 20171))
 
-;;    (setq lsp-bridge-enable-log t)
-
+ ;;   (setq lsp-bridge-enable-log t)
 ;;    (setq acm-quick-access-use-number-select t)
     (setq lsp-bridge-python-command "/home/apple115/.emacs.d/site-lisp/my-emacs-python/bin/python3.11")
     (setq acm-enable-copilot t)
+    (setq acm-candidate-match-function 'orderless-flex)
     ;;(setq lsp-bridge-enable-auto-format-code t);;自动格式化
     (setq lsp-bridge-enable-completion-in-string t)
     (setq lsp-bridge-enable-search-words  t)
+    (setq lsp-bridge-multi-lang-server-extension-list '(
+    (("jsx") . "typescript_tailwindcss")
+    (("html") . "html_tailwindcss")
+    ))
     ;;(setq lsp-bridge-enable-org-babel t)
     (setq lsp-bridge-enable-hover-diagnostic t)
     (global-lsp-bridge-mode)
@@ -1244,15 +1258,6 @@ org的配置
 )))
 #+end_src
 
-** emacs的exec-path
-##+begin_src emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t
-  :when (or (memq window-system '(mac ns x))
-        (unless cabins--os-win
-          (daemonp)))
-  :init (exec-path-from-shell-initialize))
-##+end_src
 ** emacs的shell 的 环境设置
 #+begin_src emacs-lisp
 (use-package envrc
@@ -1286,62 +1291,6 @@ org的配置
 #+end_src
 ** dired 增强
 #+begin_src emacs-lisp
-(use-package diredfl
-  :ensure t
-  :hook (dired-mode . diredfl-mode))
-
-(defun xah-open-in-external-app (&optional Fname)
-  "Open the current file or dired marked files in external app.
-When called in emacs lisp, if Fname is given, open that.
-
-URL `http://xahlee.info/emacs/emacs/emacs_dired_open_file_in_ext_apps.html'
-Version: 2019-11-04 2023-04-05 2023-06-26"
-  (interactive)
-  (let (xfileList xdoIt)
-    (setq xfileList
-          (if Fname
-              (list Fname)
-            (if (eq major-mode 'dired-mode)
-                (dired-get-marked-files)
-              (list buffer-file-name))))
-    (setq xdoIt (if (<= (length xfileList) 10) t (y-or-n-p "Open more than 10 files? ")))
-    (when xdoIt
-      (cond
-       ((eq system-type 'windows-nt)
-        (let ((xoutBuf (get-buffer-create "*xah open in external app*"))
-              (xcmdlist (list "PowerShell" "-Command" "Invoke-Item" "-LiteralPath")))
-          (mapc
-           (lambda (x)
-             (message "%s" x)
-             (apply 'start-process (append (list "xah open in external app" xoutBuf) xcmdlist (list (format "'%s'" (if (string-match "'" x) (replace-match "`'" t t x) x))) nil)))
-           xfileList)
-          ;; (switch-to-buffer-other-window xoutBuf)
-          )
-        ;; old code. calling shell. also have a bug if filename contain apostrophe
-        ;; (mapc (lambda (xfpath) (shell-command (concat "PowerShell -Command \"Invoke-Item -LiteralPath\" " "'" (shell-quote-argument (expand-file-name xfpath)) "'"))) xfileList)
-        )
-       ((eq system-type 'darwin)
-        (mapc (lambda (xfpath) (shell-command (concat "open " (shell-quote-argument xfpath)))) xfileList))
-       ((eq system-type 'gnu/linux)
-        (mapc (lambda (xfpath)
-                (call-process shell-file-name nil 0 nil
-                              shell-command-switch
-                              (format "%s %s"
-                                      "xdg-open"
-                                      (shell-quote-argument xfpath))))
-              xfileList))
-       ((eq system-type 'berkeley-unix)
-        (mapc (lambda (xfpath) (let ((process-connection-type nil)) (start-process "" nil "xdg-open" xfpath))) xfileList))))))
-
-
-(defun my-paste-to-dired ()
-"使用wl-paste 命令复制在当前文件夹中"
-(interactive)
-(let ((past-file-name (read-file-name "Enter file name:") ))
-  (async-shell-command (format "wl-paste > %s" past-file-name) )
-)
-)
-
 #+end_src
 
 ** init-tools.el 文件尾

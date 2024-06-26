@@ -1,10 +1,8 @@
-# -*- mode: snippet -*-
-# uuid: 4650c619-bbd9-4496-955a-1d626fdf8bcb
-# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
-# name: namedFunction
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Creates a named function in ES7 syntax
 # key: nfn
+# uuid: nfn
 # --
-
-const ${1:name} = (${2:params}) => {
-  ${3}
+const ${name} = (${params}) => {
+ $0
 }

@@ -1,10 +1,8 @@
-# -*- mode: snippet -*-
-# uuid: 095f24bf-5c76-4d0b-862e-a1f0ab1e1b95
-# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
-# name: exportNamedFunction
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Export named function in ES7 syntax
 # key: enf
+# uuid: enf
 # --
-
-export const ${1:functionName} = (${2:params}) => {
-  $0
-}
+export const ${functionName} = (${params}) => {
+ $0
+}`(js-react-redux-yasnippets-semicolon)`

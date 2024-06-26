@@ -1,10 +1,8 @@
-# -*- mode: snippet -*-
-# uuid: 6ead1d1a-bf84-4a3d-94fb-59ad97d55414
-# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
-# name: setTimeOut
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Executes the given function after the specified delay in ES7 syntax
 # key: sto
+# uuid: sto
 # --
-
 setTimeout(() => {
-  ${2}
-}, ${1:delayInms})
+ $0
+}, ${delayInMS})`(js-react-redux-yasnippets-semicolon)`

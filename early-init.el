@@ -8,7 +8,8 @@
 (setq gc-cons-percentage 0.6)
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold 50000000)
+(setq gc-cons-threshold 80000000) ;; original value * 100
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;; 启动早期不加载`package.el'包管理器
 (setq package-enable-at-startup nil)

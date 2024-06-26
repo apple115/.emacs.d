@@ -1,10 +1,8 @@
-# -*- mode: snippet -*-
-# uuid: 596c0e05-ee02-4d02-85e0-64252296629d
-# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
-# name: setInterval
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Executes the given function at specified intervals in ES7 syntax
 # key: sti
+# uuid: sti
 # --
-
 setInterval(() => {
-  ${2}
-}, ${0:intervalInms})
+ $0
+}, ${intervalInMS})`(js-react-redux-yasnippets-semicolon)`
