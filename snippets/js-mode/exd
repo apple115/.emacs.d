@@ -1,6 +1,8 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: exd
+# -*- mode: snippet -*-
+# uuid: b9a77d53-af00-4acc-90e5-0259edef0326
+# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
+# name: exportDestructing
 # key: exd
-# uuid: exd
 # --
-export { $2 } from '${1:module}'`(if (eolp) (js-react-redux-yasnippets-semicolon))`
+
+export { $2 } from '${1:module}'$0

@@ -37,7 +37,7 @@
  (require 'init-hexo)
  (require 'init-auto-yas)
 ;; (require 'init-sort-tab)
- ;;(require 'init-tabspaces)
+;;(require 'init-tabspaces)
 
  (require 'init-vertico)
  (require 'init-consult)
@@ -57,7 +57,7 @@
 (require 'init-devdocs)
 (require 'init-bufler)
 (require 'init-dired)
-;;(require 'init-doom-modeline)
+(require 'init-doom-modeline)
  ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )

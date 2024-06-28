@@ -1,6 +1,8 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: imn
+# -*- mode: snippet -*-
+# uuid: 39b0065c-1dd5-4214-a612-1fead18dd677
+# contributor: Jimmy Yuen Ho Wong <wyuenho@gmail.com>
+# name: importNoModuleName
 # key: imn
-# uuid: imn
 # --
-import '${module}'`(if (eolp) (js-react-redux-yasnippets-semicolon))`
+
+import '${1:module}'$0

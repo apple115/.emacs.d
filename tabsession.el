@@ -2,7 +2,7 @@
 ;; -------------------------------------------------------------------------
 ;; Tabspaces Session File for Emacs
 ;; -------------------------------------------------------------------------
-;; Created Tue Apr  2 12:48:23 2024
+;; Created Fri Jun 28 10:11:52 2024
 
 ;; Tabs and buffers:
-(setq tabspaces--session-list '((nil . "*dashboard*")))
+(setq tabspaces--session-list '((("/home/apple115/.emacs.d/lisp/init-dired.el") . "*dashboard*") (("/home/apple115/.emacs.d/lisp/init-dired.el") . "*scratch*")))

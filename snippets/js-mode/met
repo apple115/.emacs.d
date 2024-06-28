@@ -1,8 +1,7 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: Creates a method inside a class in ES7 syntax
+# name: method
 # key: met
-# uuid: met
 # --
-${methodName} = (${params}) => {
- $0
+${1:name}(${2:arg}) {
+  $0
 }

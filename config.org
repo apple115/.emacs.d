@@ -103,7 +103,7 @@
  (require 'init-hexo)
  (require 'init-auto-yas)
 ;; (require 'init-sort-tab)
- ;;(require 'init-tabspaces)
+;;(require 'init-tabspaces)
 
  (require 'init-vertico)
  (require 'init-consult)
@@ -123,7 +123,7 @@
 (require 'init-devdocs)
 (require 'init-bufler)
 (require 'init-dired)
-;;(require 'init-doom-modeline)
+(require 'init-doom-modeline)
  ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )
@@ -255,6 +255,12 @@
     :keymaps 'override
     :prefix "SPC" ;; set leader
     :global-prefix "M-SPC") ;; access leader in insert mode
+
+
+  (dt/leader-keys
+   "SPC" '(bufler-switch-buffer :wk "bufler")
+   )
+
 
   (dt/leader-keys
    "." '(find-file :wk "find file")

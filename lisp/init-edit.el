@@ -66,6 +66,12 @@
     :prefix "SPC" ;; set leader
     :global-prefix "M-SPC") ;; access leader in insert mode
 
+
+  (dt/leader-keys
+   "SPC" '(bufler-switch-buffer :wk "bufler")
+   )
+
+
   (dt/leader-keys
    "." '(find-file :wk "find file")
    "g"'(:ignore t :wk "goto")
