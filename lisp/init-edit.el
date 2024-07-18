@@ -143,9 +143,9 @@
 
    (dt/leader-keys
     "o" '(:ignore t :wk "open")
+    "o o" '(embark-act :wk "embark-act")
     "o t" '(vterm-toggle :wk "open terminal")
     "o s" '(async-shell-command :wk "open async shell command")
-    "o e" '(aweshell-dedicated-toggle :wk "aweshell")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda"))
 
@@ -175,6 +175,9 @@
 
 (evil-define-key 'normal global-map (kbd "C-.") 'popper-toggle)
   (evil-define-key 'normal global-map (kbd "M-.") 'popper-cycle)
+
+  (evil-define-key 'normal global-map (kbd "m") 'consult-register-store)
+  (evil-define-key 'normal global-map (kbd "'") 'consult-register-load)
 
   (evil-define-key 'insert global-map (kbd "C-.") 'popper-toggle)
   (evil-define-key 'insert global-map (kbd "M-.") 'popper-cycle)

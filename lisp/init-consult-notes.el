@@ -12,7 +12,7 @@
           ;; ("work"    ?w ,(concat org-directory "/midea/"))
           ("denote" ?d ,(concat org-directory "/denote/"))
           ("org"     ?o ,(concat org-directory "/"))
-          ("blog"    ?b  "/home/apple115/Public/website/source/_posts")
+          ("blog"    ?b  "/home/apple115/blog/source/_posts/")
           ;; ("books"   ?b ,(concat (getenv "HOME") "/Books/"))
           ))
 

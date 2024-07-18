@@ -6,6 +6,9 @@
 (use-package hexo
  :load-path "./site-lisp/hexo.el"
  :config
+ (defun hexo-my-blog ()
+    (interactive)
+    (hexo "~/blog/"))
 )
 
 (provide 'init-hexo)
