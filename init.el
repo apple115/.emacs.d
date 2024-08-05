@@ -31,7 +31,6 @@
  (require 'init-flyspell)
 ;; (require 'init-mind-wave)
 ;;( require 'init-centaur-tabs)
-
  (require 'init-rime)
 ;; (require 'init-aweshell)
  (require 'init-hexo)
@@ -59,6 +58,7 @@
 (require 'init-dired)
 (require 'init-doom-modeline)
 (require 'init-org-reveal)
+(require 'init-gptel)
  ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )
@@ -68,16 +68,3 @@
 (provide 'init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ox-reveal wucuo which-key vterm-toggle vertico tabspaces sudo-edit shackle rust-mode rime realgud rainbow-delimiters python-mode projectile popper plantuml-mode ox-gfm org-modern org-contrib org-auto-tangle org-appear orderless multi-vterm markdown-mode marginalia magit haskell-mode gruvbox-theme general format-all flycheck exec-path-from-shell evil-surround evil-nerd-commenter evil-collection eshell-prompt-extras envrc embark-consult doom-modeline dirvish diredfl devdocs denote dashboard consult-notes colorful-mode cal-china-x bufler avy auto-yasnippet all-the-icons)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

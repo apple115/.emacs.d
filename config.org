@@ -97,7 +97,6 @@
  (require 'init-flyspell)
 ;; (require 'init-mind-wave)
 ;;( require 'init-centaur-tabs)
-
  (require 'init-rime)
 ;; (require 'init-aweshell)
  (require 'init-hexo)
@@ -125,6 +124,7 @@
 (require 'init-dired)
 (require 'init-doom-modeline)
 (require 'init-org-reveal)
+(require 'init-gptel)
  ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )
@@ -153,6 +153,31 @@
 
 #+END_SRC
 **
+
+** myfunc
+#+begin_src emacs-lisp
+
+(defun my-load-config ()
+"Load Emacs configuration."
+(interactive)
+(load-file "~/.config/emacs/init.el"))
+
+(defun my-open-termial-kitty ()
+"open kitty terminal in load filepath"
+(interactive)
+(let ((directory (eshell/pwd)))
+(async-shell-command (format "kitty --directory %s" directory))
+))
+
+(defun open-vterm-in-other-window ()
+  "Open a vterm in a new window."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (multi-vterm)
+)
+
+#+end_src
 
 ** evil
 #+begin_src emacs-lisp
@@ -262,7 +287,6 @@
    "SPC" '(bufler-switch-buffer :wk "bufler")
    )
 
-
   (dt/leader-keys
    "." '(find-file :wk "find file")
    "g"'(:ignore t :wk "goto")
@@ -301,17 +325,7 @@
 
 
 
-(defun my-load-config ()
-"Load Emacs configuration."
-(interactive)
-(load-file "~/.config/emacs/init.el"))
 
-(defun my-open-termial-kitty ()
-"open kitty terminal in load filepath"
-(interactive)
-(let ((directory (eshell/pwd)))
-(async-shell-command (format "kitty --directory %s" directory))
-))
 
    (dt/leader-keys
     "h" '(:ignore t :wk "Help")
@@ -335,7 +349,7 @@
    (dt/leader-keys
     "o" '(:ignore t :wk "open")
     "o o" '(embark-act :wk "embark-act")
-    "o t" '(vterm-toggle :wk "open terminal")
+    "o t" '(vterm-toggle-insert-cd :wk "open terminal")
     "o s" '(async-shell-command :wk "open async shell command")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda"))
@@ -367,6 +381,9 @@
 #+end_src
 ** keymap
 #+begin_src emacs-lisp
+
+(global-unset-key (kbd "C-SPC"))
+(global-set-key (kbd "C-x 4 t") 'open-vterm-in-other-window)
 
   (evil-define-key 'normal global-map (kbd "C-.") 'popper-toggle)
   (evil-define-key 'normal global-map (kbd "M-.") 'popper-cycle)
@@ -451,6 +468,7 @@
   (evil-define-key 'normal global-map (kbd "L") 'evil-end-of-line)
   (evil-define-key 'visual global-map (kbd "H") 'evil-beginning-of-line)
   (evil-define-key 'visual global-map (kbd "L") 'evil-end-of-line)
+
 
 #+end_src
 
@@ -1207,18 +1225,6 @@ org的配置
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
 #+end_src
 
-** magit 使用
-##+BEGIN_SRC emacs-lisp
-(use-package magit
-  :ensure t
-  :hook (git-commit-mode)
-  :bind (("C-x g"   . magit-status)
-         ("C-x M-g" . magit-dispatch)
-         ("C-c M-g" . magit-file-dispatch))
-  :custom
-  (magit-diff-refine-hunk t)
-  (magit-ediff-dwim-show-on-hunks t))
-##+END_SRC
 ** projectile 使用
 使用这个projectile 管理项目
 #+begin_src emacs-lisp

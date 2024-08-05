@@ -3,6 +3,26 @@
 
 ;;; Code:
 
+(defun my-load-config ()
+"Load Emacs configuration."
+(interactive)
+(load-file "~/.config/emacs/init.el"))
+
+(defun my-open-termial-kitty ()
+"open kitty terminal in load filepath"
+(interactive)
+(let ((directory (eshell/pwd)))
+(async-shell-command (format "kitty --directory %s" directory))
+))
+
+(defun open-vterm-in-other-window ()
+  "Open a vterm in a new window."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (multi-vterm)
+)
+
 (use-package evil
     :ensure t
     :init
@@ -71,7 +91,6 @@
    "SPC" '(bufler-switch-buffer :wk "bufler")
    )
 
-
   (dt/leader-keys
    "." '(find-file :wk "find file")
    "g"'(:ignore t :wk "goto")
@@ -110,17 +129,7 @@
 
 
 
-(defun my-load-config ()
-"Load Emacs configuration."
-(interactive)
-(load-file "~/.config/emacs/init.el"))
 
-(defun my-open-termial-kitty ()
-"open kitty terminal in load filepath"
-(interactive)
-(let ((directory (eshell/pwd)))
-(async-shell-command (format "kitty --directory %s" directory))
-))
 
    (dt/leader-keys
     "h" '(:ignore t :wk "Help")
@@ -144,7 +153,7 @@
    (dt/leader-keys
     "o" '(:ignore t :wk "open")
     "o o" '(embark-act :wk "embark-act")
-    "o t" '(vterm-toggle :wk "open terminal")
+    "o t" '(vterm-toggle-insert-cd :wk "open terminal")
     "o s" '(async-shell-command :wk "open async shell command")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda"))
@@ -173,7 +182,10 @@
 
 )
 
-(evil-define-key 'normal global-map (kbd "C-.") 'popper-toggle)
+(global-unset-key (kbd "C-SPC"))
+(global-set-key (kbd "C-x 4 t") 'open-vterm-in-other-window)
+
+  (evil-define-key 'normal global-map (kbd "C-.") 'popper-toggle)
   (evil-define-key 'normal global-map (kbd "M-.") 'popper-cycle)
 
   (evil-define-key 'normal global-map (kbd "m") 'consult-register-store)
