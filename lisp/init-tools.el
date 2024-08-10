@@ -39,7 +39,7 @@
           (csharp     . ("https://github.com/tree-sitter/tree-sitter-c-sharp.git"))
           (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
           (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
-          (go . ("https://github.com/tree-sitter/tree-sitter-go"))
+          (go .("https://github.com/tree-sitter/tree-sitter-go"))
           (gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
           (html . ("https://github.com/tree-sitter/tree-sitter-html"))
           (java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
@@ -83,6 +83,8 @@
 (add-to-list 'auto-mode-alist '("\\.json\\'". json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'".yaml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'".css-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.go\\'".go-ts-mode))
+(setq treesit-font-lock-level 4)
 
 (use-package fingertip
 :load-path "./site-lisp/fingertip"
@@ -174,6 +176,7 @@
                   ("Haskell" (stylish-haskell))
                   ("Rust" (rustfmt))
                   ("Python" (black))
+                  ("Go" (gofmt))
                   ("C++" (clang-format "-style=Google"))
 )))
 

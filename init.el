@@ -35,7 +35,7 @@
 ;; (require 'init-aweshell)
  (require 'init-hexo)
  (require 'init-auto-yas)
-;; (require 'init-sort-tab)
+;;(require 'init-sort-tab)
 ;;(require 'init-tabspaces)
 
  (require 'init-vertico)
@@ -59,6 +59,7 @@
 (require 'init-doom-modeline)
 (require 'init-org-reveal)
 (require 'init-gptel)
+;;(require 'init-go-mode)
  ;;(require 'init-eaf)
 ;; (require 'init-js2)
   )
