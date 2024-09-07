@@ -1,31 +1,7 @@
-;;; init-vertico.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: vertico
+;;; init-emacs.el --- Langs settings -*- lexical-binding: t -*-
+;;; Commentary: emacs
 
 ;;; Code:
-(use-package vertico
-  :ensure t
-  :config
-  (vertico-mode t)
-)
-;; Configure directory extension.
-(use-package vertico-directory
-  :after vertico
-  :ensure nil
-  ;; More convenient directory navigation commands
-  :bind (:map vertico-map
-              ("RET" . vertico-directory-enter)
-              ("DEL" . vertico-directory-delete-char)
-              ("M-DEL" . vertico-directory-delete-word))
-  ;; Tidy shadowed file names
-  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
-  )
-
-
-;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
-  :init
-  (savehist-mode))
-;; A few more useful configurations...
 
 (use-package emacs
   :custom
@@ -51,16 +27,9 @@
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
-;; Use `consult-completion-in-region' if Vertico is enabled.
-;; Otherwise use the default `completion--in-region' function.
-(setq completion-in-region-function
-      (lambda (&rest args)
-        (apply (if vertico-mode
-                   #'consult-completion-in-region
-                 #'completion--in-region)
-               args)))
 
-(provide 'init-vertico)
+
+(provide 'init-emacs)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-vertico.el ends here
+;;; init-emacs.el ends here

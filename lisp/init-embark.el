@@ -15,6 +15,12 @@
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
  )
+; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :after consult
+  :ensure t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (provide 'init-embark)
 

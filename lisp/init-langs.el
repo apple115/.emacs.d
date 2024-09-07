@@ -1,6 +1,5 @@
 ;;; init-langs.el --- Langs settings -*- lexical-binding: t -*-
 ;;; Commentary:
-
 ;;; Code:
 
 (use-package rust-mode

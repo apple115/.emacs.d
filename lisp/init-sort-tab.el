@@ -6,21 +6,28 @@
 
 (use-package sort-tab
   :load-path "./site-lisp/sort-tab"
+  :after doom-modeline
   :config
+ 
+
+  (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
   (sort-tab-mode 1)
-(define-key evil-normal-state-map (kbd "g t") 'sort-tab-select-next-tab)
-(define-key evil-normal-state-map (kbd "g T") 'sort-tab-select-prev-tab)
-(define-key evil-normal-state-map (kbd "g 1") 'sort-tab-select-visible-tab)
-(define-key evil-normal-state-map (kbd "g 2") 'sort-tab-select-visible-tab)
-(define-key evil-normal-state-map (kbd "g 3") 'sort-tab-select-visible-tab)
-(define-key evil-normal-state-map (kbd "g 4") 'sort-tab-select-visible-tab)
-(define-key evil-normal-state-map (kbd "g 5") 'sort-tab-select-visible-tab)
-(define-key evil-normal-state-map (kbd "g 6") 'sort-tab-select-visible-tab)
-(define-key evil-normal-state-map (kbd "g 7") 'sort-tab-select-visible-tab)
-(define-key evil-normal-state-map (kbd "g 8") 'sort-tab-select-visible-tab)
-(define-key evil-normal-state-map (kbd "g 9") 'sort-tab-select-visible-tab)
-(define-key evil-normal-state-map (kbd "g 0") 'sort-tab-select-visible-tab)
-(setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
+
+  (dt/leader-keys
+    "1" 'sort-tab-select-visible-tab
+    "2" 'sort-tab-select-visible-tab
+    "3" 'sort-tab-select-visible-tab
+    "4" 'sort-tab-select-visible-tab
+    "5" 'sort-tab-select-visible-tab
+    "6" 'sort-tab-select-visible-tab
+    "7" 'sort-tab-select-visible-tab
+    "8" 'sort-tab-select-visible-tab
+    "9" 'sort-tab-select-visible-tab
+    "0" 'sort-tab-select-visible-tab
+    )
+    (global-set-key (kbd "s-Q") 'sort-tab-close-all-tabs)
+    (global-set-key (kbd "s-q") 'sort-tab-close-mode-tabs)
+    (global-set-key (kbd "C-;") 'sort-tab-close-current-tab)
 )
 
 (provide 'init-sort-tab)

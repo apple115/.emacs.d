@@ -23,6 +23,7 @@
  (setq inhibit-startup-screen t)         ; 不加载启动画面
  (setq inhibit-startup-message t)        ; 不加载启动消息
  (setq inhibit-startup-buffer-menu t)    ; 不显示缓冲区列表
+ (setq cursor-type nil)                  ; 不显示鼠标
 
  ;; 草稿缓冲区默认文字设置
  (setq initial-scratch-message (concat ";; Happy hacking, "
@@ -75,8 +76,8 @@
  (setq auto-window-vscroll nil)
 
  ;; 设置新分屏打开的位置的阈值
- (setq split-width-threshold (assoc-default 'width default-frame-alist))
- (setq split-height-threshold nil)
+ ;; (setq split-width-threshold (assoc-default 'width default-frame-alist))
+ ;; (setq split-height-threshold nil)
 
  ;; TAB键设置，在Emacs里不使用TAB键，所有的TAB默认为4个空格
  (setq-default indent-tabs-mode nil)
@@ -144,6 +145,12 @@
   ;; 显示行号 和 文本显示中的截断或省略
   (global-display-line-numbers-mode -1)
   (global-visual-line-mode t)
+
+;; 在这个prog-mode 和 text-mode 后添加line-number
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'text-mode-hook 'display-line-numbers-mode)
+
+
 
 ;; 配置所有的编码为UTF-8，参考：
 ;; https://thraxys.wordpress.com/2016/01/13/utf-8-in-emacs-everywhere-forever/

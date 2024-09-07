@@ -2,7 +2,6 @@
 ;;; Commentary: org-capture
 
 ;;; Code:
-
   (use-package org-capture
     :ensure nil
     :hook ((org-capture-mode . (lambda ()

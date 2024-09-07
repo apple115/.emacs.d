@@ -9,25 +9,19 @@
     (which-key-mode 1)
   :config
   (setq which-key-side-window-location 'bottom
-        which-key-sort-order #'which-key-key-order-alpha
+        which-key-sort-order #'which-key-key-order-alph
         which-key-sort-uppercase-first nil
         which-key-add-column-padding 1
         which-key-max-display-columns nil
-        which-key-min-display-lines 6
+        which-key-min-display-lines 5
         which-key-side-window-slot -10
         which-key-side-window-max-height 0.25
         which-key-idle-delay 0.8
         which-key-max-description-length 25
-        which-key-allow-imprecise-window-fit t
+        which-key-allow-imprecisewindow-fit t
         which-key-separator " → " ))
 
-(use-package auto-save
-  :load-path "./site-lisp/auto-save"
-  :config
-(auto-save-enable)
-(setq auto-save-silent t)
-(setq auto-save-delete-trailing-whitespace t)
-)
+
 
 (require 'treesit)
   (setq treesit-language-source-alist
@@ -81,60 +75,10 @@
 (add-to-list 'auto-mode-alist '("\\.tsx\\'". tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'". js-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'". json-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.yml\\'".yaml-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.css\\'".css-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.go\\'".go-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.yml\\'". yaml-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.css\\'". css-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.go\\'". go-ts-mode))
 (setq treesit-font-lock-level 4)
-
-(use-package fingertip
-:load-path "./site-lisp/fingertip"
-:config
-(dolist (hook (list
-               'c-mode-common-hook
-               'c-mode-hook
-               'c++-mode-hook
-               'java-mode-hook
-               'haskell-mode-hook
-               'emacs-lisp-mode-hook
-               'lisp-interaction-mode-hook
-               'lisp-mode-hook
-               'maxima-mode-hook
-               'ielm-mode-hook
-               'sh-mode-hook
-               'makefile-gmake-mode-hook
-               'php-mode-hook
-               'python-mode-hook
-               'js-mode-hook
-               'go-mode-hook
-               'qml-mode-hook
-               'jade-mode-hook
-               'css-mode-hook
-               'ruby-mode-hook
-               'coffee-mode-hook
-               'rust-mode-hook
-               'rust-ts-mode-hook
-               'qmake-mode-hook
-               'lua-mode-hook
-               'swift-mode-hook
-               'web-mode-hook
-               'markdown-mode-hook
-               'llvm-mode-hook
-               'conf-toml-mode-hook
-               'nim-mode-hook
-               'typescript-mode-hook
-               'c-ts-mode-hook
-               'c++-ts-mode-hook
-               'cmake-ts-mode-hook
-               'toml-ts-mode-hook
-               'css-ts-mode-hook
-               'js-ts-mode-hook
-               'json-ts-mode-hook
-               'python-ts-mode-hook
-               'bash-ts-mode-hook
-               'typescript-ts-mode-hook
-               ))
-  (add-hook hook #'(lambda () (fingertip-mode 1))))
-  )
 
 (setq make-backup-files nil)                                  ; 不自动备份
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
@@ -158,7 +102,7 @@
   ;; (prog-mode . flycheck-mode))
 
 (with-eval-after-load 'flycheck
-  (setq flycheck-check-syntax-automatically '(idle-change new-line mode-enabled)))
+  (setq flycheck-check-syntax-automatically '( new-line mode-enabled)))
 
 (use-package format-all
   :ensure t
@@ -203,6 +147,11 @@
 
   (popper-mode +1)
   (popper-echo-mode +1))                ; For echo area hints
+
+(setq compilation-scroll-output t)
+(require 'ansi-color)
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+
 
 
 
