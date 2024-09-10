@@ -101,11 +101,9 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
 ;;   :ensure t
 ;;   :hook (after-init . dirvish-override-dired-mode)
 ;;   :config
-;;   (dirvish-peek-mode)
-;;   (setq dirvish-hide-details t)
 ;;   (setq dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index)))
 ;;   (setq dirvish-attributes
-;;         '(all-the-icons file-time file-size collapse subtree-state vc-state git-msg))
+;;         '(file-time file-size collapse subtree-state vc-state git-msg))
 ;; (general-evil-define-key 'normal dired-mode-map
 ;;   "c" 'dired-do-compress-to
 ;;   "q" 'quit-window

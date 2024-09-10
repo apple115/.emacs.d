@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: box
 # key: box
-# expand-env: ((yas-indent-line 'auto) (yas-wrap-around-region 't))
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 +${1:$(make-string (string-width yas-text) ?\-)}+
 |${1}|

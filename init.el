@@ -3,6 +3,9 @@
 
 ;;; Code:
 (require 'package)
+
+
+
 (setq package-archives
       '(("melpa"  . "https://melpa.org/packages/")
         ("gnu"    . "https://elpa.gnu.org/packages/")
@@ -23,7 +26,7 @@
   (require 'init-org)
   (require 'init-langs)
   (require 'init-edit)
-
+  (require 'init-projectile)
   (require 'init-org-set)
   (require 'init-org-capture)
   (require 'init-org-agenda)
@@ -40,21 +43,25 @@
   (require 'init-consult-notes)
   (require 'init-vterm)
   (require 'init-magit)
-  (require 'init-realgud)
   (require 'init-colorful-mode)
   (require 'init-devdocs)
-  (require 'init-bufler)
+  (require 'init-ibuffer)
   (require 'init-dired)
   (require 'init-doom-modeline)
   (require 'init-org-reveal)
   (require 'init-gptel)
-  (require 'init-auto-save)
-  ;; (require 'init-super-save)
   (require 'init-func)
-  ;; (require 'init-tab-bar)
   (require 'init-sort-tab)
   (require 'init-dape)
   (require 'init-citre)
+  (require 'init-compile)
+  (require 'init-docker)
+
+  ;; (require 'init-bufler)
+  ;; (require 'init-realgud)
+  ;; (require 'init-tab-bar)
+  ;; (require 'init-auto-save)
+  ;; (require 'init-super-save)
   ;; (require 'init-eaf)
   ;; (require 'init-mind-wave)
   ;; (require 'init-centaur-tabs)

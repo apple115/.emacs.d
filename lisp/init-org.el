@@ -181,7 +181,7 @@
 
   ;; If you use Markdown or plain text files (Org renders links as buttons
   ;; right away)
-  (add-hook 'find-file-hook #'denote-link-buttonize-buffer)
+  ;; (add-hook 'find-file-hook #'denote-link-buttonize-buffer)
   (setq denote-dired-rename-expert nil)
 
   ;; OR if only want it in `denote-dired-directories':

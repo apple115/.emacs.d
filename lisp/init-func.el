@@ -24,10 +24,10 @@
 (defun my-vterm-apple115-switch ()
   "Create a new vterm buffer with the fixed name 'apple115'."
   (interactive)
-  (let ((buffer (get-buffer "*apple115*")))
+  (let ((buffer (get-buffer "terminal")))
     (if (not buffer) ; 检查是否已经存在名为 'apple115' 的缓冲区
-        (vterm "*apple115*")) ; 如果不存在，创建一个名为 'apple115' 的 vterm 缓冲区
-    (switch-to-buffer "*apple115*"))) ; 切换到 'apple115' 缓冲区
+        (vterm "terminal")) ; 如果不存在，创建一个名为 'apple115' 的 vterm 缓冲区
+    (switch-to-buffer "terminal"))) ; 切换到 'apple115' 缓冲区
 
 
 (defun get-word-translate-to-bar()
@@ -63,6 +63,15 @@ If NEWNAME is a directory, move file to it."
   (when (y-or-n-p (format "Really delete '%s'? " file))
     (kill-this-buffer)
     (delete-file file)))
+
+(defun delete-this-file()
+  "Delete current file and kill the buffer."
+  (interactive)
+  (unless (buffer-file-name)
+    (error "No file is curretly being edited"))
+    (when (yes-or-no-p (format "Really delete '%s'? " (file-name-nondirectory buffer-file-name)))
+    (delete-file(buffer-file-name))
+    (kill-this-buffer))) 
 
 (defun +copy-current-filename (file)
   "Copy the full path to the current FILE."

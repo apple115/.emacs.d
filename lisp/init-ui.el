@@ -173,6 +173,9 @@
     :hook (prog-mode . rainbow-delimiters-mode))
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
+(setq-default auto-fill-function nil)
+(setq-default visual-line-mode nil)
+
 (provide 'init-ui)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-ui.el ends here

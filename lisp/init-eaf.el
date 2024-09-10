@@ -5,8 +5,11 @@
 (use-package eaf
   :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
   :config
-(require 'eaf-browser)
-  )
+  (require 'eaf-browser)
+  ;; (require 'eaf-file-manager)
+  (eaf-bind-key nil "SPC" eaf-browser-keybinding)
+)
+
 
 (provide 'init-eaf)
 

@@ -9,7 +9,7 @@
     (which-key-mode 1)
   :config
   (setq which-key-side-window-location 'bottom
-        which-key-sort-order #'which-key-key-order-alph
+        which-key-sort-order 'which-key-key-order-alpha
         which-key-sort-uppercase-first nil
         which-key-add-column-padding 1
         which-key-max-display-columns nil
@@ -83,26 +83,21 @@
 (setq make-backup-files nil)                                  ; 不自动备份
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
 
-(use-package projectile
-  :ensure t
-  :init
-  (projectile-mode +1)
-  :bind (:map projectile-mode-map
-              ("s-p" . projectile-command-map)
-              ("C-c p" . projectile-command-map)))
 
 (use-package flycheck
   :ensure t
+  :hook
+  (prog-mode . flycheck-mode)
   :config
   (setq truncate-lines nil) ; 如果单行信息很长会自动换行
   (flycheck-add-mode 'javascript-eslint 'js2-mode)
   (flycheck-add-mode 'rust-clippy 'rust-mode)
-  (flycheck-add-mode 'haskell-ghc 'haskell-mode))
-  ;; :hook
-  ;; (prog-mode . flycheck-mode))
+  (flycheck-add-mode 'haskell-ghc 'haskell-mode)
+  )
 
 (with-eval-after-load 'flycheck
-  (setq flycheck-check-syntax-automatically '( new-line mode-enabled)))
+  (setq flycheck-check-syntax-automatically '(new-line mode-enabled)))
+
 
 (use-package format-all
   :ensure t
@@ -142,15 +137,13 @@
          "\\*compilation\\*"
          "\\*vterm\\*"
          "\\*lsp-bridge-doc\\*"
+         "\\*Org Agenda(t)\\*"
           help-mode
           compilation-mode))
 
   (popper-mode +1)
   (popper-echo-mode +1))                ; For echo area hints
 
-(setq compilation-scroll-output t)
-(require 'ansi-color)
-(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 
 

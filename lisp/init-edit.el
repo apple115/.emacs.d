@@ -2,6 +2,10 @@
 ;;; Commentary:
 
 ;;; Code:
+;;;自动保存
+(setq auto-save-visited-interval 4)
+(setq auto-save-visited-mode t)
+(auto-save-visited-mode +1)
 
 ;; 可以是async-shell-command 自动填充上一个命令
 (advice-add #'read-shell-command
@@ -26,6 +30,7 @@
 ;;         (when (and (buffer-file-name) (buffer-modified-p))
 ;;             (call-interactively #'save-buffer))))
 )
+
 
 (use-package evil-collection
   :ensure t
@@ -84,6 +89,7 @@
     "/" '(split-window-horizontally :wk"split window horizontally")
     "-" '(split-window-vertically :wk"split window vertically")
     "." '(find-file :wk "find file")
+    "," '(dired-jump :wk "open-dired")
     )
 
   (dt/leader-keys
@@ -103,7 +109,7 @@
     "f" '(:ignore t :wk "file")
     "f f" '(consult-fd :wk "find file")
     "f /" '(find-file-other-window :wk "find file on other window")
-    "f R" '(+rename-current-file :wk "rename current file")
+    "f R" '(+rename-current-file :wk "rename and move current file")
     "f D" '(+delete-current-file :wk "delete current file")
     "f y" '(+copy-current-filename :wk "copy current filename")
     "f u" '(sudo-edit-find-file :wk "Sudo find file")
@@ -124,7 +130,7 @@
     "b ." '(switch-to-next-buffer :wk "next-buffer")
     "b /" '(switch-to-buffer-other-window :wk "Switch buffer to other window")
     "b k" '(kill-buffer :wk "kill buffer")
-    "b i" '(bufler :wk "Ibuffer")
+    "b i" '(ibuffer :wk "Ibuffer")
     "b r" '(revert-buffer :wk "Reload buffer")
     )
 
@@ -284,8 +290,6 @@
 
 ;; (message "init-base configuration: %.2fs"
 ;;          (float-time (time-subtract (current-time) my/init-base-start-time)))
-
-
 
 
 (provide 'init-edit)

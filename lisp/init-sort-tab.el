@@ -8,10 +8,11 @@
   :load-path "./site-lisp/sort-tab"
   :after doom-modeline
   :config
- 
+
 
   (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
   (sort-tab-mode 1)
+  (setq sort-tab-show-index-number t)
 
   (dt/leader-keys
     "1" 'sort-tab-select-visible-tab
