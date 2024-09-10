@@ -39,7 +39,6 @@
   (require 'init-embark)
   (require 'init-marginalia)
   (require 'init-orderless)
-  (require 'init-shackle)
   (require 'init-consult-notes)
   (require 'init-vterm)
   (require 'init-magit)
@@ -56,6 +55,7 @@
   (require 'init-citre)
   (require 'init-compile)
   (require 'init-docker)
+  (require 'init-smart-input-source)
 
   ;; (require 'init-bufler)
   ;; (require 'init-realgud)
@@ -68,7 +68,6 @@
   ;; (require 'init-aweshell)
   ;; (require 'init-tabspaces)
   ;; (require 'init-dashboard)
-  ;; (require 'init-smart-input-source)
   ;; (require 'init-awesome-tray)
   ;; (require 'init-go-mode)
   ;; (require 'init-js2)

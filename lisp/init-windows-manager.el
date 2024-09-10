@@ -1,5 +1,6 @@
-;;; init-shackle.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: shackle
+;;; init-windwos-manager.el --- tools settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; windwos-manager
 
 ;;; Code:
 (use-package shackle
@@ -21,7 +22,7 @@
           ("*eshell*"                    :select t                          :size 0.3  :align t     :popup t)
           (helpful-mode                  :select t                          :size 0.6  :align right :popup t)
           ("*Messages*"                  :select t                          :size 0.3  :align t     :popup t)
-          ("*Org Agenda(t)*"             :select nil                        :size 0.4  :align right :popup t)
+          ("*Org Agenda(t)*"             :select nil                        :size 0.3  :align right :popup t)
           ("*Async Shell Command*"         :select nil                        :size 0.3  :align t     :popup t)
           ("*lsp-bridge-doc*"            :select nil                        :size 0.3  :align t     :popup t)
           ("*Calendar*"                  :select t                          :size 0.3  :align t     :popup t)
@@ -32,7 +33,25 @@
  )
 
 
-(provide 'init-shackle)
+(use-package popper
+  :ensure t 
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "Output\\*$"
+          "\\*Async Shell Command\\*"
+          "\\*quickrun\\*"
+          "Aweshell"
+         "\\*compilation\\*"
+         "\\*vterm\\*"
+         "\\*lsp-bridge-doc\\*"
+         "\\*Org Agenda(t)\\*"
+          help-mode
+          compilation-mode))
 
+  (popper-mode +1)
+  (popper-echo-mode +1))                ; For echo area hints
+
+(provide 'init-windwos-manager)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-shackle.el ends here
+;;; init-windwos-manager.el ends here

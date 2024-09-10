@@ -125,28 +125,6 @@
 (envrc-global-mode)
 )
 
-(use-package popper
-  :ensure t ; or :straight t
-  :init
-  (setq popper-reference-buffers
-        '("\\*Messages\\*"
-          "Output\\*$"
-          "\\*Async Shell Command\\*"
-          "\\*quickrun\\*"
-          "Aweshell"
-         "\\*compilation\\*"
-         "\\*vterm\\*"
-         "\\*lsp-bridge-doc\\*"
-         "\\*Org Agenda(t)\\*"
-          help-mode
-          compilation-mode))
-
-  (popper-mode +1)
-  (popper-echo-mode +1))                ; For echo area hints
-
-
-
-
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
