@@ -163,7 +163,9 @@
     "o t" '(vterm-toggle-insert-cd :wk "open terminal")
     "o s" '(async-shell-command :wk "open async shell command")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
-    "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda"))
+    "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
+    "o b" '(hexo-my-blog  :wk "open org-agenda")
+    )
 
   (dt/leader-keys
     "x" '(:ignore t :wk "fix or delete")

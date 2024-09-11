@@ -9,7 +9,12 @@
  (defun hexo-my-blog ()
     (interactive)
     (hexo "~/blog/"))
+
+
+(evil-collection-define-key 'normal 'hexo-mode-map (kbd "RET") #'hexo-command-open-file)
 )
+
+
 
 (provide 'init-hexo)
 
