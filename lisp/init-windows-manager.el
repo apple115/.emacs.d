@@ -1,4 +1,4 @@
-;;; init-windwos-manager.el --- tools settings -*- lexical-binding: t -*-
+;;; init-windows-manager.el --- tools settings -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; windwos-manager
 
@@ -23,7 +23,7 @@
           (helpful-mode                  :select t                          :size 0.6  :align right :popup t)
           ("*Messages*"                  :select t                          :size 0.3  :align t     :popup t)
           ("*Org Agenda(t)*"             :select nil                        :size 0.3  :align right :popup t)
-          ("*Async Shell Command*"         :select nil                        :size 0.3  :align t     :popup t)
+          ("*Async Shell Command*"        :select nil                        :size 0.3  :align t     :popup t)
           ("*lsp-bridge-doc*"            :select nil                        :size 0.3  :align t     :popup t)
           ("*Calendar*"                  :select t                          :size 0.3  :align t     :popup t)
           ("*info*"                      :select t                                                  :same t)
@@ -52,6 +52,6 @@
   (popper-mode +1)
   (popper-echo-mode +1))                ; For echo area hints
 
-(provide 'init-windwos-manager)
+(provide 'init-windows-manager)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-windwos-manager.el ends here
+;;; init-windows-manager.el ends here

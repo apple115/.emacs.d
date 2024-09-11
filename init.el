@@ -55,7 +55,8 @@
   (require 'init-citre)
   (require 'init-compile)
   (require 'init-docker)
-  (require 'init-smart-input-source)
+  (require 'init-windows-manager)
+  ;; (require 'init-smart-input-source)
 
   ;; (require 'init-bufler)
   ;; (require 'init-realgud)

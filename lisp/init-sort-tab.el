@@ -5,11 +5,9 @@
 ;;; coade
 
 (use-package sort-tab
-  :load-path "./site-lisp/sort-tab"
+  :load-path "./site-lisp/my-fork-sort-tab"
   :after doom-modeline
   :config
-
-
   (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
   (sort-tab-mode 1)
   (setq sort-tab-show-index-number t)

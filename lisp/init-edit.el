@@ -177,6 +177,7 @@
     "p f" '(projectile-find-file :wk "project find file")
     "p d" '(projectile-dired :wk "project dired")
     "p b" '(projectile-switch-to-buffer :wk "project switch buffer")
+    "p k" '(projectile-kill-buffers :wk "kill projectile buffers")
     "p r" '(projectile-run-project :wk "run project")
     "p t" '(projectile-test-project :wk "test project")
     "p c" '(projectile-compile-project :wk "compile project")
@@ -191,6 +192,7 @@
     "d f" '(denote-open-or-create :wk "find denote")
     "d r" '(denote-dired-rename-file :wk "rename denote"))
   )
+
 
 (global-unset-key (kbd "C-SPC"))
 (global-set-key (kbd "C-x 4 t") 'open-vterm-in-other-window)
@@ -210,6 +212,8 @@
   (evil-define-key 'normal prog-mode-map (kbd "gd") 'lsp-bridge-find-def)
   (evil-define-key 'normal prog-mode-map (kbd "gi") 'lsp-bridge-find-imp)
   (evil-define-key 'normal prog-mode-map (kbd "go") 'lsp-bridge-find-def-return)
+  (evil-define-key 'normal prog-mode-map (kbd "]d") 'lsp-bridge-diagnostic-jump-next)
+  (evil-define-key 'normal prog-mode-map (kbd "[d") 'lsp-bridge-diagnostic-jump-prev)
   )
 
 (with-eval-after-load 'rust-mode
@@ -222,30 +226,33 @@
 
 
 (general-define-key
- :states '(normal visual)
- :keymaps 'org-mode-map
- :prefix "SPC"
- "c" '(:ignore t :wk "mode define command")
- "c c" '(org-toggle-checkbox  :wk"toggle-checkbox")
- )
-
-(general-define-key
- :states '(normal visual)
+ :states '(normal)
  :keymaps 'override
  :prefix "SPC"
- "c" '(:ignore t :wk "mode define command")
- "c o" '(xah-open-in-external-app :wk"open the file with xopen")
- "c p" '(my-paste-to-dired  :wk "past some in the dired")
- )
+ "c" '(:ignore t :wk "")
+ "c a"'(lsp-bridge-code-action :wk "code action")
+ "c r"'(lsp-bridge-rename :wk "lsp-bridge-rename")
+)
+
+;; (general-define-key
+;;  :states '(normal visual)
+;;  :keymaps 'override
+;;  :prefix "SPC"
+;;  "c" '(:ignore t :wk "mode define command")
+;;  "c o" '(xah-open-in-external-app :wk"open the file with xopen")
+;;  "c p" '(my-paste-to-dired  :wk "past some in the dired")
+;;  )
 
 ;; 可以继续为其他模式添加类似的代码
 
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
 
+
 (evil-collection-define-key 'normal 'lsp-bridge-ref-mode-map (kbd "q") #'lsp-bridge-ref-quit)
 (evil-collection-define-key 'normal 'lsp-bridge-ref-mode-map (kbd "C-n") #'lsp-bridge-ref-jump-next-keyword)
 (evil-collection-define-key 'normal 'lsp-bridge-ref-mode-map (kbd "C-p") #'lsp-bridge-ref-jump-prev-keyword)
+
 
 ;; (add-hook 'lsp-bridge-ref-mode-hook (lambda()(add-hook 'evil-normal-state-entry-hook 'lsp-bridge-ref-switch-to-view-mode)))
 

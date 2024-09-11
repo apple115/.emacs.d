@@ -27,6 +27,7 @@
   ;;    (setq acm-quick-access-use-number-select t)
   (setq lsp-bridge-python-command "/home/apple115/.emacs.d/site-lisp/my-emacs-python/bin/python3.11")
   (setq acm-enable-copilot t)
+  (setq acm-enable-citre t)
   (setq acm-candidate-match-function 'orderless-flex)
   ;;(setq lsp-bridge-enable-auto-format-code t);;自动格式化
   (setq lsp-bridge-enable-completion-in-string t)
