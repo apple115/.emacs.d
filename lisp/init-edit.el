@@ -160,11 +160,11 @@
     "o" '(:ignore t :wk "open")
     "o o" '(embark-act :wk "embark-act")
     "o e" '(compile :wk "compile")
-    "o t" '(vterm-toggle-insert-cd :wk "open terminal")
+    "o t" '(+new-vtermN :wk "open vtermN")
     "o s" '(async-shell-command :wk "open async shell command")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
-    "o b" '(hexo-my-blog  :wk "open org-agenda")
+    "o b" '(hexo-my-blog  :wk "open hexo")
     )
 
   (dt/leader-keys

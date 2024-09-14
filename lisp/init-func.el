@@ -21,6 +21,7 @@
   (other-window 1)
   (multi-vterm)
   )
+
 (defun my-vterm-apple115-switch ()
   "Create a new vterm buffer with the fixed name 'apple115'."
   (interactive)
@@ -28,6 +29,20 @@
     (if (not buffer) ; 检查是否已经存在名为 'apple115' 的缓冲区
         (vterm "terminal")) ; 如果不存在，创建一个名为 'apple115' 的 vterm 缓冲区
     (switch-to-buffer "terminal"))) ; 切换到 'apple115' 缓冲区
+
+(defun +new-vtermN ()
+  "Create a new vterm buffer with a name in the form of 'termN', where N is a number."
+  (interactive)
+  (let ((counter 1)
+        (vterm-prefix "term"))
+    ;; Find the next available number to use for the vterm buffer name
+    (while (get-buffer (concat vterm-prefix (number-to-string counter)))
+      (setq counter (1+ counter)))
+    ;; Create the vterm buffer with the unique name
+    (let ((vterm-name (concat vterm-prefix (number-to-string counter))))
+    (vterm vterm-name)
+    ;; Switch to the new buffer
+    (switch-to-buffer vterm-name))))
 
 
 (defun get-word-translate-to-bar()
