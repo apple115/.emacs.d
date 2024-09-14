@@ -2,12 +2,23 @@
 ;;; Commentary:
 
 ;;; Code:
+(use-package cape
+  :ensure t
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-history)
+  (add-hook 'completion-at-point-functions #'cape-keyword)
+)
+
+
 (use-package yasnippet
   :ensure t
   :config
   ;;(setq yas-snippet-dirs '("~/.config/emacs/snippets"))
   (yas-global-mode 1)
   )
+
 (use-package markdown-mode
   :ensure t
   :mode
@@ -17,17 +28,19 @@
   :bind
   (:map markdown-mode-map
         ("C-c C-e" . markdown-do)))
+
 (use-package lsp-bridge
   :load-path "./site-lisp/lsp-bridge"
   :config
 
   ;;(setq acm-backend-copilot-network-proxy '(:host "127.0.0.1" :port 20171))
 
-  ;;   (setq lsp-bridge-enable-log t)
+  ;; (setq lsp-bridge-enable-log t)
   ;;    (setq acm-quick-access-use-number-select t)
   (setq lsp-bridge-python-command "/home/apple115/.emacs.d/site-lisp/my-emacs-python/bin/python3.11")
   (setq acm-enable-copilot t)
   (setq acm-enable-citre t)
+  (setq acm-enable-capf t)
   (setq acm-candidate-match-function 'orderless-flex)
   ;;(setq lsp-bridge-enable-auto-format-code t);;自动格式化
   (setq lsp-bridge-enable-completion-in-string t)
@@ -54,7 +67,7 @@
   ;; (define-key acm-mode-map (kbd "M-0") (lambda () (interactive) (insert "0")))
   (define-key acm-mode-map
               (kbd "<tab>")
-              'nil)
+              'yas-expand)
 
 )
 (provide 'init-completion)

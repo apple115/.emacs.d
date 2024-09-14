@@ -96,7 +96,7 @@
   )
 
 (with-eval-after-load 'flycheck
-  (setq flycheck-check-syntax-automatically '(new-line mode-enabled save)))
+  (setq flycheck-check-syntax-automatically 'nil))
 
 
 (use-package format-all

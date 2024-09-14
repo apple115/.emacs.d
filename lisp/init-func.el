@@ -82,6 +82,12 @@ If NEWNAME is a directory, move file to it."
   (message "Copying '%s' to clipboard" file))
 
 
+(defun +format-code-and-flycheck()
+  (interactive)
+  (flycheck-buffer)
+  (format-all-buffer)
+ )
+
 (provide 'init-func)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

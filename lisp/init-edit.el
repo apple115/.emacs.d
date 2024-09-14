@@ -36,7 +36,7 @@
   :ensure t
   :after evil
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud bufler compile))
+  (setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud compile docker dape vertico atomic-chrome))
   (evil-collection-init))
 
 (use-package evil-surround
@@ -85,7 +85,7 @@
 
   (dt/leader-keys
     "SPC" '(consult-buffer :wk "switch-buffer")
-    "=" '((lambda () (interactive) (format-all-buffer)) :wk "current buffer format")
+    "=" '(+format-code-and-flycheck :wk "flycheck and format")
     "/" '(split-window-horizontally :wk"split window horizontally")
     "-" '(split-window-vertically :wk"split window vertically")
     "." '(find-file :wk "find file")
@@ -287,9 +287,6 @@
 (evil-define-key  'visual prog-mode-map (kbd "s") 'avy-goto-char-2)
 (evil-define-key  'visual text-mode-map (kbd "s") 'avy-goto-char-2)
 
-(evil-define-key  'insert prog-mode-map (kbd "C-y") 'yas-expand)
-(evil-define-key  'insert text-mode-map (kbd "C-y") 'yas-expand)
-
 (evil-define-key 'normal org-mode-map (kbd "<tab>") 'org-cycle)
 
 (evil-define-key 'normal global-map (kbd "H") 'evil-beginning-of-line)
@@ -300,6 +297,13 @@
 ;; (message "init-base configuration: %.2fs"
 ;;          (float-time (time-subtract (current-time) my/init-base-start-time)))
 
+
+(use-package atomic-chrome
+  :load-path "./site-lisp/atomic-chrome"
+  :config
+  (atomic-chrome-start-server)
+(setq atomic-chrome-buffer-open-style 'full)
+)
 
 (provide 'init-edit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
