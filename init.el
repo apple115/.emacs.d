@@ -56,12 +56,11 @@
   (require 'init-compile)
   (require 'init-docker)
   (require 'init-windows-manager)
+  (require 'init-auto-save)
   ;; (require 'init-smart-input-source)
-
   ;; (require 'init-bufler)
   ;; (require 'init-realgud)
   ;; (require 'init-tab-bar)
-  ;; (require 'init-auto-save)
   ;; (require 'init-super-save)
   ;; (require 'init-eaf)
   ;; (require 'init-mind-wave)

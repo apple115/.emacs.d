@@ -3,9 +3,9 @@
 
 ;;; Code:
 ;;;自动保存
-(setq auto-save-visited-interval 4)
-(setq auto-save-visited-mode t)
-(auto-save-visited-mode +1)
+;; (setq auto-save-visited-interval 4)
+;; (setq auto-save-visited-mode t)
+;; (auto-save-visited-mode +1)
 
 ;; 可以是async-shell-command 自动填充上一个命令
 (advice-add #'read-shell-command

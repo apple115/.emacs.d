@@ -1,5 +1,5 @@
-;;; init-hexo.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: hexo
+;;; init-hexo.el --- hexo settings -*- lexical-binding: t -*-
+;;; Commentary:
 
 ;;; Code:
 ;;; coade
@@ -9,7 +9,6 @@
  (defun hexo-my-blog ()
     (interactive)
     (hexo "~/blog/"))
-
 
 (evil-collection-define-key 'normal 'hexo-mode-map (kbd "RET") #'hexo-command-open-file)
 )
