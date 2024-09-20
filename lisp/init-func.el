@@ -86,7 +86,7 @@ If NEWNAME is a directory, move file to it."
     (error "No file is curretly being edited"))
     (when (yes-or-no-p (format "Really delete '%s'? " (file-name-nondirectory buffer-file-name)))
     (delete-file(buffer-file-name))
-    (kill-this-buffer))) 
+    (kill-this-buffer)))
 
 (defun +copy-current-filename (file)
   "Copy the full path to the current FILE."
@@ -99,9 +99,9 @@ If NEWNAME is a directory, move file to it."
 
 (defun +format-code-and-flycheck()
   (interactive)
+  (ignore-errors
   (flycheck-buffer)
-  (format-all-buffer)
- )
+  (format-all-buffer)))
 
 (provide 'init-func)
 
