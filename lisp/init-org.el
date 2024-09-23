@@ -3,39 +3,39 @@
 
 ;;; Code:
 
-(use-package org-modern
-  :ensure t
-  :hook (after-init . (lambda ()
-                        (setq org-modern-hide-stars 'leading)
-                        (global-org-modern-mode t)))
-  :config
-  ;; 标题行型号字符
-  (setq org-modern-star ["◉" "○" "✸" "✳" "◈" "◇" "✿" "❀" "✜"])
-  ;; 额外的行间距，0.1表示10%，1表示1px
-  (setq-default line-spacing 0.1)
-  ;; tag边框宽度，还可以设置为 `auto' 即自动计算
-  (setq org-modern-label-border 1)
-  ;; 设置表格竖线宽度，默认为3
-  (setq org-modern-table-vertical 2)
-  ;; 设置表格横线为0，默认为0.1
-  (setq org-modern-table-horizontal 0)
-  ;; 复选框美化
-  ;; (setq org-modern-checkbox
-  ;;       '((?X . #("▢✓" 0 2 (composition ((2)))))
-  ;;         (?- . #("▢–" 0 2 (composition ((2)))))
-  ;;         (?\s . #("▢" 0 1 (composition ((1)))))))
-  ;; 列表符号美化
-  (setq org-modern-list
-        '((?- . "•")
-          (?+ . "◦")
-          (?* . "▹")))
-  ;; 代码块左边加上一条竖边线（需要Org mode顶头，如果启用了 `visual-fill-column-mode' 会很难看）
-  (setq org-modern-block-fringe t)
-  ;; 代码块类型美化，我们使用了 `prettify-symbols-mode'
-  (setq org-modern-block-name t)
-  ;; #+关键字美化，我们使用了 `prettify-symbols-mode'
-  (setq org-modern-keyword t)
-  )
+;; (use-package org-modern
+;;   :ensure t
+;;   :hook (after-init . (lambda ()
+;;                         (setq org-modern-hide-stars 'leading)
+;;                         (global-org-modern-mode t)))
+;;   :config
+;;   ;; 标题行型号字符
+;;   (setq org-modern-star ["◉" "○" "✸" "✳" "◈" "◇" "✿" "❀" "✜"])
+;;   ;; 额外的行间距，0.1表示10%，1表示1px
+;;   (setq-default line-spacing 0.1)
+;;   ;; tag边框宽度，还可以设置为 `auto' 即自动计算
+;;   (setq org-modern-label-border 1)
+;;   ;; 设置表格竖线宽度，默认为3
+;;   (setq org-modern-table-vertical 2)
+;;   ;; 设置表格横线为0，默认为0.1
+;;   (setq org-modern-table-horizontal 0)
+;;   ;; 复选框美化
+;;   ;; (setq org-modern-checkbox
+;;   ;;       '((?X . #("▢✓" 0 2 (composition ((2)))))
+;;   ;;         (?- . #("▢–" 0 2 (composition ((2)))))
+;;   ;;         (?\s . #("▢" 0 1 (composition ((1)))))))
+;;   ;; 列表符号美化
+;;   (setq org-modern-list
+;;         '((?- . "•")
+;;           (?+ . "◦")
+;;           (?* . "▹")))
+;;   ;; 代码块左边加上一条竖边线（需要Org mode顶头，如果启用了 `visual-fill-column-mode' 会很难看）
+;;   (setq org-modern-block-fringe t)
+;;   ;; 代码块类型美化，我们使用了 `prettify-symbols-mode'
+;;   (setq org-modern-block-name t)
+;;   ;; #+关键字美化，我们使用了 `prettify-symbols-mode'
+;;   (setq org-modern-keyword t)
+;;   )
 
 (use-package calendar
     :ensure nil
@@ -193,7 +193,6 @@
   :mode ("\\.plantuml\\'" . plantuml-mode)
   :init
   ;; enable plantuml babel support
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (org-babel-do-load-languages 'org-babel-load-languages
                                (append org-babel-load-languages
                                        '((plantuml . t))))
@@ -207,7 +206,13 @@
         '((:exports . "results")
           (:results . "file")
           ))
-  )
+)
+
+(use-package org-excalidraw
+  :ensure t
+  :config
+  (org-excalidraw-directory "~/Nutstore Files/Nutstore/org/picture")
+)
 
 (use-package ox
   :ensure nil
@@ -249,6 +254,7 @@
   (setq org-appear-autokeywords t)
   (setq org-appear-inside-latex t)
   )
+
 
 (provide 'init-org)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

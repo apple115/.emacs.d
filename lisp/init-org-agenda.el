@@ -120,6 +120,7 @@ This function makes sure that dates are aligned for easy reading."
    (list (expand-file-name "tasks.org" org-directory)
          (expand-file-name "diary.org" org-directory)
          (expand-file-name "habits.org" org-directory)
+         (expand-file-name "projects.org" org-directory)
          ;; (expand-file-name "config.org" user-emacs-directory)
          ))
   ;; 设置org的日记文件
@@ -188,7 +189,6 @@ This function makes sure that dates are aligned for easy reading."
   ;; org habit show 7 days before today and 7 days after today. ! means not done. * means done.
   (org-habit-preceding-days 7)
   )
-
 
 (provide 'init-org-agenda)
 

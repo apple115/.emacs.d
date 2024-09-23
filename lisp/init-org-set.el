@@ -27,8 +27,11 @@
       (cons '("*" '(:emphasis t :foreground "blue"))
             (delete* "*" org-emphasis-alist :key 'car :test 'equal)))
 
-(setq org-todo-keywords '((sequence "TODO(t)"  "WIP(i!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
+(setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "|" "DONE(d!)" "CANCELLED(c@/!)")
                             ))
+
+(setq org-todo-keyword-faces
+      '(("PROG".(:foreground "yellow" :weight bold))))
 ;; ---- org代码块相关的设置
 (setq org-src-fontify-natively 1);代码块语法高亮
 (setq org-src-tab-acts-natively 1);开启代码块语法缩进

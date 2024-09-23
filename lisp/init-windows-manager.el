@@ -22,7 +22,7 @@
           ("*eshell*"                    :select t                          :size 0.3  :align t     :popup t)
           (helpful-mode                  :select t                          :size 0.6  :align right :popup t)
           ("*Messages*"                  :select t                          :size 0.3  :align t     :popup t)
-          ("*Org Agenda(t)*"             :select nil                        :size 0.3  :align right :popup t)
+          ;; ("*Org Agenda(t)*"             :select nil                        :size 0.3  :align right :popup t)
           ("*Async Shell Command*"        :select nil                        :size 0.3  :align t     :popup t)
           ("*lsp-bridge-doc*"            :select nil                        :size 0.3  :align t     :popup t)
           ("*Calendar*"                  :select t                          :size 0.3  :align t     :popup t)
@@ -34,7 +34,7 @@
 
 
 (use-package popper
-  :ensure t 
+  :ensure t
   :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"
@@ -45,7 +45,7 @@
          "\\*compilation\\*"
          "\\*vterm\\*"
          "\\*lsp-bridge-doc\\*"
-         "\\*Org Agenda(t)\\*"
+         ;; "\\*Org Agenda(t)\\*"
           help-mode
           compilation-mode))
 
