@@ -11,6 +11,8 @@
 (advice-add #'read-shell-command
  :filter-args #'(lambda(args) (list (car args) (car shell-command-history))))
 
+(add-hook 'prog-mode-hook 'hs-minor-mode)
+
 (use-package evil
   :ensure t
   :init
@@ -30,7 +32,6 @@
 ;;         (when (and (buffer-file-name) (buffer-modified-p))
 ;;             (call-interactively #'save-buffer))))
 )
-
 
 (use-package evil-collection
   :ensure t
@@ -258,28 +259,6 @@
 
 ;; (add-hook 'lsp-bridge-ref-mode-hook (lambda()(add-hook 'evil-normal-state-entry-hook 'lsp-bridge-ref-switch-to-view-mode)))
 
-;; agenda
-
-(add-hook 'org-agenda-mode-hook
-          (lambda ()
-            (evil-set-initial-state 'org-agenda-mode 'normal)))
-(evil-define-key 'normal org-agenda-mode-map (kbd "q") 'org-agenda-quit)
-
-
-(evil-define-key 'normal org-agenda-mode-map (kbd "j") 'org-agenda-next-line)
-(evil-define-key 'normal org-agenda-mode-map (kbd "k") 'org-agenda-previous-line)
-
-
-(evil-define-key 'normal org-agenda-mode-map (kbd "<tab>") 'org-agenda-todo)
-(evil-define-key 'normal org-agenda-mode-map (kbd "gc") 'org-agenda-goto-calender)
-(evil-define-key 'normal org-agenda-mode-map (kbd "gr") 'org-agenda-redo)
-
-(evil-define-key 'normal org-agenda-mode-map (kbd "u") 'org-agenda-undo)
-
-;; capture
-(add-hook 'org-capture-mode-hook
-          (lambda ()
-            (evil-set-initial-state 'org-capture-mode 'normal)))
 
 ;; vim keymap setting
 (evil-define-key  'normal prog-mode-map (kbd "s") 'avy-goto-char-2)
@@ -304,6 +283,15 @@
   (atomic-chrome-start-server)
 (setq atomic-chrome-buffer-open-style 'full)
 )
+
+(use-package hippie-exp
+:ensure nil
+:config
+(setq-default hippie-expand-try-functions-list
+                '(yas-hippie-try-expand emmet-expand-line)))
+
+
+
 
 (provide 'init-edit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

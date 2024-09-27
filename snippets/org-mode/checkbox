@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: checkbox
+# key: cbox
+# --
+- [ ] $0

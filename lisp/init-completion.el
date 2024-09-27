@@ -11,13 +11,12 @@
   (add-hook 'completion-at-point-functions #'cape-keyword)
 )
 
-
 (use-package yasnippet
   :ensure t
   :config
   ;;(setq yas-snippet-dirs '("~/.config/emacs/snippets"))
   (yas-global-mode 1)
-  )
+)
 
 (use-package markdown-mode
   :ensure t
@@ -47,12 +46,12 @@
   (setq lsp-bridge-enable-search-words  t)
   (setq lsp-bridge-multi-lang-server-extension-list
         '(
-          (("jsx")
-           . "typescript_tailwindcss")
-          (("html")
-           . "html_tailwindcss")
+          (("jsx"). "typescript_tailwindcss")
+          (("html"). "html_emmet")
+          (("tsx"). "typescript_tailwindcss_emmet")
           ))
   ;;(setq lsp-bridge-enable-org-babel t)
+  (setq  lsp-bridge--get-language-id-func t)
   (setq lsp-bridge-enable-hover-diagnostic t)
   (global-lsp-bridge-mode)
   ;; (define-key acm-mode-map (kbd "M-1") (lambda () (interactive) (insert "1")))
@@ -68,7 +67,6 @@
   (define-key acm-mode-map
               (kbd "<tab>")
               'yas-expand)
-
 )
 (provide 'init-completion)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

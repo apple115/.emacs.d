@@ -5,7 +5,7 @@
 (defun my-load-config ()
   "Load Emacs configuration."
   (interactive)
-  (load-file "~/.config/emacs/init.el"))
+  (load-file "~/.emacs.d/init.el"))
 
 (defun my-open-termial-kitty ()
   "Open kitty terminal in load filepath"
@@ -102,6 +102,10 @@ If NEWNAME is a directory, move file to it."
   (ignore-errors
   (flycheck-buffer)
   (format-all-buffer)))
+
+(use-package tailwindcss-color-mode
+ :load-path "./site-lisp/tailwindcss-color-mode"
+)
 
 (provide 'init-func)
 

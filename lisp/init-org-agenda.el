@@ -5,10 +5,6 @@
 (use-package org-agenda
   :ensure nil
   :hook (org-agenda-finalize . org-agenda-to-appt)
-  :bind (("\e\e a" . org-agenda)
-         :map org-agenda-mode-map
-         ("i" . (lambda () (interactive) (org-capture nil "d")))
-         ("J" . consult-org-agenda))
   :config
   ;; 日程模式的日期格式设置
   (setq org-agenda-format-date 'org-agenda-format-date-aligned)
@@ -78,7 +74,6 @@ This function makes sure that dates are aligned for easy reading."
   ;; 对于截止日期的任务在视图里的显示
   (setq org-agenda-deadline-leaders
         '("截止 " "还有%02d天到期 " "已经过期%02d天 "))
-
   ;; =====================
   ;; 自定义日程视图，分别显示TODO，WIP，WIAT中的任务
   ;; n键显示自定义视图，p键纯文本视图，a键默认视图
@@ -87,7 +82,7 @@ This function makes sure that dates are aligned for easy reading."
     `((todo "TODO"
             ((org-agenda-block-separator nil)
              (org-agenda-overriding-header "所有待办任务\n")))
-      (todo "WIP"
+      (todo "PROG"
             ((org-agenda-block-separator nil)
              (org-agenda-overriding-header "\n进行中的任务\n")))
       (todo "WAIT"
@@ -96,17 +91,11 @@ This function makes sure that dates are aligned for easy reading."
       (agenda "" ((org-agenda-block-separator nil)
                   (org-agenda-overriding-header "\n今日日程\n"))))
     "Custom agenda for use in `org-agenda-custom-commands'.")
+
   (setq org-agenda-custom-commands
         `(("n" "Daily agenda and top priority tasks"
            ,my-org-custom-daily-agenda)
-          ("p" "Plain text daily agenda and top priorities"
-           ,my-org-custom-daily-agenda
-           ((org-agenda-with-colors nil)
-            (org-agenda-prefix-format "%t %s")
-            (org-agenda-current-time-string ,(car (last org-agenda-time-grid)))
-            (org-agenda-fontify-priorities nil)
-            (org-agenda-remove-tags t))
-           ("agenda.txt"))))
+           ))
 
   ;; 时间戳格式设置，会影响到 `svg-tag' 等基于正则的设置
   ;; 这里设置完后是 <2022-12-24 星期六> 或 <2022-12-24 星期六 06:53>
@@ -124,17 +113,17 @@ This function makes sure that dates are aligned for easy reading."
          ;; (expand-file-name "config.org" user-emacs-directory)
          ))
   ;; 设置org的日记文件
-  (org-agenda-diary-file (expand-file-name "diary.org" org-directory))
+  ;; (org-agenda-diary-file (expand-file-name "diary.org" org-directory))
   ;; 日记插入精确时间戳
   (org-agenda-insert-diary-extract-time t)
   ;; 设置日程视图更加紧凑
-  ;; (org-agenda-compact-blocks t)
+  (org-agenda-compact-blocks t)
   ;; 日程视图的块分隔符
   (org-agenda-block-separator ?─)
   ;; 日视图还是周视图，通过 v-d, v-w, v-m, v-y 切换视图，默认周视图
   (org-agenda-span 'week)
   ;; q退出时删除agenda缓冲区
-  (org-agenda-sticky t)
+  (org-agenda-sticky nil)
   ;; 是否包含直接日期
   (org-agenda-include-deadlines t)
   ;; 禁止日程启动画面

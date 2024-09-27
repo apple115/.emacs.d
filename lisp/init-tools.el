@@ -79,6 +79,7 @@
 (add-to-list 'auto-mode-alist '("\\.yml\\'". yaml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'". css-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'". go-ts-mode))
+(add-to-list 'auto-mode-alist '("\\Dockerfile\\'". dockerfile-ts-mode))
 (setq treesit-font-lock-level 4)
 
 (setq make-backup-files nil)                                  ; 不自动备份

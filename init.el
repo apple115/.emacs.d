@@ -4,8 +4,6 @@
 ;;; Code:
 (require 'package)
 
-
-
 (setq package-archives
       '(("melpa"  . "https://melpa.org/packages/")
         ("gnu"    . "https://elpa.gnu.org/packages/")
@@ -57,6 +55,11 @@
   (require 'init-docker)
   (require 'init-windows-manager)
   (require 'init-auto-save)
+  (require 'init-virtualenvwrapper)
+  (require 'init-web)
+  (require 'init-clojure)
+  ;; (require 'init-reformatter)
+  ;; (require 'init-go-mode)
   ;; (require 'init-smart-input-source)
   ;; (require 'init-bufler)
   ;; (require 'init-realgud)
@@ -69,7 +72,6 @@
   ;; (require 'init-tabspaces)
   ;; (require 'init-dashboard)
   ;; (require 'init-awesome-tray)
-  ;; (require 'init-go-mode)
   ;; (require 'init-js2)
   )
 (when

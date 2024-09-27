@@ -11,8 +11,6 @@
 (setq auto-save-delete-trailing-whitespace t)
 )
 
-
 (provide 'init-auto-save)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-auto-save.el ends here

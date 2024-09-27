@@ -27,11 +27,12 @@
       (cons '("*" '(:emphasis t :foreground "blue"))
             (delete* "*" org-emphasis-alist :key 'car :test 'equal)))
 
-(setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "|" "DONE(d!)" "CANCELLED(c@/!)")
+(setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "WAIT(w)" "|" "DONE(d!)" "CANCELLED(c@/!)")
                             ))
 
 (setq org-todo-keyword-faces
       '(("PROG".(:foreground "yellow" :weight bold))))
+
 ;; ---- org代码块相关的设置
 (setq org-src-fontify-natively 1);代码块语法高亮
 (setq org-src-tab-acts-natively 1);开启代码块语法缩进
@@ -121,6 +122,23 @@
   :ensure t
   :hook (org-mode . org-auto-tangle-mode)
 )
+
+;; agenda
+(add-hook 'org-agenda-mode-hook
+          (lambda ()
+            (evil-set-initial-state 'org-agenda-mode 'normal)))
+
+;; capture
+(add-hook 'org-capture-mode-hook
+          (lambda ()
+            (evil-set-initial-state 'org-capture-mode 'normal)))
+
+(evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "/") #'org-agenda-filter)
+(evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "tab") #'org-agenda-goto)
+(evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "q") #'org-agenda-quit)
+(evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "j") #'org-agenda-next-line)
+(evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "k") #'org-agenda-previous-line)
+(evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "gr") #'org-agenda-redo-all)
 
 (provide 'init-org-set)
 

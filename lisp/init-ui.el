@@ -148,9 +148,7 @@
 
 ;; 在这个prog-mode 和 text-mode 后添加line-number
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'text-mode-hook 'display-line-numbers-mode)
-
-
+;; (add-hook 'text-mode-hook 'display-line-numbers-mode)
 
 ;; 配置所有的编码为UTF-8，参考：
 ;; https://thraxys.wordpress.com/2016/01/13/utf-8-in-emacs-everywhere-forever/

@@ -209,9 +209,9 @@
 )
 
 (use-package org-excalidraw
-  :ensure t
+  :load-path "./site-lisp/org-excalidraw"
   :config
-  (org-excalidraw-directory "~/Nutstore Files/Nutstore/org/picture")
+  (setq org-excalidraw-directory "~/Nutstore Files/Nutstore/org/picture")
 )
 
 (use-package ox
