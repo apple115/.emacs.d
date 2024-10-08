@@ -58,6 +58,7 @@
   (require 'init-virtualenvwrapper)
   (require 'init-web)
   (require 'init-clojure)
+  (require 'init-aider)
   ;; (require 'init-reformatter)
   ;; (require 'init-go-mode)
   ;; (require 'init-smart-input-source)

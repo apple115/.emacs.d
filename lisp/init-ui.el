@@ -6,11 +6,14 @@
 (load-theme 'gruvbox-light-soft t)
 
 (defun my-apply-font()
-(set-face-attribute 'default nil :font (font-spec :family "Inconsolata" :size 18 :weight 'bold))
- ;; (set-fontset-font t 'unicode (font-spec :family "Noto Color Emoji" :size 14))
-(set-fontset-font t '(#x2ff0 . #x9ffc) (font-spec :family "LXGW WenKai" :size 18 :weight 'bold))
+    (set-face-attribute 'default nil :font (font-spec :family "Inconsolata" :size 18 ;; :weight 'bold
+                                                      ))
+    (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 18 ;; :weight 'bold
+                                                      ))
 )
+
 (my-apply-font)
+
 (add-hook 'after-make-frame-functions
           (lambda (frame)
             (select-frame frame)

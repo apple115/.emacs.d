@@ -100,7 +100,7 @@ If NEWNAME is a directory, move file to it."
 (defun +format-code-and-flycheck()
   (interactive)
   (ignore-errors
-  (flycheck-buffer)
+  ;; (flycheck-buffer)
   (format-all-buffer)))
 
 (use-package tailwindcss-color-mode
