@@ -117,7 +117,7 @@
   (dt/leader-keys
     "f" '(:ignore t :wk "file")
     "f f" '(consult-fd :wk "find file")
-    "f /" '(find-file-other-window :wk "find file on other window")
+    "f /" '(+consult-fd-other-window :wk "find file on other window")
     "f R" '(+rename-current-file :wk "rename and move current file")
     "f D" '(+delete-current-file :wk "delete current file")
     "f y" '(+copy-current-filename :wk "copy current filename")
@@ -137,7 +137,7 @@
     "b" '(:ignore t :wk "buffer")
     "b ," '(switch-to-prev-buffer :wk "prev-buffer")
     "b ." '(switch-to-next-buffer :wk "next-buffer")
-    "b /" '(switch-to-buffer-other-window :wk "Switch buffer to other window")
+    "b /" '(consult-buffer-other-window :wk "Switch buffer to other window")
     "b k" '(kill-buffer :wk "kill buffer")
     "b i" '(ibuffer :wk "Ibuffer")
     "b r" '(revert-buffer :wk "Reload buffer")

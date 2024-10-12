@@ -22,6 +22,17 @@
   (multi-vterm)
   )
 
+(defun +consult-fd-other-window (&optional dir initial)
+  "Search for files with `fd' in DIR.
+The file names must match the input regexp.  INITIAL is the
+initial minibuffer input.  See `consult-grep' for details
+regarding the asynchronous search and the arguments."
+  (interactive "P")
+  (pcase-let* ((`(,prompt ,paths ,dir) (consult--directory-prompt "Fd" dir))
+               (default-directory dir)
+               (builder (consult--fd-make-builder paths)))
+  (find-file-other-window  (consult--find prompt builder initial))))
+
 (defun my-vterm-apple115-switch ()
   "Create a new vterm buffer with the fixed name 'apple115'."
   (interactive)
@@ -102,6 +113,7 @@ If NEWNAME is a directory, move file to it."
   (ignore-errors
   ;; (flycheck-buffer)
   (format-all-buffer)))
+
 
 (use-package tailwindcss-color-mode
  :load-path "./site-lisp/tailwindcss-color-mode"
