@@ -31,7 +31,6 @@
 (use-package lsp-bridge
   :load-path "./site-lisp/lsp-bridge"
   :config
-
   ;;(setq acm-backend-copilot-network-proxy '(:host "127.0.0.1" :port 20171))
 
   ;; (setq lsp-bridge-enable-log t)

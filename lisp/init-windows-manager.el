@@ -52,6 +52,7 @@
   (popper-mode +1)
   (popper-echo-mode +1))                ; For echo area hints
 
+
 (provide 'init-windows-manager)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-windows-manager.el ends here

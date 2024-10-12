@@ -3,6 +3,7 @@
 
 ;;; Code:
 ;;; coade
+
 (use-package rime
  :ensure t
  :bind ("C-\\". toggle-input-method)

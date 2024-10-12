@@ -20,6 +20,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
+  (setq evil-search-module 'evil-search)
   (evil-mode 1)
   :config
 ;; (add-hook 'evil-insert-state-exit-hook
@@ -50,6 +51,13 @@
   :init
   (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
   (define-key evil-visual-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines))
+
+;; (use-package evil-escape
+;;   :ensure t
+;;   :config
+;;     (evil-escape-mode 1)
+;;     (setq-default evil-escape-key-sequence "jk")
+;; )
 
 (setq x-select-request-type nil)
 
@@ -166,6 +174,7 @@
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
     "o b" '(hexo-my-blog  :wk "open hexo")
+    "o z" '(link-hint-open-link  :wk "open link-hint")
     )
 
   (dt/leader-keys
@@ -194,7 +203,28 @@
     "d t" '(denote-type :wk "creates a note while prompting for a file type")
     "d f" '(denote-open-or-create :wk "find denote")
     "d r" '(denote-dired-rename-file :wk "rename denote"))
+
+  (dt/leader-keys
+    "c" '(:ignore t :wk "compile")
+    "c r"'(recompile :wk "recompile")
+    "c k"'(kill-compilation :wk "recompile")
+    )
+
+  (dt/leader-keys
+    "l" '(:ignore t :wk "lsp")
+    "l n"'(lsp-bridge-rename :wk "rename")
+    "l a"'(lsp-bridge-code-action :wk "code action")
+    )
   )
+
+;; (general-define-key
+;;  :states '(normal)
+;;  :keymaps 'override
+;;  :prefix "SPC"
+;;  "c" '(:ignore t :wk "")
+;;  "c a"'(lsp-bridge-code-action :wk "code action")
+;;  "c r"'(lsp-bridge-rename :wk "lsp-bridge-rename")
+;; )
 
 
 (global-unset-key (kbd "C-SPC"))
@@ -219,23 +249,6 @@
   (evil-define-key 'normal prog-mode-map (kbd "[d") 'lsp-bridge-diagnostic-jump-prev)
   )
 
-(with-eval-after-load 'rust-mode
-  )
-
-;; 定义快捷键在 python-mode 下生效
-(with-eval-after-load 'python-mode
-  )
-
-
-
-(general-define-key
- :states '(normal)
- :keymaps 'override
- :prefix "SPC"
- "c" '(:ignore t :wk "")
- "c a"'(lsp-bridge-code-action :wk "code action")
- "c r"'(lsp-bridge-rename :wk "lsp-bridge-rename")
-)
 
 ;; (general-define-key
 ;;  :states '(normal visual)
@@ -261,10 +274,13 @@
 
 
 ;; vim keymap setting
-(evil-define-key  'normal prog-mode-map (kbd "s") 'avy-goto-char-2)
-(evil-define-key  'normal text-mode-map (kbd "s") 'avy-goto-char-2)
-(evil-define-key  'visual prog-mode-map (kbd "s") 'avy-goto-char-2)
-(evil-define-key  'visual text-mode-map (kbd "s") 'avy-goto-char-2)
+(setq mark-ring-max 6)
+(setq global-mark-ring-max 6)
+(setq set-mark-command-repeat-pop t)
+(evil-define-key  'normal prog-mode-map (kbd "s") 'avy-goto-char-timer)
+(evil-define-key  'normal text-mode-map (kbd "s") 'avy-goto-char-timer)
+(evil-define-key  'visual prog-mode-map (kbd "s") 'avy-goto-char-timer)
+(evil-define-key  'visual text-mode-map (kbd "s") 'avy-goto-char-timer)
 
 (evil-define-key 'normal org-mode-map (kbd "<tab>") 'org-cycle)
 
@@ -289,8 +305,6 @@
 :config
 (setq-default hippie-expand-try-functions-list
                 '(yas-hippie-try-expand emmet-expand-line)))
-
-
 
 
 (provide 'init-edit)

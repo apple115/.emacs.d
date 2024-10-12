@@ -6,7 +6,6 @@
 
 (require 'ansi-color)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
-(global-set-key [f6] 'recompile)
 
 
 (provide 'init-compile)
