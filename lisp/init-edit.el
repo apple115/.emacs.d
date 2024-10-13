@@ -93,7 +93,7 @@
     :global-prefix "M-SPC") ;; access leader in insert mode
 
   (dt/leader-keys
-    "SPC" '(consult-buffer :wk "switch-buffer")
+    "SPC" '(consult-fd :wk "find file")
     "=" '(+format-code-and-flycheck :wk "flycheck and format")
     "/" '(split-window-horizontally :wk"split window horizontally")
     "-" '(split-window-vertically :wk"split window vertically")
@@ -127,10 +127,12 @@
 
   (dt/leader-keys
     "s" '(:ignore t :wk "Search")
-    "s s" '(consult-fd :wk "find file")
     "s o" '(consult-ripgrep :wk "search word")
+    "s e" '(consult-compile-error :wk "search word")
+    "s g" '(engine/search-google :wk "search google")
     "s m" '(consult-man :wk "search man")
     "s n" '(consult-notes :wk "search notes")
+    "s w" '(fanyi-dwim :wk "search word")
     )
 
   (dt/leader-keys
@@ -207,7 +209,7 @@
   (dt/leader-keys
     "c" '(:ignore t :wk "compile")
     "c r"'(recompile :wk "recompile")
-    "c k"'(kill-compilation :wk "recompile")
+    "c k"'(kill-compilation :wk "kill compile")
     )
 
   (dt/leader-keys

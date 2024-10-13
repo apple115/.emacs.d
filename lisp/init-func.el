@@ -22,6 +22,7 @@
   (multi-vterm)
   )
 
+;;;###autoload
 (defun +consult-fd-other-window (&optional dir initial)
   "Search for files with `fd' in DIR.
 The file names must match the input regexp.  INITIAL is the
@@ -78,7 +79,7 @@ If NEWNAME is a directory, move file to it."
   (when (equal newname (file-name-as-directory newname))
     (setq newname (concat newname (file-name-nondirectory buffer-file-name))))
   (rename-file buffer-file-name newname)
-  (set-visited-file-name ewname)
+  (set-visited-file-name newname)
   (rename-buffer newname))
 
 (defun +delete-current-file (file)

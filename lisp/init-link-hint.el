@@ -6,7 +6,7 @@
   :ensure t
   :defer t
   :config
- (setq browse-url-browser-function 'browse-url-firefox)
+  (setq browse-url-browser-function 'browse-url-firefox)
 )
 
 (provide 'init-link-hint)

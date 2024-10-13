@@ -60,7 +60,9 @@
   (require 'init-aider)
   (require 'init-link-hint)
   (require 'init-smart-input-source)
-
+  (require 'init-eww)
+  (require 'init-engine-mode)
+  (require 'init-english)
   ;; (require 'init-reformatter)
   ;; (require 'init-go-mode)
   ;;  (require 'init-rime)
