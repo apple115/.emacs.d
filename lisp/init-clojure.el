@@ -5,6 +5,10 @@
  :ensure t
 )
 
+(use-package cider
+ :ensure t
+)
+
 ;;; Code:
 (provide 'init-clojure)
 

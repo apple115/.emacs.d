@@ -159,15 +159,8 @@
 (use-package denote
   :ensure t
   :hook (dired-mode . denote-dired-mode-in-directories)
-  :bind (("C-c d n" . denote)
-         ("C-c d d" . denote-date)
-         ("C-c d t" . denote-type)
-         ("C-c d s" . denote-subdirectory)
-         ("C-c d f" . denote-open-or-create)
-         ("C-c d r" . denote-dired-rename-file))
   :config
   (setq denote-directory (expand-file-name "~/Nutstore Files/Nutstore/org/denote"))
-  (setq denote-known-keywords '("emacs" "entertainment" "reading" "studying"))
   (setq denote-infer-keywords t)
   (setq denote-sort-keywords t)
   ;; org is default, set others such as text, markdown-yaml, markdown-toml
@@ -176,7 +169,7 @@
 
   ;; We allow multi-word keywords by default.  The author's personal
   ;; preference is for single-word keywords for a more rigid workflow.
-  (setq denote-allow-multi-word-keywords t)
+  (setq denote-allow-multi-word-keywords nil)
   (setq denote-date-format nil)
 
   ;; If you use Markdown or plain text files (Org renders links as buttons
@@ -243,6 +236,9 @@
 
 (require 'ob-python)
 (require 'ob-C)
+(require 'ob-go)
+
+
 
 (use-package org-appear
   :ensure t

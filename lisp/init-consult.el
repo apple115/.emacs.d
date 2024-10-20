@@ -5,7 +5,6 @@
 (use-package consult
  :ensure t
  :bind
- ("C-s" . consult-line)
  :config
 (setq read-file-name-function #'consult-find-file-with-preview)
 
@@ -17,7 +16,8 @@
                    :prompt prompt
                    :initial initial
                    :require-match mustmatch
-                   :predicate pred)))
+                   :predicate pred))
+)
 )
 
 

@@ -32,13 +32,14 @@
 ;;  (lambda ()
 ;;         (when (and (buffer-file-name) (buffer-modified-p))
 ;;             (call-interactively #'save-buffer))))
+(evil-add-command-properties #'citre-jump :jump t)
 )
 
 (use-package evil-collection
   :ensure t
   :after evil
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud compile docker dape vertico atomic-chrome))
+  (setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud compile docker dape vertico atomic-chrome xref))
   (evil-collection-init))
 
 (use-package evil-surround
@@ -102,7 +103,7 @@
     )
 
   (dt/leader-keys
-    "w" '(:ignore :wk "find file")
+    "w" '(:ignore :wk "window")
     "w 0" '(delete-window :wk "delete-window")
     "w 9" '(delete-other-windows :wk "delete-other-windows")
    )
@@ -132,16 +133,18 @@
     "s g" '(engine/search-google :wk "search google")
     "s m" '(consult-man :wk "search man")
     "s n" '(consult-notes :wk "search notes")
+    "s t" '(citre-query-jump :wk "find tags")
     "s w" '(fanyi-dwim :wk "search word")
     )
 
   (dt/leader-keys
     "b" '(:ignore t :wk "buffer")
+    "b b" '(consult-buffer :wk "buffer-switch")
     "b ," '(switch-to-prev-buffer :wk "prev-buffer")
     "b ." '(switch-to-next-buffer :wk "next-buffer")
     "b /" '(consult-buffer-other-window :wk "Switch buffer to other window")
     "b k" '(kill-buffer :wk "kill buffer")
-    "b i" '(ibuffer :wk "Ibuffer")
+    "b i" '(ibuffer :wk "ibuffer")
     "b r" '(revert-buffer :wk "Reload buffer")
     )
 
@@ -242,14 +245,6 @@
 (evil-define-key 'insert global-map (kbd "M-.") 'popper-cycle)
 
 ;; 定义快捷键在 rust-mode 下生效
-(with-eval-after-load 'prog-mode
-  (evil-define-key 'normal prog-mode-map (kbd "K") 'lsp-bridge-show-documentation)
-  (evil-define-key 'normal prog-mode-map (kbd "gd") 'lsp-bridge-find-def)
-  (evil-define-key 'normal prog-mode-map (kbd "gi") 'lsp-bridge-find-imp)
-  (evil-define-key 'normal prog-mode-map (kbd "go") 'lsp-bridge-find-def-return)
-  (evil-define-key 'normal prog-mode-map (kbd "]d") 'lsp-bridge-diagnostic-jump-next)
-  (evil-define-key 'normal prog-mode-map (kbd "[d") 'lsp-bridge-diagnostic-jump-prev)
-  )
 
 
 ;; (general-define-key
@@ -257,20 +252,27 @@
 ;;  :keymaps 'override
 ;;  :prefix "SPC"
 ;;  "c" '(:ignore t :wk "mode define command")
-;;  "c o" '(xah-open-in-external-app :wk"open the file with xopen")
+;;  "c o" '(xah-open-in-external-app :wk"open the file with spine")
 ;;  "c p" '(my-paste-to-dired  :wk "past some in the dired")
 ;;  )
 
 ;; 可以继续为其他模式添加类似的代码
 
+
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
 
+(evil-collection-define-key 'normal 'lsp-bridge-mode-map (kbd "K") #'lsp-bridge-show-documentation)
+(evil-collection-define-key 'normal 'lsp-bridge-mode-map (kbd "gd") #'lsp-bridge-find-def)
+;; (add-to-list 'evil-goto-definition-functions 'lsp-bridge-find-def)
+(evil-collection-define-key 'normal 'lsp-bridge-mode-map (kbd "gi") #'lsp-bridge-find-impl)
+(evil-collection-define-key 'normal 'lsp-bridge-mode-map (kbd "go") #'lsp-bridge-find-def-return)
+(evil-collection-define-key 'normal 'lsp-bridge-mode-map (kbd "]d") #'lsp-bridge-diagnostic-jump-next)
+(evil-collection-define-key 'normal 'lsp-bridge-mode-map (kbd "[d") #'lsp-bridge-diagnostic-jump-prev)
 
 (evil-collection-define-key 'normal 'lsp-bridge-ref-mode-map (kbd "q") #'lsp-bridge-ref-quit)
 (evil-collection-define-key 'normal 'lsp-bridge-ref-mode-map (kbd "C-n") #'lsp-bridge-ref-jump-next-keyword)
 (evil-collection-define-key 'normal 'lsp-bridge-ref-mode-map (kbd "C-p") #'lsp-bridge-ref-jump-prev-keyword)
-
 
 ;; (add-hook 'lsp-bridge-ref-mode-hook (lambda()(add-hook 'evil-normal-state-entry-hook 'lsp-bridge-ref-switch-to-view-mode)))
 

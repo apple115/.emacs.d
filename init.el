@@ -63,6 +63,8 @@
   (require 'init-eww)
   (require 'init-engine-mode)
   (require 'init-english)
+  (require 'init-anki)
+  (require 'init-sql)
   ;; (require 'init-reformatter)
   ;; (require 'init-go-mode)
   ;;  (require 'init-rime)
@@ -96,7 +98,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(dape super-save wucuo which-key vterm-toggle vertico tabspaces sudo-edit shackle rust-mode rime realgud rainbow-delimiters python-mode projectile popper plantuml-mode ox-reveal ox-gfm org-modern org-contrib org-auto-tangle org-appear orderless multi-vterm markdown-mode marginalia haskell-mode gruvbox-theme gptel general format-all flycheck exec-path-from-shell evil-surround evil-nerd-commenter evil-collection eshell-prompt-extras envrc embark-consult doom-modeline dirvish diredfl devdocs denote dashboard consult-notes colorful-mode cal-china-x avy auto-yasnippet all-the-icons)))
+   '(ob-go cider dape super-save wucuo which-key vterm-toggle vertico tabspaces sudo-edit shackle rust-mode rime realgud rainbow-delimiters python-mode popper plantuml-mode ox-reveal ox-gfm org-modern org-contrib org-auto-tangle org-appear orderless multi-vterm markdown-mode marginalia haskell-mode gruvbox-theme gptel general format-all flycheck exec-path-from-shell evil-surround evil-nerd-commenter evil-collection eshell-prompt-extras envrc embark-consult doom-modeline dirvish diredfl devdocs denote dashboard consult-notes colorful-mode cal-china-x avy auto-yasnippet all-the-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
