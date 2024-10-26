@@ -1,6 +1,32 @@
-;;; init-dirvish.el --- config dired mode -*- lexical-binding: t -*-
-;;; Commentary: dired
+;;; init-editer.el --- Langs settings -*- lexical-binding: t -*-
+;;; Commentary: editer
+
 ;;; Code:
+(use-package sort-tab
+  :load-path "./site-lisp/my-fork-sort-tab"
+  :after doom-modeline
+  :config
+  (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
+  (sort-tab-mode 1)
+  (setq sort-tab-show-index-number t)
+
+  (dt/leader-keys
+    "1" 'sort-tab-select-visible-tab
+    "2" 'sort-tab-select-visible-tab
+    "3" 'sort-tab-select-visible-tab
+    "4" 'sort-tab-select-visible-tab
+    "5" 'sort-tab-select-visible-tab
+    "6" 'sort-tab-select-visible-tab
+    "7" 'sort-tab-select-visible-tab
+    "8" 'sort-tab-select-visible-tab
+    "9" 'sort-tab-select-visible-tab
+    "0" 'sort-tab-select-visible-tab
+    )
+    (global-set-key (kbd "s-Q") 'sort-tab-close-all-tabs)
+    (global-set-key (kbd "s-q") 'sort-tab-close-mode-tabs)
+    (global-set-key (kbd "C-;") 'sort-tab-close-current-tab)
+)
+
 (use-package dired
   :ensure nil
   :config
@@ -95,55 +121,45 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
   (async-shell-command (format "wl-paste > %s" past-file-name) )
 )
 )
-
-
-;; (use-package dirvish
-;;   :ensure t
-;;   :hook (after-init . dirvish-override-dired-mode)
-;;   :config
-;;   (setq dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index)))
-;;   (setq dirvish-attributes
-;;         '(file-time file-size collapse subtree-state vc-state git-msg))
-;; (general-evil-define-key 'normal dired-mode-map
-;;   "c" 'dired-do-compress-to
-;;   "q" 'quit-window
-;;   "h" 'dired-up-directory
-;;   "j" 'dired-next-line
-;;   "k" 'dired-previous-line
-;;   "l" 'dired-find-file
-;;   "gr" 'revert-buffer
-;;   "gy" 'dired-show-file-type
-;;   "m" 'dired-mark
-;;   "u" 'dired-unmark
-;;   "x" 'dired-do-flagged-delete
-;;   "RET" 'dired-find-file
-
-;;   "A" 'dired-do-find-regexp
-;;   "B" 'dired-do-byte-compile
-;;   "C" 'dired-do-copy
-;;   "D" 'dired-do-delete
-;;   "H" 'dired-do-hardlink
-;;   "G" 'dired-do-chgrp
-;;   "M" 'dired-do-chmod
-;;   "O" 'dired-do-chown
-;;   "R" 'dired-do-rename
-;;   "S" 'dired-do-symlink
-;;   "T" 'dired-do-touch
-;;   "Y" 'dired-copy-filename-as-kill
-;;   "Z" 'dired-do-compress
-;;   "!" 'dired-do-shell-command
-;;   "&" 'dired-do-async-shell-command
-;;   "+" 'dired-create-directory
-;;   "TAB" 'dirvish-toggle-subtree
-;;  )
-;; )
-
-
 (use-package all-the-icons
   :ensure t)
 
 
-(provide 'init-dired)
+(use-package auto-save
+  :load-path "./site-lisp/auto-save"
+  :config
+    (auto-save-enable)
+    (setq auto-save-silent t)
+    (setq auto-save-delete-trailing-whitespace t)
+)
 
+(use-package ibuffer
+  :ensure nil
+  :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold))))
+
+(use-package nerd-icons-ibuffer
+  :ensure
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+
+
+(use-package sis
+  ;;:hook
+  ;; enable the /context/ and /inline region/ mode for specific buffers
+  ;; (((text-mode prog-mode) . sis-context-mode)
+  ;; ((text-mode prog-mode) . sis-inline-mode))
+  :ensure t
+  :config
+  (sis-ism-lazyman-config "1" "2" 'fcitx5)
+  ;; enable the /cursor color/ mode
+  (sis-global-cursor-color-mode t)
+  ;; enable the /respect/ mode
+  (sis-global-respect-mode t)
+  ;; enable the /context/ mode for all buffers
+  (sis-global-context-mode t)
+  ;; enable the /inline english/ mode for all buffers
+  (sis-global-inline-mode t)
+  )
+
+(provide 'init-editer)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-dired.el ends here
+;;; init-editer.el ends here

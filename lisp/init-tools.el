@@ -138,7 +138,6 @@
 (envrc-global-mode)
 )
 
-
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-tools.el ends here

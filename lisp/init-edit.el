@@ -6,6 +6,10 @@
 ;; (setq auto-save-visited-interval 4)
 ;; (setq auto-save-visited-mode t)
 ;; (auto-save-visited-mode +1)
+(use-package savehist
+  :init
+  (savehist-mode))
+;; A few more useful configurations...
 
 ;; 可以是async-shell-command 自动填充上一个命令
 (advice-add #'read-shell-command
@@ -78,7 +82,9 @@
 
 (use-package elec-pair
   :ensure nil
-  :hook (after-init . electric-pair-mode)
+  :hook ((prog-mode . electric-pair-mode)
+         (conf-mode . electric-pair-mode)
+         )
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
 (use-package general
@@ -203,7 +209,7 @@
   (dt/leader-keys
     "d" '(:ignore t :wk "denote or dired")
     "d d" '(pwd :wk "pwd")
-    "d j" '(dired-jump)
+    "d j" '(denote-find-link :wk"find link")
     "d n" '(denote :wk "create denote")
     "d t" '(denote-type :wk "creates a note while prompting for a file type")
     "d f" '(denote-open-or-create :wk "find denote")
@@ -221,7 +227,6 @@
     "l a"'(lsp-bridge-code-action :wk "code action")
     )
   )
-
 ;; (general-define-key
 ;;  :states '(normal)
 ;;  :keymaps 'override

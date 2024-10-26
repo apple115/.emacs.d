@@ -2,6 +2,32 @@
 ;;; Commentary: org-agenda
 
 ;;; Code:
+(use-package calendar
+    :ensure nil
+    :hook (calendar-today-visible . calendar-mark-today)
+    :custom
+    ;; 是否显示中国节日，我们使用 `cal-chinese-x' 插件
+    (calendar-chinese-all-holidays-flag nil)
+    ;; 是否显示节日
+    (calendar-mark-holidays-flag t)
+    ;; 是否显示Emacs的日记，我们使用org的日记
+    (calendar-mark-diary-entries-flag nil)
+    ;; 数字方式显示时区，如 +0800，默认是字符方式如 CST
+    (calendar-time-zone-style 'numeric)
+    ;; 日期显示方式：year/month/day
+    (calendar-date-style 'iso)
+    ;; 中文天干地支设置
+    (calendar-chinese-celestial-stem ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"])
+    (calendar-chinese-terrestrial-branch ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"])
+    ;; 设置中文月份
+    (calendar-month-name-array ["一月" "二月" "三月" "四月" "五月" "六月" "七月" "八月" "九月" "十月" "十一月" "十二月"])
+    ;; 设置星期标题显示
+    (calendar-day-name-array ["日" "一" "二" "三" "四" "五" "六"])
+    ;; 周一作为一周第一天
+    (calendar-week-start-day 1)
+    )
+
+
 (use-package org-agenda
   :ensure nil
   :hook (org-agenda-finalize . org-agenda-to-appt)
@@ -178,6 +204,7 @@ This function makes sure that dates are aligned for easy reading."
   ;; org habit show 7 days before today and 7 days after today. ! means not done. * means done.
   (org-habit-preceding-days 7)
   )
+
 
 (provide 'init-org-agenda)
 

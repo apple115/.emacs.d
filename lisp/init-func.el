@@ -7,6 +7,11 @@
   (interactive)
   (load-file "~/.emacs.d/init.el"))
 
+(defun add-list-to-list (dst src)
+  "Similar to `add-to-list', but accepts a list as 2nd argument"
+  (set dst
+       (append (eval dst) src)))
+
 (defun my-open-termial-kitty ()
   "Open kitty terminal in load filepath"
   (interactive)

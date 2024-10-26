@@ -17,10 +17,31 @@
                    :initial initial
                    :require-match mustmatch
                    :predicate pred))
-)
-)
+))
 
+(use-package engine-mode
+  :ensure t
+  :config
+    (defengine google
+    "https://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+    )
+  (engine-mode t))
 
+(use-package consult-notes
+  :ensure t
+  :commands (consult-notes
+             consult-notes-search-in-all-notes)
+  :config
+  (setq consult-notes-file-dir-sources
+        `(
+          ;; ("work"    ?w ,(concat org-directory "/midea/"))
+          ("denote" ?d ,(concat org-directory "/denote/"))
+          ("org"     ?o ,(concat org-directory "/"))
+          ("blog"    ?b  "/home/apple115/blog/source/_posts/")
+          ;; ("books"   ?b ,(concat (getenv "HOME") "/Books/"))
+          ))
+
+   )
 
 (provide 'init-consult)
 

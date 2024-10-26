@@ -1,8 +1,7 @@
-;;; init-magit.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: magit
+;;; init-git.el --- Langs settings -*- lexical-binding: t -*-
+;;; Commentary: git
 
 ;;; Code:
-;;; coade
 (use-package with-editor
   :ensure t)
 
@@ -15,7 +14,8 @@
   (magit-diff-refine-hunk t)
   (magit-ediff-dwim-show-on-hunks t))
 
-(provide 'init-magit)
+
+(provide 'init-git)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-magit.el ends here
+;;; init-git.el ends here

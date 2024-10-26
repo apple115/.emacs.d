@@ -179,6 +179,14 @@
 (setq-default auto-fill-function nil)
 (setq-default visual-line-mode nil)
 
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :config
+(setq doom-modeline-modal t)
+(setq doom-modeline-height 25)
+)
+
 (provide 'init-ui)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-ui.el ends here
