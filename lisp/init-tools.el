@@ -130,6 +130,7 @@
                   ("SQL" (sqlformat))
                   ("Ruby" (rufo))
                   ("C++" (clang-format "-style=Google"))
+                  ("clojure" (zprint))
 )))
 
 (use-package envrc

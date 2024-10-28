@@ -1,5 +1,5 @@
-;;; init-virtualenvwrapper.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: virtualenvwrapper
+;;; init-python.el --- Langs settings -*- lexical-binding: t -*-
+;;; Commentary: python
 
 ;;; Code:
 (use-package virtualenvwrapper
@@ -13,7 +13,9 @@
 (setq venv-location "/home/apple115/.cache/pypoetry/virtualenvs/")
 )
 
-(provide 'init-virtualenvwrapper)
+
+
+(provide 'init-python)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-virtualenvwrapper.el ends here
+;;; init-python.el ends here

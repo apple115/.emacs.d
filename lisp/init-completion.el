@@ -14,7 +14,7 @@
   (corfu-auto t)
   (corfu-auto-prefix 2)
   (corfu-preview-current nil)
-  (corfu-auto-delay 0.1)
+  (corfu-auto-delay 0.2)
   (corfu-popupinfo-delay '(0.4 . 0.2))
   :hook ((after-init . global-corfu-mode)
          (global-corfu-mode . corfu-popupinfo-mode)))
@@ -34,6 +34,7 @@
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
 )
+
 ; Support Pinyin
 (use-package pinyinlib
   :ensure t
@@ -56,10 +57,24 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
+;; (use-package hotfuzz
+;;   :load-path "./site-lisp/hotfuzz"
+;;   :custom
+;;   (completion-styles '(hotfuzz))
+;; )
+;; (require 'hotfuzz-module)
+
 (use-package marginalia
  :ensure t
  :init
  (marginalia-mode)
+)
+
+(use-package eldoc-box
+  :ensure t
+  :config
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
+  (add-to-list 'eglot-ignored-server-capabilites :hoverProvider)
 )
 
 (use-package cape
@@ -69,7 +84,14 @@
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-history)
   (add-hook 'completion-at-point-functions #'cape-keyword)
+  (add-hook 'completion-at-point-functions #'cape-dict)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+;; Sanitize the `pcomplete-completions-at-point' Capf.  The Capf has undesired
+;; side effects on Emacs 28 and earlier.  These advices are not needed on Emacs
+;; 29 and newer.
+(when (< emacs-major-version 29)
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
 )
 
 ; Consult users will also want the embark-consult package.
@@ -79,8 +101,22 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;; (use-package eldoc
+;;   :init
+;;   (global-eldoc-mode))
+
 (use-package eglot
   :ensure nil
+  ;; :hook (prog-mode . eglot-ensure)
+  :custom
+  (eglot-ignored-server-capabilities
+   '(:hoverProvider
+     :documentHighlightProvider
+     :documentFormattingProvider
+     :documentRangeFormattingProvider
+     :documentOnTypeFormattingProvider
+     :colorProvider
+     :foldingRangeProvider))
 )
 
 (use-package eglot-booster

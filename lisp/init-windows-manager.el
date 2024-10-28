@@ -47,6 +47,7 @@
          "\\*vterm\\*"
          "\\*lsp-bridge-doc\\*"
          "\\*fanyi\\*"
+         "\\*eshell*\\*"
          ;; "\\*Org Agenda(t)\\*"
           help-mode
           compilation-mode))
