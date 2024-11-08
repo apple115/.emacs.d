@@ -6,7 +6,20 @@
 :ensure t
 :config
 ;;(setq rust-format-on-save t)
+)
 
+(use-package go-ts-mode
+:ensure nil
+:mode "\\.go\\'"
+:custom
+(go-ts-mode-indent-offset 4))
+
+(use-package clojure-ts-mode
+:ensure t
+)
+
+(use-package cider
+ :ensure t
 )
 
 (use-package haskell-mode

@@ -74,7 +74,6 @@
   :ensure t
   :config
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
-  (add-to-list 'eglot-ignored-server-capabilites :hoverProvider)
 )
 
 (use-package cape

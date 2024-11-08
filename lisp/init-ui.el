@@ -6,13 +6,14 @@
 (load-theme 'gruvbox-light-soft t)
 
 (defun my-apply-font()
-    (set-face-attribute 'default nil :font (font-spec :family "Inconsolata" :size 18 ;; :weight 'bold
+    (set-face-attribute 'default nil :font (font-spec :family "Inconsolata" :size 18 :weight 'medium
                                                       ))
-    (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 18 ;; :weight 'bold
+    (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 18 :weight 'medium
                                                       ))
 )
 
-
+;; |大家|
+;; |aabb|
 
 (my-apply-font)
 

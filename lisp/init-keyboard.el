@@ -32,7 +32,6 @@
     "g b" '((lambda () (interactive) (find-file "~/blog")) :wk "blog")
 
     "f" '(:ignore t :wk "file")
-    "f f" '(consult-fd :wk "find file")
     "f /" '(+consult-fd-other-window :wk "find file on other window")
     "f R" '(+rename-current-file :wk "rename and move current file")
     "f D" '(+delete-current-file :wk "delete current file")
@@ -47,6 +46,8 @@
     "s m" '(consult-man :wk "search man")
     "s n" '(consult-notes :wk "search notes")
     "s t" '(citre-query-jump :wk "find tags")
+    "s i" '(consult-imenu :wk "find imenu")
+    "s f" '(consult-fd :wk "find file")
     "s w" '(fanyi-dwim :wk "search word")
 
     "b" '(:ignore t :wk "buffer")

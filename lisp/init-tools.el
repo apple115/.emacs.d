@@ -139,6 +139,30 @@
 (envrc-global-mode)
 )
 
+(use-package link-hint
+  :ensure t
+  :defer t
+  :config
+  (setq browse-url-browser-function 'browse-url-firefox)
+)
+
+(use-package colorful-mode
+ :ensure t
+ ;; :hook (prog-mode text-mode)
+ :config
+;; In this example add emacs color names only for yaml-mode and derived.
+(add-to-list 'colorful-extra-color-keyword-functions '(yaml-mode . colorful-add-color-names))
+(add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
+)
+
+(use-package vterm
+  :ensure t)
+(use-package vterm-toggle
+  :ensure t)
+(use-package multi-vterm
+  :ensure t)
+
+
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-tools.el ends here
