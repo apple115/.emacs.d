@@ -19,14 +19,6 @@
     (async-shell-command (format "kitty --directory %s" directory))
     ))
 
-(defun open-vterm-in-other-window ()
-  "Open a vterm in a new window."
-  (interactive)
-  (split-window-right)
-  (other-window 1)
-  (multi-vterm)
-  )
-
 ;;;###autoload
 (defun +consult-fd-other-window (&optional dir initial)
   "Search for files with `fd' in DIR.
@@ -119,6 +111,13 @@ If NEWNAME is a directory, move file to it."
   (ignore-errors
   ;; (flycheck-buffer)
   (format-all-buffer)))
+
+(defun +hexo-new()
+  "New a hexo blog"
+  (interactive)
+  (let ((default-directory "~/blog/"))
+   (hexo-new))
+)
 
 
 (use-package tailwindcss-color-mode

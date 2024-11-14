@@ -11,7 +11,10 @@
                      fanyi-youdao-thesaurus-provider
                      fanyi-etymon-provider
                      ;; Longman
-                     fanyi-longman-provider)))
+                     fanyi-longman-provider))
+  :config
+  (evil-collection-define-key 'normal 'fanyi-mode-map (kbd "q") #'quit-window)
+)
 
 (provide 'init-english)
 

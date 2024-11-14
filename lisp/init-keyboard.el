@@ -2,6 +2,13 @@
 ;;; Commentary: keyboard
 
 ;;; Code:
+
+;; I do not use Emacs without following settings!!!
+(global-set-key (kbd "C-h") 'nil)
+(global-set-key (kbd "M-h") 'nil)
+(global-set-key (kbd "<f1>") 'help-command)
+(define-key isearch-mode-map "\C-h" 'isearch-delete-char)
+
 (with-eval-after-load 'general
   (+leader-keys
     "SPC" '(consult-fd :wk "find file")
@@ -40,14 +47,17 @@
     "f U" '(sudo-edit :wk "Sudo edit file")
 
     "s" '(:ignore t :wk "Search")
+    "s s" '(link-hint-open-link :wk "search link")
     "s o" '(consult-ripgrep :wk "search word")
-    "s e" '(consult-compile-error :wk "search word")
+    "s c" '(consult-compile-error :wk "search compile error")
     "s g" '(engine/search-google :wk "search google")
     "s m" '(consult-man :wk "search man")
     "s n" '(consult-notes :wk "search notes")
     "s t" '(citre-query-jump :wk "find tags")
     "s i" '(consult-imenu :wk "find imenu")
     "s f" '(consult-fd :wk "find file")
+    "s e" '(consult-flymake :wk "search diagnostic")
+    "s l" '(consult-line :wk "search line in buffer")
     "s w" '(fanyi-dwim :wk "search word")
 
     "b" '(:ignore t :wk "buffer")
@@ -72,22 +82,17 @@
     "h r r" '(my-load-config :wk "Reload Emacs config")
 
     "t" '(:ignore t :wk "Toggle")
-    "t t" '(my-open-termial-kitty :wk "open terminal")
-    "t o" '(eglot :wk "open eglot")
+    "t l" '(eglot :wk "open eglot")
+    "t f" '(flymake-mode :wk "open flymake")
 
     "o" '(:ignore t :wk "open")
     "o o" '(embark-act :wk "embark-act")
     "o e" '(compile :wk "compile")
-    "o t" '(+new-vtermN :wk "open vtermN")
+    "o t" '(vterm-toggle :wk "open-vterm")
     "o s" '(async-shell-command :wk "open async shell command")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
     "o b" '(hexo-my-blog  :wk "open hexo")
-    "o z" '(link-hint-open-link  :wk "open link-hint")
-
-    "x" '(:ignore t :wk "fix or delete")
-    "x x" '(lsp-bridge-diagnostic-list :wk "show diagnostic list")
-    "x c" '(lsp-bridge-diagnostic-copy :wk "copy diagnostic list")
 
     "p" '(:ignore t :wk "project")
     "p p" '(projectile-switch-project :wk "project switch project")
@@ -99,21 +104,28 @@
     "p t" '(projectile-test-project :wk "test project")
     "p c" '(projectile-compile-project :wk "compile project")
 
-    "d" '(:ignore t :wk "denote or dired")
+    "d" '(:ignore t :wk "dired")
     "d d" '(pwd :wk "pwd")
-    "d j" '(denote-find-link :wk"find link")
-    "d n" '(denote :wk "create denote")
-    "d t" '(denote-type :wk "creates a note while prompting for a file type")
-    "d f" '(denote-open-or-create :wk "find denote")
-    "d r" '(denote-dired-rename-file :wk "rename denote")
 
     "c" '(:ignore t :wk "compile")
     "c r"'(recompile :wk "recompile")
     "c k"'(kill-compilation :wk "kill compile")
 
+    "n" '(:ignore t :wk "new")
+    "n n" '(denote :wk "new note")
+    "n b" '(+hexo-new :wk "new blog")
+    "n t" '(+new-vtermN :wk "new term")
+    "n y" '(yas-new-snippet :wk "new snippet")
+    "n a t" '(my-open-termial-kitty :wk "open terminal")
+
     "l" '(:ignore t :wk "lsp")
-    "l n"'(lsp-bridge-rename :wk "rename")
-    "l a"'(lsp-bridge-code-action :wk "code action")
+    "l r"'(eglot-rename :wk "rename")
+    "l a"'(eglot-code-actions :wk "code action")
+
+    "x" '(:ignore t :wk "fix or delete")
+    "x x" '(lsp-bridge-diagnostic-list :wk "show diagnostic list")
+    "x c" '(lsp-bridge-diagnostic-copy :wk "copy diagnostic list")
+
     ))
 
 

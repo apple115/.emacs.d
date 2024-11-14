@@ -9,7 +9,6 @@
 (use-package savehist
   :init
   (savehist-mode))
-;; A few more useful configurations...
 
 ;; 可以是async-shell-command 自动填充上一个命令
 (advice-add #'read-shell-command
@@ -25,16 +24,20 @@
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
   (setq evil-search-module 'evil-search)
+  (setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
+  (setq evil-want-C-d-scroll t) ;; allow scroll down with 'C-d'
+  (setq evil-want-integration t) ;; necessary for evil collection
   (evil-mode 1)
   :config
   (evil-add-command-properties #'citre-jump :jump t)
+  (define-key evil-insert-state-map (kbd "C-h") 'backward-delete-char)
 )
 
 (use-package evil-collection
   :ensure t
   :after evil
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud compile docker dape vertico atomic-chrome xref corfu))
+  (setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud compile docker dape vertico atomic-chrome xref corfu mini-buffer))
   (evil-collection-init))
 
 (use-package evil-surround
@@ -47,6 +50,11 @@
   :init
   (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
   (define-key evil-visual-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines))
+
+(use-package evil-matchit
+  :ensure t
+  :config
+  (setq global-evil-matchit-mode 1))
 
 (setq x-select-request-type nil)
 
@@ -78,23 +86,25 @@
 
   ;; set up 'SPC' as the global leader key
   (general-create-definer +leader-keys
-    :states '(normal insert visual emacs)
+    :states '(normal)
+    :states 'nil
     :keymaps 'override
     :prefix "SPC" ;; set leader
-    :global-prefix "M-SPC") ;; access leader in insert mode
-
+    :global-prefix "C-SPC") ;; access leader in insert mode
  )
 
-(global-unset-key (kbd "C-SPC"))
+
 
 ;; vim keymap setting
 (setq mark-ring-max 6)
 (setq global-mark-ring-max 6)
 (setq set-mark-command-repeat-pop t)
-(evil-define-key  'normal prog-mode-map (kbd "s") 'avy-goto-char-timer)
+
 (evil-define-key  'normal text-mode-map (kbd "s") 'avy-goto-char-timer)
+(evil-define-key  'normal prog-mode-map (kbd "s") 'avy-goto-char-timer)
 (evil-define-key  'visual prog-mode-map (kbd "s") 'avy-goto-char-timer)
 (evil-define-key  'visual text-mode-map (kbd "s") 'avy-goto-char-timer)
+
 (evil-define-key 'normal org-mode-map (kbd "<tab>") 'org-cycle)
 
 (evil-define-key 'normal global-map (kbd "H") 'evil-beginning-of-line)

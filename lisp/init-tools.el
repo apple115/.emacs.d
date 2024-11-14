@@ -69,6 +69,7 @@
         (sh-mode         . bash-ts-mode)
         (typescript-mode . typescript-ts-mode)
         (go-mode . go-ts-mode)
+        (clojure-mode . clojure-ts-mode)
         ))
 
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (treesit-parser-create 'elisp)))
@@ -157,10 +158,30 @@
 
 (use-package vterm
   :ensure t)
+
 (use-package vterm-toggle
-  :ensure t)
-(use-package multi-vterm
-  :ensure t)
+  :ensure t
+   :bind (   :map vterm-mode-map
+            ([(control return)] . vterm-toggle-insert-cd))
+  :config
+  (setq vterm-toggle-cd-auto-create-buffer nil)
+  (defvar vterm-compile-buffer nil)
+  (defun vterm-compile ()
+    "Compile the program including the current buffer in `vterm'."
+    (interactive)
+    (setq compile-command (compilation-read-command compile-command))
+    (let ((vterm-toggle-use-dedicated-buffer t)
+          (vterm-toggle--vterm-dedicated-buffer (if (vterm-toggle--get-window)
+                                                    (vterm-toggle-hide)
+                                                  vterm-compile-buffer)))
+      (with-current-buffer (vterm-toggle-cd)
+        (setq vterm-compile-buffer (current-buffer))
+        (rename-buffer "*vterm compilation*")
+        (compilation-shell-minor-mode 1)
+        (vterm-send-M-w)
+        (vterm-send-string compile-command t)
+        (vterm-send-return))))
+)
 
 
 (provide 'init-tools)

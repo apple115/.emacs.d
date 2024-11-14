@@ -9,10 +9,6 @@
   (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
   (sort-tab-mode 1)
   (setq sort-tab-show-index-number t)
-
-    (global-set-key (kbd "s-Q") 'sort-tab-close-all-tabs)
-    (global-set-key (kbd "s-q") 'sort-tab-close-mode-tabs)
-    (global-set-key (kbd "C-;") 'sort-tab-close-current-tab)
 )
 
 (use-package dired

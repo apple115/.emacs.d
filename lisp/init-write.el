@@ -232,8 +232,9 @@
  (defun hexo-my-blog ()
     (interactive)
     (hexo "~/blog/"))
-
 (evil-collection-define-key 'normal 'hexo-mode-map (kbd "RET") #'hexo-command-open-file)
+(evil-collection-define-key 'normal 'hexo-mode-map (kbd "q") #'quit-window)
+(evil-collection-define-key 'normal 'hexo-mode-map (kbd "D") #'hexo-command-delete-file)
 )
 
 (setq ispell-program-name "aspell")
@@ -281,10 +282,11 @@
 )
 
 (use-package olivetti
+  :hook ((markdown-mode . olivetti-mode)
+         (org-mode .  olivetti-mode))
   :ensure t
   :custom
-  (olivetti-mode 1)
-  (olivetti-set-width 120)
+  (olivetti-set-width 240)
 )
 
 (provide 'init-write)
