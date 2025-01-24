@@ -283,7 +283,9 @@
 
 (use-package olivetti
   :hook ((markdown-mode . olivetti-mode)
-         (org-mode .  olivetti-mode))
+         (org-mode .  olivetti-mode)
+         (nov-mode . olivetti-mode))
+
   :ensure t
   :custom
   (olivetti-set-width 240)

@@ -14,6 +14,11 @@
 (use-package dired
   :ensure nil
   :config
+  (use-package nerd-icons-dired
+    :ensure
+    :hook
+    (dired-mode . nerd-icons-dired-mode))
+
 (setq dired-hide-details-hide-symlink-targets nil)
 
 (general-evil-define-key 'normal dired-mode-map
@@ -103,11 +108,7 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
 (interactive)
 (let ((past-file-name (read-file-name "Enter file name:") ))
   (async-shell-command (format "wl-paste > %s" past-file-name) )
-)
-)
-(use-package all-the-icons
-  :ensure t)
-
+))
 
 (use-package auto-save
   :load-path "./site-lisp/auto-save"
@@ -121,10 +122,13 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
   :ensure nil
   :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold))))
 
+
+(use-package nerd-icons
+  :ensure t)
+
 (use-package nerd-icons-ibuffer
   :ensure
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
-
 
 (use-package sis
   ;;:hook
@@ -143,6 +147,11 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
   ;; enable the /inline english/ mode for all buffers
   (sis-global-inline-mode t)
   )
+
+;;view large file
+(use-package vlf
+  :ensure t)
+
 
 (provide 'init-editer)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

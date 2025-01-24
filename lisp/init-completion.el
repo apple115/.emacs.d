@@ -19,7 +19,14 @@
   :bind(:map corfu-map
              ("TAB". nil))
   :hook ((after-init . global-corfu-mode)
-         (global-corfu-mode . corfu-popupinfo-mode)))
+         (global-corfu-mode . corfu-popupinfo-mode))
+  :config
+  (use-package nerd-icons-corfu
+    :ensure t
+    :config
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
+  )
+  )
 
 ;;; Code:
 (use-package vertico
@@ -83,9 +90,9 @@
   :init
   (add-hook 'completion-at-point-functions #'cape-dabbrev)
   (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-history)
-  (add-hook 'completion-at-point-functions #'cape-keyword)
-  (add-hook 'completion-at-point-functions #'cape-dict)
+  ;; (add-hook 'completion-at-point-functions #'cape-history)
+  ;; (add-hook 'completion-at-point-functions #'cape-keyword)
+  ;; (add-hook 'completion-at-point-functions #'cape-dict)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
 ;; Sanitize the `pcomplete-completions-at-point' Capf.  The Capf has undesired
 ;; side effects on Emacs 28 and earlier.  These advices are not needed on Emacs
@@ -119,15 +126,21 @@
      :colorProvider
      :foldingRangeProvider))
   :config
-
-
-
 )
 
 (use-package eglot-booster
     :load-path "./site-lisp/eglot-booster"
 	:after eglot
 	:config	(eglot-booster-mode))
+
+(use-package ht
+  :ensure t
+)
+(use-package lsp-copilot
+  :load-path "./site-lisp/lsp-copilot"
+  :config
+  (setq lsp-copilot-user-languages-config (expand-file-name (concat user-emacs-directory "languages.toml")))
+)
 
 (provide 'init-completion)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

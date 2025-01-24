@@ -67,6 +67,7 @@
         (js-json-mode    . json-ts-mode)
         (python-mode     . python-ts-mode)
         (sh-mode         . bash-ts-mode)
+        (rust-mode       .rust-ts-mode)
         (typescript-mode . typescript-ts-mode)
         (go-mode . go-ts-mode)
         (clojure-mode . clojure-ts-mode)

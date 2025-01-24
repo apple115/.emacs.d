@@ -14,7 +14,6 @@
   (defalias 'browse-web #'eaf-open-browser))
    ;; unbind, see more in the Wiki
 
-
 (use-package eaf-browser
 :ensure nil
 :config
@@ -41,9 +40,11 @@
 (define-key my-eaf-mode-map (kbd "8") 'sort-tab-select-visible-tab)
 (define-key my-eaf-mode-map (kbd "9") 'sort-tab-select-visible-tab)
 (define-key my-eaf-mode-map (kbd "0") 'sort-tab-select-visible-tab)
+(define-key my-eaf-mode-map (kbd "b k") '(kill-buffer :wk "kill buffer"))
+(define-key my-eaf-mode-map (kbd "s f") '(consult-fd :wk "find file"))
 
 (setq eaf-evil-leader-keymap my-eaf-mode-map)
-(setq eaf-evil-leader-key "SPC")
+(setq eaf-evil-leader-key "C-SPC")
 
 
 (provide 'init-eaf)

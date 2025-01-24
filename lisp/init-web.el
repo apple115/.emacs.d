@@ -19,6 +19,13 @@
 (add-to-list 'emmet-jsx-major-modes 'tsx-ts-mode)
 )
 
+(use-package restclient
+  :ensure t
+)
+
+(use-package ob-restclient
+  :ensure t
+)
 
 (provide 'init-web)
 

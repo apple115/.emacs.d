@@ -37,7 +37,7 @@
   :ensure t
   :after evil
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud compile docker dape vertico atomic-chrome xref corfu mini-buffer))
+  (setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud compile docker dape vertico atomic-chrome xref corfu mini-buffer consult nov woman))
   (evil-collection-init))
 
 (use-package evil-surround
