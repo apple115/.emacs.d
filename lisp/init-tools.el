@@ -81,6 +81,7 @@
 (add-to-list 'auto-mode-alist '("\\.yml\\'". yaml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'". css-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'". go-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.rs\\'". rust-ts-mode))
 (add-to-list 'auto-mode-alist '("\\Dockerfile\\'". dockerfile-ts-mode))
 (setq treesit-font-lock-level 4)
 
@@ -97,7 +98,8 @@
   (flycheck-add-mode 'javascript-eslint 'js2-mode)
   (flycheck-add-mode 'rust-clippy 'rust-mode)
   (flycheck-add-mode 'haskell-ghc 'haskell-mode)
-  )
+  (flycheck-add-mode 'go-staticcheck 'go-ts-mode)
+)
 
 (with-eval-after-load 'flycheck
   (setq flycheck-check-syntax-automatically 'nil))
@@ -158,7 +160,8 @@
 )
 
 (use-package vterm
-  :ensure t)
+  :ensure t
+)
 
 (use-package vterm-toggle
   :ensure t
