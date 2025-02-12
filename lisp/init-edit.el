@@ -111,6 +111,8 @@
 (evil-define-key 'normal global-map (kbd "L") 'evil-end-of-line)
 (evil-define-key 'visual global-map (kbd "H") 'evil-beginning-of-line)
 (evil-define-key 'visual global-map (kbd "L") 'evil-end-of-line)
+(evil-define-key 'motion global-map (kbd "H") 'evil-beginning-of-line)
+(evil-define-key 'motion global-map (kbd "L") 'evil-end-of-line)
 
 ;; (evil-define-key 'insert global-map (kbd "C-n") 'completion-at-point)
 

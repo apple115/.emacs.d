@@ -23,6 +23,15 @@
                     "moonshot-v1-128k")
           :host "api.moonshot.cn")))
 
+;;; code-copilot
+
+(use-package copilot
+  :ensure t
+  :config
+  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+ )
+
+
 (provide 'init-ai)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

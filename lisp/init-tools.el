@@ -79,6 +79,7 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'". js-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'". json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'". yaml-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'". yaml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'". css-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'". go-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.rs\\'". rust-ts-mode))
@@ -103,6 +104,9 @@
 
 (with-eval-after-load 'flycheck
   (setq flycheck-check-syntax-automatically 'nil))
+
+
+
 
 
 (use-package format-all

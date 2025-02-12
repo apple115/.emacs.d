@@ -34,9 +34,27 @@
   :hook (after-init . vertico-mode)
   :config
   (vertico-mode t)
+(setq vertico-multiform-commands
+      '((consult-line
+         posframe
+         (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
+         (vertico-posframe-border-width . 10)
+         ;; NOTE: This is useful when emacs is used in both in X and
+         ;; terminal, for posframe do not work well in terminal, so
+         ;; vertico-buffer-mode will be used as fallback at the
+         ;; moment.
+         (vertico-posframe-fallback-mode . vertico-buffer-mode))
+        (t posframe)))
+(vertico-multiform-mode 1)
 )
 
-;;; Code:
+(use-package vertico-posframe
+  :ensure t
+  :config
+   (vertico-posframe-mode 1)
+)
+
+
 (use-package embark
   :ensure t
   :init
@@ -91,7 +109,7 @@
   (add-hook 'completion-at-point-functions #'cape-dabbrev)
   (add-hook 'completion-at-point-functions #'cape-file)
   ;; (add-hook 'completion-at-point-functions #'cape-history)
-  ;; (add-hook 'completion-at-point-functions #'cape-keyword)
+  (add-hook 'completion-at-point-functions #'cape-keyword)
   ;; (add-hook 'completion-at-point-functions #'cape-dict)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
 ;; Sanitize the `pcomplete-completions-at-point' Capf.  The Capf has undesired
@@ -140,6 +158,23 @@
   :load-path "./site-lisp/lsp-copilot"
   :config
   (setq lsp-copilot-user-languages-config (expand-file-name (concat user-emacs-directory "languages.toml")))
+    (with-eval-after-load 'evil-collection
+    (evil-collection-define-key 'normal 'lsp-copilot-mode-map
+      (kbd "K")  'lsp-copilot-describe-thing-at-point
+      ;; (kbd "gd") 'lsp-copilot-find-definition
+      (kbd "gD") 'lsp-copilot-find-declaration
+      (kbd "gi") 'lsp-copilot-find-implementations
+      (kbd "gr") 'lsp-copilot-find-references
+      (kbd "gy") 'lsp-copilot-find-type-definition
+    ))
+   (with-eval-after-load 'general
+     (+leader-keys
+        "l" '(:ignore t :wk "lsp")
+        "l l"'(lsp-copilot-mode :wk "lsp start")
+        "l r"'(lsp-copilot-rename :wk "rename")
+        "l a"'(lsp-copilot-execute-code-action :wk "code action")
+       )
+   )
 )
 
 (provide 'init-completion)

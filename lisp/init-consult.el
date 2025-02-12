@@ -19,6 +19,8 @@
                    :predicate pred))
 ))
 
+
+
 (use-package engine-mode
   :ensure t
   :config
@@ -42,6 +44,13 @@
           ))
 
    )
+
+(use-package consult-flycheck
+  :ensure t)
+
+(use-package consult-todo
+  :ensure t
+)
 
 (provide 'init-consult)
 

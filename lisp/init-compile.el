@@ -7,6 +7,14 @@
 (require 'ansi-color)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
+(use-package compile
+ :ensure nil
+ :config
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(go-test "^\\s-*\\(.*\\.go\\):\\([0-9]+\\):" 1 2 nil 2))
+(add-to-list 'compilation-error-regexp-alist 'go-test)
+)
+
 
 (provide 'init-compile)
 

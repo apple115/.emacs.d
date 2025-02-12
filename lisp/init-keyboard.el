@@ -3,12 +3,6 @@
 
 ;;; Code:
 
-;; I do not use Emacs without following settings!!!
-(global-set-key (kbd "C-h") 'nil)
-(global-set-key (kbd "M-h") 'nil)
-(global-set-key (kbd "<f1>") 'help-command)
-(define-key isearch-mode-map "\C-h" 'isearch-delete-char)
-
 (with-eval-after-load 'general
   (+leader-keys
     "SPC" '(consult-fd :wk "find file")
@@ -56,7 +50,7 @@
     "s t" '(citre-query-jump :wk "find tags")
     "s i" '(consult-imenu :wk "find imenu")
     "s f" '(consult-fd :wk "find file")
-    "s e" '(consult-flymake :wk "search diagnostic")
+    "s e" '(consult-flycheck :wk "search diagnostic")
     "s l" '(consult-line :wk "search line in buffer")
     "s w" '(fanyi-dwim :wk "search word")
 
@@ -118,38 +112,8 @@
     "n y" '(yas-new-snippet :wk "new snippet")
     "n a t" '(my-open-termial-kitty :wk "open terminal")
 
-    "l" '(:ignore t :wk "lsp")
-    "l r"'(eglot-rename :wk "rename")
-    "l a"'(eglot-code-actions :wk "code action")
-
     "x" '(:ignore t :wk "fix or delete")
-    "x x" '(lsp-bridge-diagnostic-list :wk "show diagnostic list")
-    "x c" '(lsp-bridge-diagnostic-copy :wk "copy diagnostic list")
-
     ))
-
-
-(with-eval-after-load 'evil-collection
-;;lsp-bridge
-(evil-collection-define-key 'normal 'lsp-bridge-ref-mode-map (kbd "q") #'lsp-bridge-ref-quit)
-(evil-collection-define-key 'normal 'lsp-bridge-ref-mode-map (kbd "C-n") #'lsp-bridge-ref-jump-next-keyword)
-(evil-collection-define-key 'normal 'lsp-bridge-ref-mode-map (kbd "C-p") #'lsp-bridge-ref-jump-prev-keyword)
-
-(evil-collection-define-key 'insert 'lsp-bridge-mode-map
-    (kbd "C-n") 'acm-select-next
-    (kbd "C-p") 'acm-select-prev
-)
-
-(evil-collection-define-key 'normal 'lsp-bridge-mode-map
-  (kbd "K")  'lsp-bridge-show-documentation
-  (kbd "gd") 'lsp-bridge-find-def
-  (kbd "gi") 'lsp-bridge-find-impl
-  (kbd "go") 'lsp-bridge-find-def-return
-  (kbd "]d") 'lsp-bridge-diagnostic-jump-next
-  (kbd "[d") 'lsp-bridge-diagnostic-jump-prev
-)
-)
-
 
 (provide 'init-keyboard)
 

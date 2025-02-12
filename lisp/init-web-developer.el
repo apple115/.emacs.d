@@ -27,7 +27,7 @@
   :ensure t
 )
 
-(provide 'init-web)
+(provide 'init-web-developer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-web.el ends here
