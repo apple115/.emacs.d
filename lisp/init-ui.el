@@ -2,25 +2,28 @@
 ;;; Commentary:
 
 ;;; Code:
+;; (add-to-list 'default-frame-alist '(undecorated-round . t))
 
-(load-theme 'gruvbox-light-soft t)
+(use-package gruvbox-theme
+ :ensure t
+ :config
+ (load-theme 'gruvbox-light-soft t)
+)
 
 (defun my-apply-font()
-    (set-face-attribute 'default nil :font (font-spec :family "Inconsolata" :size 18 :weight 'medium
-                                                      ))
-    (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 18 :weight 'medium
-                                                      ))
+    (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 14 :weight 'medium))
+    (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 14 :weight 'medium))
 )
 
 ;; |大家|
-;; |aabb|
+;; |aabb|大家
 
 (my-apply-font)
 
 (add-hook 'after-make-frame-functions
-          (lambda (frame)
-            (select-frame frame)
-            (my-apply-font)))
+         (lambda (frame)
+           (select-frame frame)
+           (my-apply-font)))
 ;;测试一下这个
 
 ;; 禁用一些GUI特性
@@ -96,10 +99,10 @@
   "automatically say y when buffer name match following string"
   (if (or
            (string-match "has a running process" prompt)
-           ;; (string-match "does not exist; create" prompt)
-           ;; (string-match "modified; kill anyway" prompt)
-           ;; (string-match "Delete buffer using" prompt)
-           ;; (string-match "Kill buffer of" prompt)
+           (string-match "does not exist; create" prompt)
+           (string-match "modified; kill anyway" prompt)
+           (string-match "Delete buffer using" prompt)
+           (string-match "Kill buffer of" prompt)
            ;; (string-match "still connected.  Kill it?" prompt)
            ;; (string-match "Shutdown the client's kernel" prompt)
            ;; (string-match "kill them and exit anyway" prompt)
@@ -142,17 +145,20 @@
  ;; 退出Emacs时进行确认
  (setq confirm-kill-emacs 'y-or-n-p)
 
- ;; 在模式栏上显示当前光标的列号
-(defun display-line-numbers-equalize ()
-  "Equalize The width"
-  (setq display-line-numbers-width (length (number-to-string (line-number-at-pos (point-max))))))
-(add-hook 'find-file-hook 'display-line-numbers-equalize)
- (setq column-number-mode t)
-  ;; 显示行号 和 文本显示中的截断或省略
-  (global-display-line-numbers-mode -1)
-  (global-visual-line-mode t)
+
+;; (defun display-line-numbers-equalize ()
+;;   "Equalize The width"
+;;   (setq display-line-numbers-width (length (number-to-string (line-number-at-pos (point-max))))))
+
+;; (add-hook 'find-file-hook 'display-line-numbers-equalize)
+
+;; (setq column-number-mode t)
+;; 显示行号 和 文本显示中的截断或省略
+;; (global-display-line-numbers-mode t)
+(global-visual-line-mode t)
 
 ;; 在这个prog-mode 和 text-mode 后添加line-number
+(setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 ;; (add-hook 'text-mode-hook 'display-line-numbers-mode)
 
@@ -184,10 +190,79 @@
   :ensure t
   :hook (after-init . doom-modeline-mode)
   :config
-(setq doom-modeline-modal t)
-(setq doom-modeline-height 25)
+  (setq doom-modeline-modal t)
+  (setq doom-modeline-height 25)
+)
+
+(use-package ligature
+  :ensure t
+  :config
+  (ligature-set-ligatures 'prog-mode '("--" "---" "==" "===" "!=" "!==" "=!="
+                              "=:=" "=/=" "<=" ">=" "&&" "&&&" "&=" "++" "+++" "***" ";;" "!!"
+                              "??" "???" "?:" "?." "?=" "<:" ":<" ":>" ">:" "<:<" "<>" "<<<" ">>>"
+                              "<<" ">>" "||" "-|" "_|_" "|-" "||-" "|=" "||=" "##" "###" "####"
+                              "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#=" "^=" "<$>" "<$"
+                              "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</" "</>" "/>" "<!--" "<#--"
+                              "-->" "->" "->>" "<<-" "<-" "<=<" "=<<" "<<=" "<==" "<=>" "<==>"
+                              "==>" "=>" "=>>" ">=>" ">>=" ">>-" ">-" "-<" "-<<" ">->" "<-<" "<-|"
+                              "<=|" "|=>" "|->" "<->" "<~~" "<~" "<~>" "~~" "~~>" "~>" "~-" "-~"
+                              "~@" "[||]" "|]" "[|" "|}" "{|" "[<" ">]" "|>" "<|" "||>" "<||"
+                              "|||>" "<|||" "<|>" "..." ".." ".=" "..<" ".?" "::" ":::" ":=" "::="
+                              ":?" ":?>" "//" "///" "/*" "*/" "/=" "//=" "/==" "@_" "__" "???"
+                              "<:<" ";;;"))
+  (global-ligature-mode t))
+
+(setq-default cursor-in-non-selected-windows nil)
+
+(use-package tab-bar
+  :hook (window-setup . tab-bar-mode)
+  :config
+  (setq tab-bar-separator ""
+        tab-bar-new-tab-choice "*scratch*"
+        tab-bar-tab-name-truncated-max 20
+        tab-bar-auto-width nil
+        tab-bar-close-button-show nil
+        tab-bar-tab-hints t)
+
+  ;; 使用 super-1 super-2 ... 来切换 tab
+  (customize-set-variable 'tab-bar-select-tab-modifiers '(super))
+
+  ;; 自动截取 tab name，并且添加在每个 tab 上添加数字，方便用快捷键切换
+  (setq tab-bar-tab-name-function
+        (lambda () (let* ((raw-tab-name (buffer-name (window-buffer (minibuffer-selected-window))))
+                     (count (length (window-list-1 nil 'nomini)))
+                     (truncated-tab-name (if (< (length raw-tab-name)
+                                                tab-bar-tab-name-truncated-max)
+                                             raw-tab-name
+                                           (truncate-string-to-width raw-tab-name
+                                                                     tab-bar-tab-name-truncated-max
+                                                                     nil nil tab-bar-tab-name-ellipsis))))
+                (if (> count 1)
+                    (concat truncated-tab-name "(" (number-to-string count) ")")
+                  truncated-tab-name))))
+
+  ;; 给 tab 两边加上空格，更好看
+  (setq tab-bar-tab-name-format-function
+        (lambda (tab i)
+          (let ((face (funcall tab-bar-tab-face-function tab)))
+            (concat
+             (propertize " " 'face face)
+             (propertize (number-to-string i) 'face `(:inherit ,face :weight ultra-bold :underline t))
+             (propertize (concat " " (alist-get 'name tab) " ") 'face face)))))
+
+  ;; 我把 meow 的 indicator 也放在 tab-bar 上
+  ;; (setq tab-bar-format '(meow-indicator  tab-bar-format-tabs))
+  (setq tab-bar-format '(tab-bar-format-tabs))
+
+  (tab-bar--update-tab-bar-lines)
+
+  ;; WORKAROUND: update tab-bar for daemon
+  (when (daemonp)
+    (add-hook 'after-make-frame-functions
+              #'(lambda (&rest _) (force-mode-line-update))))
 )
 
 (provide 'init-ui)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-ui.el ends here

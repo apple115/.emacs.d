@@ -12,7 +12,6 @@
 /user
 /url
 /auto-save-list
-site-lisp
 /bookmarks
 /amx-items
 /tutorial
@@ -22,3 +21,4 @@ site-lisp
 /recentf
 /.emacs.desktop
 /.emacs.desktop.lock
+.aider*

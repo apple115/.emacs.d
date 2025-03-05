@@ -2,26 +2,22 @@
 ;;; Commentary: editer
 
 ;;; Code:
-(use-package sort-tab
-  :load-path "./site-lisp/my-fork-sort-tab"
-  :after doom-modeline
-  :config
-  (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
-  (sort-tab-mode 1)
-  (setq sort-tab-show-index-number t)
-)
+;; (use-package sort-tab
+;;   :load-path "./site-lisp/my-fork-sort-tab/"
+;;   :after doom-modeline
+;;   :config
+;;   (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
+;;   (sort-tab-mode 1)
+;;   ;; (setq sort-tab-show-index-number t)
+;; )
 
 (use-package dired
   :ensure nil
+  :custom
+  (dired-kill-when-opening-new-dired-buffer t)
   :config
-  (use-package nerd-icons-dired
-    :ensure
-    :hook
-    (dired-mode . nerd-icons-dired-mode))
-
-(setq dired-hide-details-hide-symlink-targets nil)
-
-(general-evil-define-key 'normal dired-mode-map
+  (setq dired-hide-details-hide-symlink-targets nil)
+  (general-evil-define-key 'normal dired-mode-map
   "c" 'dired-do-compress-to
   "q" 'quit-window
   "h" 'dired-up-directory
@@ -51,9 +47,12 @@
   "!" 'dired-do-shell-command
   "&" 'dired-do-async-shell-command
   "+" 'dired-create-directory
-  ;; "TAB" 'dirvish-toggle-subtree
- )
+  )
 )
+
+(use-package nerd-icons-dired
+    :ensure t
+    :hook(dired-mode . nerd-icons-dired-mode))
 
 (use-package diredfl
   :ensure t
@@ -120,8 +119,9 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
 
 (use-package ibuffer
   :ensure nil
-  :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold))))
-
+  :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold)))
+  :general
+)
 
 (use-package nerd-icons
   :ensure t)
@@ -130,28 +130,9 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
   :ensure
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
-(use-package sis
-  ;;:hook
-  ;; enable the /context/ and /inline region/ mode for specific buffers
-  ;; (((text-mode prog-mode) . sis-context-mode)
-  ;; ((text-mode prog-mode) . sis-inline-mode))
-  :ensure t
-  :config
-  (sis-ism-lazyman-config "1" "2" 'fcitx5)
-  ;; enable the /cursor color/ mode
-  (sis-global-cursor-color-mode t)
-  ;; enable the /respect/ mode
-  (sis-global-respect-mode t)
-  ;; enable the /context/ mode for all buffers
-  (sis-global-context-mode t)
-  ;; enable the /inline english/ mode for all buffers
-  (sis-global-inline-mode t)
-  )
-
 ;;view large file
 (use-package vlf
-  :ensure t)
-
+ :ensure t)
 
 (provide 'init-editer)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

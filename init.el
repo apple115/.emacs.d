@@ -4,6 +4,38 @@
 ;;; Code:
 (require 'package)
 
+;; 设置垃圾回收参数
+(setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-percentage 0.6)
+;; reduce the frequency of garbage collection by making it happen on
+;; each 50MB of allocated data (the default is on every 0.76MB)
+(setq gc-cons-threshold 80000000) ;; original value * 100
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+;; 禁止展示菜单栏、工具栏和纵向滚动条
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+
+;; 禁止自动缩放窗口先
+(setq frame-inhibit-implied-resize t)
+
+;; 禁止菜单栏、工具栏、滚动条模式，禁止启动屏幕和文件对话框
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(setq inhibit-splash-screen t)
+(setq use-file-dialog nil)
+
+;; (add-to-list 'default-frame-alist '(undecorated . t))
+;; (add-to-list 'default-frame-alist '(undecorated-round . t))
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+;; (add-to-list 'default-frame-alist '(ns-appearance . dark))
+
+;; (setq default-frame-alist '((undecorated . t)))
+;; (add-to-list 'default-frame-alist '(drag-internal-border . 5))
+;; (add-to-list 'default-frame-alist '(internal-border-width . 5))
+
 (setq package-archives
       '(("melpa"  . "https://melpa.org/packages/")
         ("gnu"    . "https://elpa.gnu.org/packages/")
@@ -25,7 +57,6 @@
   (require 'init-langs)
   (require 'init-write)
   (require 'init-editer)
-  (require 'init-projectile)
   (require 'init-org-agenda)
   (require 'init-org-capture)
   (require 'init-consult)
@@ -39,18 +70,20 @@
   (require 'init-english)
   (require 'init-anki)
   (require 'init-sql)
+  (require 'init-project)
   (require 'init-keyboard)
   (require 'init-chinese)
-  (require 'init-reading)
-  (require 'init-eaf)
   (require 'init-ai)
-  ;; (require 'init-lsp-bridge)
+  (require 'init-emacs)
+  (require 'init-git)
+  ;;(require 'init-eaf)
+  ;; (require 'init-projectile)
+  (require 'init-lsp-bridge)
   )
 (when
     (memq window-system
           '(mac ns x))
   (exec-path-from-shell-initialize))
-
 
 (when (daemonp)
   (exec-path-from-shell-initialize))
@@ -65,7 +98,20 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(consult-todo eglot ht wucuo which-key websocket vterm-toggle vlf virtualenvwrapper vertico tempel tabspaces super-save sudo-edit smart-mode-line sis shackle rust-mode rime reformatter realgud rainbow-delimiters python-mode pretty-hydra popper plantuml-mode pinyinlib ox-reveal ox-gfm org-modern org-contrib org-auto-tangle org-appear orderless olivetti ob-restclient ob-go nov nerd-icons-ibuffer nerd-icons-dired nerd-icons-corfu multi-vterm mini-modeline markdown-mode marginalia magit link-hint ibuffer-projectile hotfuzz haskell-mode gruvbox-theme gptel general format-all flycheck fanyi exec-path-from-shell evil-surround evil-nerd-commenter evil-matchit evil-escape evil-collection eshell-prompt-extras envrc engine-mode emmet-mode embark-consult eldoc-box ejc-sql doom-modeline docker dirvish diredfl devdocs denote dashboard dape corfu consult-notes colorful-mode clojure-ts-mode citre cape cal-china-x burly auto-yasnippet all-the-icons-ibuffer)))
+   '(auto-yasnippet cal-china-x cape citre clojure-ts-mode colorful-mode
+                    consult-notes consult-todo copilot corfu dape denote diredfl
+                    docker doom-modeline eglot ejc-sql eldoc-box embark-consult
+                    emmet-mode engine-mode evil-collection evil-matchit
+                    evil-nerd-commenter evil-surround evil-textobj-tree-sitter
+                    exec-path-from-shell flymake-flycheck format-all general
+                    gptel graphviz-dot-mode gruvbox-theme haskell-mode ht jinx
+                    ligature link-hint magit marginalia markdown-mode
+                    nerd-icons-corfu nerd-icons-dired nerd-icons-ibuffer ob-go
+                    ob-restclient olivetti orderless org-appear org-auto-tangle
+                    org-contrib ox-gfm ox-reveal pinyinlib plantuml-mode popper
+                    python-mode pyvenv rainbow-delimiters shackle sis sudo-edit
+                    tabspaces tree-sitter vertico virtualenvwrapper vlf
+                    vterm-toggle)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -24,7 +24,7 @@
           ("*Messages*"                  :select nil                        :size 0.3  :align t     :popup t)
           ;; ("*Org Agenda(t)*"             :select nil                        :size 0.3  :align right :popup t)
           ("*Async Shell Command*"       :select nil                        :size 0.3  :align t     :popup t)
-          ("*vterm compilation*"       :select nil                        :size 0.3  :align t     :popup t)
+          ("*vterm compilation*"         :select nil                        :size 0.3  :align t     :popup t)
           ("*lsp-bridge-doc*"            :select nil                        :size 0.3  :align t     :popup t)
           ("*fanyi*"                     :select nil                        :size 0.3  :align t     :popup t)
           ("*Calendar*"                  :select t                          :size 0.3  :align t     :popup t)
@@ -46,6 +46,7 @@
           "Aweshell"
          "\\*compilation\\*"
          "\\*vterm compilation\\*"
+         "help-mode"
          "\\*vterm\\*"
          "\\*lsp-bridge-doc\\*"
          "\\*fanyi\\*"
@@ -55,7 +56,9 @@
           compilation-mode))
 
   (popper-mode +1)
-  (popper-echo-mode +1))                ; For echo area hints
+  (popper-echo-mode +1)
+  :config
+)                ; For echo area hints
 
 
 (provide 'init-windows-manager)

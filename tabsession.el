@@ -2,7 +2,7 @@
 ;; -------------------------------------------------------------------------
 ;; Tabspaces Session File for Emacs
 ;; -------------------------------------------------------------------------
-;; Created Fri Jun 28 10:11:52 2024
+;; Created Wed Mar  5 22:17:03 2025
 
 ;; Tabs and buffers:
-(setq tabspaces--session-list '((("/home/apple115/.emacs.d/lisp/init-dired.el") . "*dashboard*") (("/home/apple115/.emacs.d/lisp/init-dired.el") . "*scratch*")))
+(setq tabspaces--session-list '((nil "*scratch*" (((min-height . 4) (min-width . 10) (min-height-ignore . 3) (min-width-ignore . 4) (min-height-safe . 1) (min-width-safe . 2) (min-pixel-height . 72) (min-pixel-width . 80) (min-pixel-height-ignore . 54) (min-pixel-width-ignore . 32) (min-pixel-height-safe . 18) (min-pixel-width-safe . 16)) leaf (pixel-width . 1466) (pixel-height . 850) (total-width . 183) (total-height . 47) (normal-height . 1.0) (normal-width . 1.0) (buffer "*scratch*" (selected . t) (hscroll . 0) (fringes 8 8 nil nil) (margins nil) (scroll-bars nil 0 t nil 0 t nil) (vscroll . 0) (dedicated) (point . 44) (start . 1)))) (("/Users/apple115/.emacs.d/lisp/init-completion.el" "/Users/apple115/.emacs.d/init.el" "/Users/apple115/.emacs.d/lisp/init-project.el") ".emacs.d" (((min-height . 4) (min-width . 10) (min-height-ignore . 3) (min-width-ignore . 4) (min-height-safe . 1) (min-width-safe . 2) (min-pixel-height . 72) (min-pixel-width . 80) (min-pixel-height-ignore . 54) (min-pixel-width-ignore . 32) (min-pixel-height-safe . 18) (min-pixel-width-safe . 16)) leaf (pixel-width . 1466) (pixel-height . 850) (total-width . 183) (total-height . 47) (normal-height . 1.0) (normal-width . 1.0) (parameters (context)) (buffer "init-completion.el" (selected . t) (hscroll . 0) (fringes 8 8 nil nil) (margins nil) (scroll-bars nil 0 t nil 0 t nil) (vscroll . 0) (dedicated) (point . 4495) (start . 3544)) (prev-buffers ("init.el" 1260 1780) ("init-project.el" 214 1830) ("*scratch*" 1 1))))))

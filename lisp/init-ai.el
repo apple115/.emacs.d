@@ -13,24 +13,45 @@
 (use-package gptel
   :ensure t
   :config
-  (setq gptel-model "moonshot-v1-8k")
+  (setq gptel-model "deepspek-chat")
   (setq gptel-default-mode 'org-mode)
   (setq gptel-backend
-        (gptel-make-openai "Moonshot"
-          :key 'gptel-api-key
-          :models '("moonshot-v1-8k"
-                    "moonshot-v1-32k"
-                    "moonshot-v1-128k")
-          :host "api.moonshot.cn")))
+          (gptel-make-openai "DeepSeek"
+        :host "api.deepseek.com"
+        :endpoint "/chat/completions"
+        :stream t
+        :key (with-temp-buffer (with-temp-buffer
+                                (insert-file-contents "~/.config/deepseek/key.txt")
+                                (string-trim (buffer-string))))
+        :models '(deepseek-chat deepseek-coder))
+    ))
 
 ;;; code-copilot
 
-(use-package copilot
-  :ensure t
-  :config
-  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
- )
+;; (use-package copilot
+;;   :ensure t
+;;   :config
+;;   (setq copilot-version nil)
+;;   (setq copilot-node-executable "/opt/homebrew/bin/node")
+;;   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+;;  )
 
+;; (use-package aidermacs
+;;   :load-path "./site-lisp/aidermacs"
+;;   :config
+;;   (setq aidermacs-default-model "deepseek/deepseek-coder")
+;;   ;; Use vterm backend (default is comint)
+;;   (setq aidermacs-backend 'vterm)
+;;   (global-set-key (kbd "C-c a") 'aidermacs-transient-menu)
+;;   ; Enable minor mode for Aider files
+;;   (aidermacs-setup-minor-mode)
+;;   ; See the Configuration section below
+;;   (setq aidermacs-auto-commits t)
+;;   (setq aidermacs-use-architect-mode t)
+;;   ; Ensure emacs can access *_API_KEY through .bashrc or setenv
+;;   (setenv "ANTHROPIC_API_KEY" (with-temp-buffer
+;;                                 (insert-file-contents "~/.config/deepseek/key.txt")
+;;                                 (string-trim (buffer-string)))))
 
 (provide 'init-ai)
 

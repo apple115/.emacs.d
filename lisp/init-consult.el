@@ -4,10 +4,21 @@
 ;;; Code:
 (use-package consult
  :ensure t
- :bind
+ :general
+ (:keymaps 'override
+ :states '(normal visual)
+ :prefix  "SPC"
+  "s o" '(consult-ripgrep :wk "search word")
+  "s c" '(consult-compile-error :wk "search compile error")
+  "s m" '(consult-man :wk "search man")
+  "s n" '(consult-notes :wk "search notes")
+  "s i" '(consult-imenu :wk "find imenu")
+  "s f" '(consult-fd :wk "find file")
+  "s e" '(consult-flymake :wk "search diagnostic")
+  "s l" '(consult-line :wk "search line in buffer")
+ )
  :config
 (setq read-file-name-function #'consult-find-file-with-preview)
-
 (defun consult-find-file-with-preview (prompt &optional dir default mustmatch initial pred)
   (interactive)
   (let ((default-directory (or dir default-directory))
@@ -17,8 +28,8 @@
                    :initial initial
                    :require-match mustmatch
                    :predicate pred))
-))
-
+  )
+)
 
 
 (use-package engine-mode
@@ -37,16 +48,11 @@
   (setq consult-notes-file-dir-sources
         `(
           ;; ("work"    ?w ,(concat org-directory "/midea/"))
-          ("denote" ?d ,(concat org-directory "/denote/"))
-          ("org"     ?o ,(concat org-directory "/"))
-          ("blog"    ?b  "/home/apple115/blog/source/_posts/")
+          ("denote"  ?d ,(concat org-directory "/denote/"))
+          ;; ("org"     ?o ,(concat org-directory "/"))
+          ;; ("blog"    ?b  "/home/apple115/blog/source/_posts/")
           ;; ("books"   ?b ,(concat (getenv "HOME") "/Books/"))
-          ))
-
-   )
-
-(use-package consult-flycheck
-  :ensure t)
+          )))
 
 (use-package consult-todo
   :ensure t

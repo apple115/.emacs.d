@@ -25,7 +25,7 @@
 (setq org-edit-src-content-indentation 0);代码块初始缩进范围
 (add-hook 'org-mode-hook (lambda () (org-display-inline-images t)))
 
-(setq org-directory "~/Nutstore Files/Nutstore/org/")
+(setq org-directory "~/Documents/org/")
 
 ;; 设置标题行之间总是有空格；列表之间根据情况自动加空格
 (setq org-blank-before-new-entry '((heading . t)
@@ -97,6 +97,9 @@
 
 ;; 归档设置
 (org-archive-location "%s_archive::datetree/")
+
+;;添加org-babel支持
+(add-to-list 'org-src-lang-modes '("go" . go-ts))
 )
 
 ;; 自动展开
@@ -130,7 +133,7 @@
   :ensure t
   :hook (dired-mode . denote-dired-mode-in-directories)
   :config
-  (setq denote-directory (expand-file-name "~/Nutstore Files/Nutstore/org/denote"))
+  (setq denote-directory (expand-file-name "~/Documents/org/denote"))
   (setq denote-infer-keywords t)
   (setq denote-sort-keywords t)
   ;; org is default, set others such as text, markdown-yaml, markdown-toml
@@ -206,7 +209,9 @@
 
 (require 'ob-python)
 (require 'ob-C)
-(require 'ob-go)
+(use-package ob-go
+:ensure t
+)
 
 (use-package org-appear
   :ensure t
@@ -237,49 +242,49 @@
 (evil-collection-define-key 'normal 'hexo-mode-map (kbd "D") #'hexo-command-delete-file)
 )
 
-(setq ispell-program-name "aspell")
-;; You could add extra option "--camel-case" for camel case code spell checking if Aspell 0.60.8+ is installed
-;; @see https://github.com/redguardtoo/emacs.d/issues/796
-(setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=16"))
+;; (setq ispell-program-name "aspell")
+;; ;; You could add extra option "--camel-case" for camel case code spell checking if Aspell 0.60.8+ is installed
+;; ;; @see https://github.com/redguardtoo/emacs.d/issues/796
+;; (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=16"))
 
-;; (setq ispell-program-name "hunspell")
-;; ;; reset the hunspell so it STOPS querying locale!
-;; ;; "en_US" is the key to lookup in `ispell-local-dictionary-alist`
-;; (setq ispell-local-dictionary "en_US")
-;; ;; two dictionaries "en_US" and "zh_CN" are used. Feel free to remove "zh_CN"
-;; ;; If `ispell-local-dictionary-alist' is nil, `ispell-local-dictionary' is passed
-;; ;; to hunpsell cli program as dictionary.
-;; (setq ispell-local-dictionary-alist
-;;       '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US" "zh_CN") nil utf-8)))
-;; ;; new variable `ispell-hunspell-dictionary-alist' is defined in Emacs
-;; ;; If it's nil, Emacs tries to automatically set up the dictionaries.
-;; (when (boundp 'ispell-hunspell-dictionary-alist)
-;;       (setq ispell-hunspell-dictionary-alist ispell-local-dictionary-alist))
+;; ;; (setq ispell-program-name "hunspell")
+;; ;; ;; reset the hunspell so it STOPS querying locale!
+;; ;; ;; "en_US" is the key to lookup in `ispell-local-dictionary-alist`
+;; ;; (setq ispell-local-dictionary "en_US")
+;; ;; ;; two dictionaries "en_US" and "zh_CN" are used. Feel free to remove "zh_CN"
+;; ;; ;; If `ispell-local-dictionary-alist' is nil, `ispell-local-dictionary' is passed
+;; ;; ;; to hunpsell cli program as dictionary.
+;; ;; (setq ispell-local-dictionary-alist
+;; ;;       '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US" "zh_CN") nil utf-8)))
+;; ;; ;; new variable `ispell-hunspell-dictionary-alist' is defined in Emacs
+;; ;; ;; If it's nil, Emacs tries to automatically set up the dictionaries.
+;; ;; (when (boundp 'ispell-hunspell-dictionary-alist)
+;; ;;       (setq ispell-hunspell-dictionary-alist ispell-local-dictionary-alist))
 
-(use-package  wucuo
-  :ensure t
-  :custom
-  (wucuo-flyspell-start-mode "fast")
-  ;; How many seconds wucuo waits before running spell-check.
-  (wucuo-update-interval 2)
-  :config
-  (add-hook 'prog-mode-hook #'wucuo-start)
-(add-hook 'text-mode-hook #'wucuo-start)
-(setq wucuo-spell-check-buffer-predicate
-      (lambda ()
-        (not (memq major-mode
-                   '(dired-mode
-                     vterm-mode
-                     log-edit-mode
-                     compilation-mode
-                     help-mode
-                     profiler-report-mode
-                     speedbar-mode
-                     gud-mode
-                     calc-mode
-                     Info-mode
-                     )))))
-)
+;; (use-package  wucuo
+;;   :ensure t
+;;   :custom
+;;   (wucuo-flyspell-start-mode "fast")
+;;   ;; How many seconds wucuo waits before running spell-check.
+;;   (wucuo-update-interval 2)
+;;   :config
+;;   (add-hook 'prog-mode-hook #'wucuo-start)
+;; (add-hook 'text-mode-hook #'wucuo-start)
+;; (setq wucuo-spell-check-buffer-predicate
+;;       (lambda ()
+;;         (not (memq major-mode
+;;                    '(dired-mode
+;;                      vterm-mode
+;;                      log-edit-mode
+;;                      compilation-mode
+;;                      help-mode
+;;                      profiler-report-mode
+;;                      speedbar-mode
+;;                      gud-mode
+;;                      calc-mode
+;;                      Info-mode
+;;                      )))))
+;; )
 
 (use-package olivetti
   :hook ((markdown-mode . olivetti-mode)
@@ -290,6 +295,35 @@
   :custom
   (olivetti-set-width 240)
 )
+
+(use-package jinx
+   :ensure t
+   :config
+(let ((st jinx--base-syntax-table))
+  (modify-syntax-entry '(#x4E00 . #x9FFF) "_" st)   ; CJK Unified Ideographs
+  (modify-syntax-entry '(#x3400 . #x4DBF) "_" st)   ; CJK Unified Ideographs Extension A
+  (modify-syntax-entry '(#x20000 . #x2A6DF) "_" st) ; CJK Unified Ideographs Extension B
+  (modify-syntax-entry '(#x2A700 . #x2B73F) "_" st) ; CJK Unified Ideographs Extension C
+  (modify-syntax-entry '(#x2B740 . #x2B81F) "_" st) ; CJK Unified Ideographs Extension D
+  (modify-syntax-entry '(#x2B820 . #x2CEAF) "_" st) ; CJK Unified Ideographs Extension E
+  (modify-syntax-entry '(#x2CEB0 . #x2EBEF) "_" st) ; CJK Unified Ideographs Extension F
+  (modify-syntax-entry '(#x30000 . #x3134F) "_" st) ; CJK Unified Ideographs Extension G
+  (modify-syntax-entry '(#x31350 . #x323AF) "_" st) ; CJK Unified Ideographs Extension H
+  (modify-syntax-entry '(#x2EBF0 . #x2EE5F) "_" st) ; CJK Unified Ideographs Extension I
+  )
+)
+
+(use-package graphviz-dot-mode
+  :ensure t
+  :init
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               (append org-babel-load-languages
+                                       '((dot . t))))
+  :config
+  (setq graphviz-dot-indent-width 4)
+(add-to-list 'org-src-lang-modes (quote ("dot" . graphviz-dot)))
+)
+
 
 (provide 'init-write)
 

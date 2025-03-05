@@ -2,19 +2,18 @@
 ;;; Commentary:
 
 ;;; Code:
-;;;自动保存
-;; (setq auto-save-visited-interval 4)
-;; (setq auto-save-visited-mode t)
-;; (auto-save-visited-mode +1)
 (use-package savehist
   :init
   (savehist-mode))
 
-;; 可以是async-shell-command 自动填充上一个命令
+;; 可以是 async-shell-command 自动填充上一个命令
+;; 中文
 (advice-add #'read-shell-command
  :filter-args #'(lambda(args) (list (car args) (car shell-command-history))))
 
 (add-hook 'prog-mode-hook 'hs-minor-mode)
+;; (add-hook 'after-init-hook 'auto-save-visited-mode)
+(add-hook 'after-init-hook 'global-hl-line-mode)
 
 (use-package evil
   :ensure t
@@ -30,14 +29,16 @@
   (evil-mode 1)
   :config
   (evil-add-command-properties #'citre-jump :jump t)
-  (define-key evil-insert-state-map (kbd "C-h") 'backward-delete-char)
+    (define-key evil-insert-state-map (kbd "C-h") 'backward-delete-char)
+    (evil-define-key 'normal prog-mode-map (kbd "s") 'evil-avy-goto-char-timer)
 )
+
 
 (use-package evil-collection
   :ensure t
   :after evil
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar vterm eshell magit realgud compile docker dape vertico atomic-chrome xref corfu mini-buffer consult nov woman))
+  (setq evil-collection-mode-list '(ibuffer calendar vterm magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel))
   (evil-collection-init))
 
 (use-package evil-surround
@@ -56,13 +57,34 @@
   :config
   (setq global-evil-matchit-mode 1))
 
+(use-package evil-textobj-tree-sitter
+  :ensure t
+  :after (evil)
+  :config
+  (define-key evil-outer-text-objects-map "m" (cons "evil-outer-function/method" (evil-textobj-tree-sitter-get-textobj "function.outer")))
+  (define-key evil-inner-text-objects-map "m" (cons "evil-inner-function/method" (evil-textobj-tree-sitter-get-textobj "function.inner")))
+  (define-key evil-outer-text-objects-map "f" (cons "evil-outer-call" (evil-textobj-tree-sitter-get-textobj "function.outer")))
+  (define-key evil-inner-text-objects-map "f" (cons "evil-inner-call" (evil-textobj-tree-sitter-get-textobj "function.inner")))
+  (define-key evil-outer-text-objects-map "c" (cons "evil-outer-class" (evil-textobj-tree-sitter-get-textobj "class.outer")))
+  (define-key evil-inner-text-objects-map "c" (cons "evil-inner-class" (evil-textobj-tree-sitter-get-textobj "class.inner")))
+  (define-key evil-outer-text-objects-map "n" (cons "evil-outer-comment" (evil-textobj-tree-sitter-get-textobj "comment.outer")))
+  (define-key evil-inner-text-objects-map "n" (cons "evil-outer-comment" (evil-textobj-tree-sitter-get-textobj "comment.outer")))
+  (define-key evil-outer-text-objects-map "v" (cons "evil-outer-conditional-loop" (evil-textobj-tree-sitter-get-textobj ("conditional.outer" "loop.outer"))))
+  (define-key evil-inner-text-objects-map "v" (cons "evil-inner-conditional-loop" (evil-textobj-tree-sitter-get-textobj ("conditional.inner" "loop.inner"))))
+  (define-key evil-inner-text-objects-map "a" (cons "evil-inner-parameter" (evil-textobj-tree-sitter-get-textobj "parameter.inner")))
+  (define-key evil-outer-text-objects-map "a" (cons "evil-outer-parameter" (evil-textobj-tree-sitter-get-textobj "parameter.outer")))
+)
+
 (setq x-select-request-type nil)
 
 (use-package avy
   :ensure t)
 
 (use-package sudo-edit
-  :ensure t)
+  :ensure t
+  :config
+  (sudo-edit-indicator-mode)
+)
 
 (use-package saveplace
   :ensure nil
@@ -74,9 +96,7 @@
 
 (use-package elec-pair
   :ensure nil
-  :hook ((prog-mode . electric-pair-mode)
-         (conf-mode . electric-pair-mode)
-         )
+  :hook (prog-mode . electric-pair-local-mode)
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
 (use-package general
@@ -86,59 +106,41 @@
 
   ;; set up 'SPC' as the global leader key
   (general-create-definer +leader-keys
-    :states '(normal)
+    :states '(normal visual)
     :states 'nil
     :keymaps 'override
     :prefix "SPC" ;; set leader
     :global-prefix "C-SPC") ;; access leader in insert mode
  )
 
-
-
 ;; vim keymap setting
 (setq mark-ring-max 6)
 (setq global-mark-ring-max 6)
 (setq set-mark-command-repeat-pop t)
 
-(evil-define-key  'normal text-mode-map (kbd "s") 'avy-goto-char-timer)
-(evil-define-key  'normal prog-mode-map (kbd "s") 'avy-goto-char-timer)
-(evil-define-key  'visual prog-mode-map (kbd "s") 'avy-goto-char-timer)
-(evil-define-key  'visual text-mode-map (kbd "s") 'avy-goto-char-timer)
-
-(evil-define-key 'normal org-mode-map (kbd "<tab>") 'org-cycle)
-
-(evil-define-key 'normal global-map (kbd "H") 'evil-beginning-of-line)
-(evil-define-key 'normal global-map (kbd "L") 'evil-end-of-line)
-(evil-define-key 'visual global-map (kbd "H") 'evil-beginning-of-line)
-(evil-define-key 'visual global-map (kbd "L") 'evil-end-of-line)
-(evil-define-key 'motion global-map (kbd "H") 'evil-beginning-of-line)
-(evil-define-key 'motion global-map (kbd "L") 'evil-end-of-line)
-
-;; (evil-define-key 'insert global-map (kbd "C-n") 'completion-at-point)
-
-(evil-define-key 'normal global-map (kbd "C-.") 'popper-toggle)
-(evil-define-key 'normal global-map (kbd "M-.") 'popper-cycle)
-(evil-define-key 'normal global-map (kbd "m") 'consult-register-store)
-(evil-define-key 'normal global-map (kbd "'") 'consult-register-load)
-(evil-define-key 'insert global-map (kbd "C-.") 'popper-toggle)
-(evil-define-key 'insert global-map (kbd "M-.") 'popper-cycle)
-(evil-define-key 'normal global-map (kbd "K") 'eldoc-box-help-at-point)
-
 (global-set-key (kbd "C-;") nil)
 (global-set-key (kbd "C-'") nil)
-
-(use-package atomic-chrome
-  :load-path "./site-lisp/atomic-chrome"
-  :config
-  (atomic-chrome-start-server)
-(setq atomic-chrome-buffer-open-style 'full)
-)
 
 (use-package hippie-exp
 :ensure nil
 :config
 (setq-default hippie-expand-try-functions-list
                 '(yas-hippie-try-expand emmet-expand-line)))
+
+(use-package sis
+ :ensure t
+ :hook
+ (((text-mode prog-mode) . sis-context-mode)
+   ((text-mode prog-mode) . sis-inline-mode))
+ :config
+(sis-ism-lazyman-config
+   "com.apple.keylayout.ABC"
+   "com.apple.inputmethod.SCIM.Shuangpin"
+)
+(sis-global-cursor-color-mode t)
+(sis-global-respect-mode t)
+(setq sis-inline-with-other t)
+)
 
 (provide 'init-edit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -3,30 +3,54 @@
 ;;; Code:
 (use-package yasnippet
   :ensure t
+  :general
+  (:keymaps 'override
+   :states '(normal visual)
+   :prefix  "SPC"
+    "n y" '(yas-new-snippet :wk "new snippet")
+  )
   :config
-  ;;(setq yas-snippet-dies '("~/.config/emacs/snippets"))
   (yas-global-mode 1)
 )
 
-(use-package corfu
+(use-package auto-yasnippet
   :ensure t
-  :custom
-  (corfu-auto t)
-  (corfu-auto-prefix 2)
-  (corfu-preview-current nil)
-  (corfu-auto-delay 0.2)
-  (corfu-popupinfo-delay '(0.4 . 0.2))
-  :bind(:map corfu-map
-             ("TAB". nil))
-  :hook ((after-init . global-corfu-mode)
-         (global-corfu-mode . corfu-popupinfo-mode))
-  :config
-  (use-package nerd-icons-corfu
-    :ensure t
-    :config
-    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
+  :after yasnippet
+  :general
+  (:keymaps 'yas-minor-mode-map
+   :states '(normal visual)
+   :prefix  "SPC"
+    "y" '(:ignore t :wk "auto-yasnippet")
+    "y w"   '(aya-create)
+    "y TAB" '(aya-expand)
+    "y SPC" '(aya-expand-from-history)
+    "y d"   '(aya-delete-from-history)
+    "y c"   '(aya-clear-history)
+    "y n"   '(aya-next-in-history)
+    "y p"   '(aya-previous-in-history)
+    "y s"   '(aya-persist-snippet)
+    "y o"   '(aya-open-line)
   )
-  )
+)
+
+;; (use-package corfu
+;;   :ensure t
+;;   :custom
+;;   (corfu-auto t)
+;;   (corfu-auto-prefix 2)
+;;   (corfu-preview-current nil)
+;;   (corfu-auto-delay 0.2)
+;;   (corfu-popupinfo-delay '(0.4 . 0.2))
+;;   :bind(:map corfu-map ("TAB". nil))
+;;   :hook ((after-init . global-corfu-mode)
+;;          (global-corfu-mode . corfu-popupinfo-mode))
+;;   :config
+;;   (use-package nerd-icons-corfu
+;;     :ensure t
+;;     :config
+;;     (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
+;;     )
+;;   )
 
 ;;; Code:
 (use-package vertico
@@ -34,29 +58,12 @@
   :hook (after-init . vertico-mode)
   :config
   (vertico-mode t)
-(setq vertico-multiform-commands
-      '((consult-line
-         posframe
-         (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
-         (vertico-posframe-border-width . 10)
-         ;; NOTE: This is useful when emacs is used in both in X and
-         ;; terminal, for posframe do not work well in terminal, so
-         ;; vertico-buffer-mode will be used as fallback at the
-         ;; moment.
-         (vertico-posframe-fallback-mode . vertico-buffer-mode))
-        (t posframe)))
-(vertico-multiform-mode 1)
 )
-
-(use-package vertico-posframe
-  :ensure t
-  :config
-   (vertico-posframe-mode 1)
-)
-
 
 (use-package embark
   :ensure t
+  :bind
+  ("C-." . embark-act)         ;; pick some comfortable binding
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -80,16 +87,9 @@
 
 (use-package orderless
   :ensure t
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
-
-;; (use-package hotfuzz
-;;   :load-path "./site-lisp/hotfuzz"
-;;   :custom
-;;   (completion-styles '(hotfuzz))
-;; )
-;; (require 'hotfuzz-module)
+  :config
+ (setq completion-styles '(orderless flex)
+        completion-category-overrides '((eglot (styles . (orderless flex))))))
 
 (use-package marginalia
  :ensure t
@@ -97,28 +97,31 @@
  (marginalia-mode)
 )
 
-(use-package eldoc-box
-  :ensure t
-  :config
-  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
-)
+;; (use-package eldoc
+;;   :ensure nil
+;;   )
 
-(use-package cape
-  :ensure t
-  :init
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  ;; (add-hook 'completion-at-point-functions #'cape-history)
-  (add-hook 'completion-at-point-functions #'cape-keyword)
-  ;; (add-hook 'completion-at-point-functions #'cape-dict)
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
-;; Sanitize the `pcomplete-completions-at-point' Capf.  The Capf has undesired
-;; side effects on Emacs 28 and earlier.  These advices are not needed on Emacs
-;; 29 and newer.
-(when (< emacs-major-version 29)
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
-)
+;; (use-package eldoc-box
+;;   :ensure t
+;;   :hook (prog-mode . eldoc-box-hover-mode)
+;;   :config
+;; )
+
+;; (use-package cape
+;;   :ensure t
+;;   :init
+;;   (add-hook 'completion-at-point-functions #'cape-abbrev)
+;;   (add-hook 'completion-at-point-functions #'cape-dabbrev)
+;;   (add-hook 'completion-at-point-functions #'cape-file)
+;;   (add-hook 'completion-at-point-functions #'cape-keyword)
+;;   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+;; ;; Sanitize the `pcomplete-completions-at-point' Capf.  The Capf has undesired
+;; ;; side effects on Emacs 28 and earlier.  These advices are not needed on Emacs
+;; ;; 29 and newer.
+;; (when (< emacs-major-version 29)
+;;   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+;;   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+;; )
 
 ; Consult users will also want the embark-consult package.
 (use-package embark-consult
@@ -127,55 +130,52 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-;; (use-package eldoc
-;;   :init
-;;   (global-eldoc-mode))
+;; (use-package eglot
+;;   :ensure nil
+;;   ;; :hook (prog-mode . eglot-ensure)
+;;   :general
+;;   (:keymaps 'override
+;;    :states '(normal visual)
+;;    :prefix  "SPC"
+;;    "t l" '(eglot :wk "open eglot")
+;;    "l r" '(eglot-rename :wk "rename")
+;;    "l a" '(eglot-code-actions :wk "code action")
+;;   )
+;;   :custom
+;;   (eglot-ignored-server-capabilities
+;;    '(:inlayHintProvider
+;;      :hoverProvider
+;;      :documentHighlightProvider
+;;      :documentFormattingProvider
+;;      :documentRangeFormattingProvider
+;;      :documentOnTypeFormattingProvider
+;;      :colorProvider
+;;      :foldingRangeProvider))
+;;   :config
+;;   (setq eglot-events-buffer-size 0)
+;;   (add-to-list 'eglot-server-programs '(rust-ts-mode . ("rust-analyzer")))
+;; )
 
-(use-package eglot
-  :ensure nil
-  ;; :hook (prog-mode . eglot-ensure)
-  :custom
-  (eglot-ignored-server-capabilities
-   '(:hoverProvider
-     :documentHighlightProvider
-     :documentFormattingProvider
-     :documentRangeFormattingProvider
-     :documentOnTypeFormattingProvider
-     :colorProvider
-     :foldingRangeProvider))
-  :config
-)
+;; (use-package eglot-booster
+;;     :load-path "./site-lisp/eglot-booster"
+;; 	:after eglot
+;; 	:config	(eglot-booster-mode))
 
-(use-package eglot-booster
-    :load-path "./site-lisp/eglot-booster"
-	:after eglot
-	:config	(eglot-booster-mode))
+;; (use-package ht
+;;   :ensure t
+;; )
 
-(use-package ht
-  :ensure t
-)
-(use-package lsp-copilot
-  :load-path "./site-lisp/lsp-copilot"
-  :config
-  (setq lsp-copilot-user-languages-config (expand-file-name (concat user-emacs-directory "languages.toml")))
-    (with-eval-after-load 'evil-collection
-    (evil-collection-define-key 'normal 'lsp-copilot-mode-map
-      (kbd "K")  'lsp-copilot-describe-thing-at-point
-      ;; (kbd "gd") 'lsp-copilot-find-definition
-      (kbd "gD") 'lsp-copilot-find-declaration
-      (kbd "gi") 'lsp-copilot-find-implementations
-      (kbd "gr") 'lsp-copilot-find-references
-      (kbd "gy") 'lsp-copilot-find-type-definition
-    ))
-   (with-eval-after-load 'general
-     (+leader-keys
-        "l" '(:ignore t :wk "lsp")
-        "l l"'(lsp-copilot-mode :wk "lsp start")
-        "l r"'(lsp-copilot-rename :wk "rename")
-        "l a"'(lsp-copilot-execute-code-action :wk "code action")
-       )
-   )
-)
+;; (use-package lsp-proxy
+;;   :load-path "./site-lisp/lsp-proxy"
+;;   :config
+;;   (setq lsp-proxy-user-languages-config (expand-file-name (concat user-emacs-directory "languages.toml")))
+;;     (with-eval-after-load 'evil-collection
+;;     (evil-collection-define-key 'normal 'lsp-proxy-mode-map
+;;       (kbd "K")  'lsp-proxy-describe-thing-at-point
+;;       ;; (kbd "gd") 'lsp-proxy-find-definition
+;;       (kbd "gD") 'lsp-proxy-find-declaration
+;;       (kbd "gi") 'lsp-proxy-find-implementations
+;;      )))
 
 (provide 'init-completion)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

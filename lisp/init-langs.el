@@ -2,17 +2,17 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package rust-mode
-:ensure t
-:config
-;;(setq rust-format-on-save t)
+(use-package rust-ts-mode
+:ensure nil
+:mode "\\.rs\\'"
 )
 
 (use-package go-ts-mode
 :ensure nil
 :mode "\\.go\\'"
-:custom
-(go-ts-mode-indent-offset 4))
+:config
+(setq go-ts-mode-indent-offset 4)
+)
 
 (use-package clojure-ts-mode
 :ensure t
@@ -43,8 +43,6 @@
   :custom
   (sh-basic-offset 2)
   (sh-indentation 2))
-
-
 
 (provide 'init-langs)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -1,0 +1,36 @@
+[submodule "site-lisp/eglot-booster"]
+	path = site-lisp/eglot-booster
+	url = git@github.com:jdtsmith/eglot-booster.git
+[submodule "site-lisp/lsp-proxy"]
+	path = site-lisp/lsp-proxy
+	url = git@github.com:jadestrong/lsp-proxy.git
+[submodule "site-lisp/org-excalidraw"]
+	path = site-lisp/org-excalidraw
+	url = git@github.com:wdavew/org-excalidraw.git
+[submodule "site-lisp/sort-tab"]
+	path = site-lisp/sort-tab
+	url = git@github.com:manateelazycat/sort-tab.git
+[submodule "site-lisp/hexo.el"]
+	path = site-lisp/hexo.el
+	url = git@github.com:kuanyui/hexo.el.git
+[submodule "site-lisp/emacs-anki-helper"]
+	path = site-lisp/emacs-anki-helper
+	url = git@github.com:Elilif/emacs-anki-helper.git
+[submodule "site-lisp/tailwindcss-color-mode.el"]
+	path = site-lisp/tailwindcss-color-mode.el
+	url = git@github.com:apple115/tailwindcss-color-mode.el.git
+[submodule "site-lisp/auto-save"]
+	path = site-lisp/auto-save
+	url = git@github.com:manateelazycat/auto-save.git
+[submodule "site-lisp/aider.el"]
+	path = site-lisp/aider.el
+	url = git@github.com:tninja/aider.el.git
+[submodule "site-lisp/my-fork-sort-tab"]
+	path = site-lisp/my-fork-sort-tab
+	url = git@github.com:apple115/my-fork-sort-tab.git
+[submodule "site-lisp/aidermacs"]
+	path = site-lisp/aidermacs
+	url = git@github.com:MatthewZMD/aidermacs.git
+[submodule "site-lisp/lsp-bridge"]
+	path = site-lisp/lsp-bridge
+	url = git@github.com:manateelazycat/lsp-bridge.git

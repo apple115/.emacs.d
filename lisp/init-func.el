@@ -120,9 +120,13 @@ If NEWNAME is a directory, move file to it."
 )
 
 
-(use-package tailwindcss-color-mode
- :load-path "./site-lisp/tailwindcss-color-mode"
-)
+;; (use-package tailwindcss-color-mode
+;;  :load-path "./site-lisp/tailwindcss-color-mode"
+;; )
+
+;; (use-package mini-bar
+;;  :load-path "./site-lisp/mini-tab.el"
+;; )
 
 (provide 'init-func)
 
