@@ -22,3 +22,11 @@
 /.emacs.desktop
 /.emacs.desktop.lock
 .aider*
+/..emacs.d-tabspaces-session.el
+/.cache/
+/history
+/.org-id-locations
+/network-security.data
+/org-roam.db
+/persist/
+/projects
