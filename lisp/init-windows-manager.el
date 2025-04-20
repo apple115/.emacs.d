@@ -34,9 +34,12 @@
           ))
  )
 
-
 (use-package popper
   :ensure t
+  :bind (:map popper-mode-map
+         ("C-h z"       . popper-toggle)
+         ("C-<tab>"     . popper-cycle)
+         ("C-M-<tab>"   . popper-toggle-type))
   :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"

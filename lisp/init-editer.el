@@ -2,13 +2,29 @@
 ;;; Commentary: editer
 
 ;;; Code:
-;; (use-package sort-tab
-;;   :load-path "./site-lisp/my-fork-sort-tab/"
-;;   :after doom-modeline
+(use-package sort-tab
+  :load-path "./site-lisp/my-fork-sort-tab/"
+  :after doom-modeline
+  :custom
+  (sort-tab-separator "")
+  (sort-tab-name-max-length 20)
+  :config
+  (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
+  (setq sort-tab-show-index-number t)
+  ;; (sort-tab-mode 1)
+)
+;; (use-package dirvish
+;;   :init
+;;   (dirvish-override-dired-mode)
+;;   :ensure t
 ;;   :config
-;;   (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
-;;   (sort-tab-mode 1)
-;;   ;; (setq sort-tab-show-index-number t)
+;;     (setq dirvish-use-header-line nil)      ; hide header line (show the classic dired header)
+;;     (setq dirvish-use-mode-line nil)        ; hide mode line
+;;     (setq dirvish-attributes
+;;             '(nerd-icons file-time file-size collapse subtree-state vc-state git-msg)
+;;             dirvish-side-attributes
+;;             '(vc-state file-size nerd-icons collapse))
+;;   (setq delete-by-moving-to-trash t)
 ;; )
 
 (use-package dired
@@ -120,15 +136,26 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
 (use-package ibuffer
   :ensure nil
   :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold)))
-  :general
+  :config
+    (use-package nerd-icons-ibuffer
+    :ensure
+    :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+
+    (use-package ibuffer-project
+    :ensure t
+    :config
+    (add-hook
+    'ibuffer-hook
+    (lambda ()
+    (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
+    (unless (eq ibuffer-sorting-mode 'project-file-relative)
+        (ibuffer-do-sort-by-project-file-relative))))
+    )
 )
 
 (use-package nerd-icons
   :ensure t)
 
-(use-package nerd-icons-ibuffer
-  :ensure
-  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 ;;view large file
 (use-package vlf

@@ -38,6 +38,8 @@
 (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
 (evil-collection-define-key 'normal 'lsp-bridge-mode-map
     "K"   'lsp-bridge-popup-documentation
+    "gd"  'lsp-bridge-find-def
+    "gr" 'lsp-bridge-find-references
   )
   (global-lsp-bridge-mode)
 )

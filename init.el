@@ -76,9 +76,10 @@
   (require 'init-ai)
   (require 'init-emacs)
   (require 'init-git)
+  ;; (require 'init-org-ui)
+  (require 'init-lsp-bridge)
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
-  (require 'init-lsp-bridge)
   )
 (when
     (memq window-system
@@ -98,20 +99,24 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(auto-yasnippet cal-china-x cape citre clojure-ts-mode colorful-mode
-                    consult-notes consult-todo copilot corfu dape denote diredfl
-                    docker doom-modeline eglot ejc-sql eldoc-box embark-consult
-                    emmet-mode engine-mode evil-collection evil-matchit
-                    evil-nerd-commenter evil-surround evil-textobj-tree-sitter
-                    exec-path-from-shell flymake-flycheck format-all general
-                    gptel graphviz-dot-mode gruvbox-theme haskell-mode ht jinx
-                    ligature link-hint magit marginalia markdown-mode
-                    nerd-icons-corfu nerd-icons-dired nerd-icons-ibuffer ob-go
-                    ob-restclient olivetti orderless org-appear org-auto-tangle
-                    org-contrib ox-gfm ox-reveal pinyinlib plantuml-mode popper
-                    python-mode pyvenv rainbow-delimiters shackle sis sudo-edit
-                    tabspaces tree-sitter vertico virtualenvwrapper vlf
-                    vterm-toggle)))
+   '(atomic-chrome auto-yasnippet cal-china-x citre clojure-ts-mode colorful-mode
+                   consult-notes consult-todo dape denote diredfl dirvish docker
+                   doom-modeline dumb-jump dwim-shell-command eglot ejc-sql
+                   embark-consult emmet-mode engine-mode evil-collection
+                   evil-matchit evil-nerd-commenter evil-surround
+                   evil-textobj-tree-sitter exec-path-from-shell
+                   flymake-flycheck format-all general gptel graphviz-dot-mode
+                   gruvbox-theme haskell-mode ibuffer-project jinx ligature
+                   link-hint magit marginalia markdown-mode nerd-icons-dired
+                   nerd-icons-ibuffer ob-go ob-restclient olivetti orderless
+                   org-appear org-auto-tangle org-contrib org-modern
+                   org-modern-indent org-roam ox-gfm ox-reveal pinyinlib
+                   plantuml-mode popper python-mode pyvenv quickrun
+                   rainbow-delimiters scss-mode shackle sis sudo-edit tabspaces
+                   tree-sitter treesit-auto ultra-scroll vertico
+                   virtualenvwrapper vlf vterm-toggle web-mode))
+ '(package-vc-selected-packages
+   '((ultra-scroll :url "https://github.com/jdtsmith/ultra-scroll"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

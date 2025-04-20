@@ -59,6 +59,12 @@
 (with-eval-after-load 'consult
 ;; hide full buffer list (still available with "b" prefix)
 (consult-customize consult--source-buffer :hidden t :default nil)
+
+(defun consult--filter-sort-tab-buffers (buf)
+  "Filter out the *sort-tab* buffer and check if buffer is local to tabspace."
+  (and (not (string= (buffer-name buf) "*sort-tab*"))
+       (tabspaces--local-buffer-p buf)))
+
 ;; set consult-workspace buffer list
 (defvar consult--source-workspace
   (list :name     "Workspace Buffers"
@@ -68,12 +74,13 @@
         :state    #'consult--buffer-state
         :default  t
         :items    (lambda () (consult--buffer-query
-                         :predicate #'tabspaces--local-buffer-p
+                         :predicate #'consult--filter-sort-tab-buffers
                          :sort 'visibility
                          :as #'buffer-name)))
 
   "Set workspace buffer list for consult-buffer.")
 (add-to-list 'consult-buffer-sources 'consult--source-workspace))
+
 
 (provide 'init-project)
 

@@ -18,6 +18,23 @@
 (add-to-list 'emmet-jsx-major-modes 'typescript-mode)
 (add-to-list 'emmet-jsx-major-modes 'tsx-ts-mode)
 )
+;; CSS
+(use-package css-mode
+  :ensure nil
+  :init (setq css-indent-offset 2))
+
+;; SCSS
+(use-package scss-mode
+  :ensure t
+  :init (setq scss-compile-at-save nil))
+
+(use-package web-mode
+  :ensure t
+  :mode "\\.\\(phtml\\|php\\|[gj]sp\\|as[cp]x\\|erb\\|djhtml\\|html?\\|hbs\\|ejs\\|jade\\|swig\\|tm?pl\\|vue\\)$"
+  :config
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
 
 (use-package restclient
   :ensure t

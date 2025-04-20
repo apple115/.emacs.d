@@ -15,6 +15,10 @@
 (add-to-list 'compilation-error-regexp-alist 'go-test)
 )
 
+(use-package quickrun
+  :ensure t
+)
+
 
 (provide 'init-compile)
 

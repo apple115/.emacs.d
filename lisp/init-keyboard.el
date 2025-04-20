@@ -15,6 +15,17 @@
     ";" '(popper-toggle :wk "open-pop")
     "'" '(popper-cycle :wk "cycle-pop")
 
+    "1" 'sort-tab-select-visible-tab
+    "2" 'sort-tab-select-visible-tab
+    "3" 'sort-tab-select-visible-tab
+    "4" 'sort-tab-select-visible-tab
+    "5" 'sort-tab-select-visible-tab
+    "6" 'sort-tab-select-visible-tab
+    "7" 'sort-tab-select-visible-tab
+    "8" 'sort-tab-select-visible-tab
+    "9" 'sort-tab-select-visible-tab
+    "0" 'sort-tab-select-visible-tab
+
     "w" '(:ignore :wk "window")
     "w 0" '(delete-window :wk "delete-window")
     "w 9" '(delete-other-windows :wk "delete-other-windows")

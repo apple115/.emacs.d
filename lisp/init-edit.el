@@ -31,6 +31,7 @@
   (evil-add-command-properties #'citre-jump :jump t)
     (define-key evil-insert-state-map (kbd "C-h") 'backward-delete-char)
     (evil-define-key 'normal prog-mode-map (kbd "s") 'evil-avy-goto-char-timer)
+(global-set-key [remap evil-quit] 'kill-buffer-and-window)
 )
 
 
@@ -38,7 +39,7 @@
   :ensure t
   :after evil
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar vterm magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel))
+  (setq evil-collection-mode-list '(ibuffer calendar vterm ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel))
   (evil-collection-init))
 
 (use-package evil-surround

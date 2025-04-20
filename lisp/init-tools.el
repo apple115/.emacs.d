@@ -28,6 +28,11 @@
   (global-tree-sitter-mode)
 )
 
+(use-package treesit-auto
+  :ensure t
+  :config
+  (global-treesit-auto-mode))
+
 (use-package tree-sitter-langs
   :defer 1
   :ensure t
@@ -85,21 +90,24 @@
 
 (use-package flycheck
   :ensure t
+  :hook (prog-mode . flycheck-mode)
   :config
-(setq-default
-    flycheck-disabled-checkers
-    (append (default-value 'flycheck-disabled-checkers)
-            '(emacs-lisp emacs-lisp-checkdoc emacs-lisp-package sh-shellcheck)))
+    (setq-default
+        flycheck-disabled-checkers
+        (append (default-value 'flycheck-disabled-checkers)
+                '(emacs-lisp emacs-lisp-checkdoc emacs-lisp-package sh-shellcheck)))
   ;; (setq truncate-lines nil) ; 如果单行信息很长会自动换行
-  (flycheck-add-mode 'javascript-eslint 'js2-mode)
+  (flycheck-add-mode 'javascript-eslint 'js-mode)
   (flycheck-add-mode 'rust-clippy 'rust-mode)
   (flycheck-add-mode 'haskell-ghc 'haskell-mode)
   (flycheck-add-mode 'go-staticcheck 'go-ts-mode)
+  (evil-define-key 'normal prog-mode-map (kbd "]d") 'flycheck-previous-error)
+  (evil-define-key 'normal prog-mode-map (kbd "[d") 'flycheck-next-error)
 )
 
 (use-package flymake
   :ensure nil
-  :hook (prog-mode . flymake-mode)
+  ;; :hook (prog-mode . flymake-mode)
   :config
   (evil-define-key 'normal prog-mode-map (kbd "]d") 'flymake-goto-prev-error)
   (evil-define-key 'normal prog-mode-map (kbd "[d") 'flymake-goto-next-error)
@@ -127,7 +135,7 @@
                   ("JSX" (prettier "-w"))
                   ("TSX" (prettier "-w"))
                   ("Haskell" (stylish-haskell))
-                  ("Rust" (rustfmt))
+                  ("Rust" (rustfmt "--edition" "2021"))
                   ("Python" (black))
                   ("Go" (goimports))
                   ("CMake" (cmake-format))
@@ -194,6 +202,24 @@
 (use-package woman
   :ensure nil
 )
+
+(use-package atomic-chrome
+  :demand t
+  :vc (:url "https://github.com/KarimAziev/atomic-chrome")
+  :commands (atomic-chrome-start-server)
+  :config (atomic-chrome-start-server))
+
+(use-package dwim-shell-command
+  :ensure t)
+
+(use-package dumb-jump
+  :ensure t
+  :bind
+  (:map prog-mode-map
+        (("C-c C-o" . dumb-jump-go-other-window)
+         ("C-c C-j" . dumb-jump-go)
+         ("C-c C-i" . dumb-jump-go-prompt)))
+ )
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
