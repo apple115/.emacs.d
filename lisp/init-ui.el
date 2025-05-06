@@ -3,6 +3,13 @@
 
 ;;; Code:
 ;; (add-to-list 'default-frame-alist '(undecorated-round . t))
+;; Initial frame
+(setq initial-frame-alist '((top . 0.5)
+                            (left . 0.5)
+                            (width . 0.7)
+                            (height . 0.85)
+                            (fullscreen)))
+
 
 (use-package gruvbox-theme
  :ensure t
