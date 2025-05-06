@@ -90,8 +90,8 @@
 
 (use-package flycheck
   :ensure t
-  :hook (prog-mode . flycheck-mode)
   :config
+  (global-flycheck-mode)
     (setq-default
         flycheck-disabled-checkers
         (append (default-value 'flycheck-disabled-checkers)
@@ -103,28 +103,27 @@
   (flycheck-add-mode 'rust-clippy 'rust-mode)
   (flycheck-add-mode 'haskell-ghc 'haskell-mode)
   (flycheck-add-mode 'go-staticcheck 'go-ts-mode)
-  (setq flycheck-javascript-eslint-executable )
   (evil-define-key 'normal prog-mode-map (kbd "]d") 'flycheck-previous-error)
   (evil-define-key 'normal prog-mode-map (kbd "[d") 'flycheck-next-error)
 )
 
-(use-package flymake
-  :ensure nil
-  ;; :hook (prog-mode . flymake-mode)
-  :config
-  (evil-define-key 'normal prog-mode-map (kbd "]d") 'flymake-goto-prev-error)
-  (evil-define-key 'normal prog-mode-map (kbd "[d") 'flymake-goto-next-error)
-)
+;; (use-package flymake
+;;   :ensure nil
+;;   ;; :hook (prog-mode . flymake-mode)
+;;   :config
+;;   (evil-define-key 'normal prog-mode-map (kbd "]d") 'flymake-goto-prev-error)
+;;   (evil-define-key 'normal prog-mode-map (kbd "[d") 'flymake-goto-next-error)
+;; )
 
-(use-package flymake-flycheck
- :ensure t
- :config
- (add-hook 'flymake-mode-hook 'flymake-flycheck-auto)
- (setq eldoc-documentation-function 'eldoc-documentation-compose)
- (add-hook 'flymake-mode-hook
-            (lambda ()
-                (add-hook 'eldoc-documentation-functions 'flymake-eldoc-function nil t)))
-)
+;; (use-package flymake-flycheck
+;;  :ensure t
+;;  :config
+;;  (add-hook 'flymake-mode-hook 'flymake-flycheck-auto)
+;;  (setq eldoc-documentation-function 'eldoc-documentation-compose)
+;;  (add-hook 'flymake-mode-hook
+;;             (lambda ()
+;;                 (add-hook 'eldoc-documentation-functions 'flymake-eldoc-function nil t)))
+;; )
 
 (use-package format-all
   :ensure t

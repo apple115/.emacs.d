@@ -46,7 +46,7 @@
 
 (use-package add-node-modules-path
   :ensure t
-  :hook((web-mode js-base-mode) . add-node-modules-path)
+  :hook((web-mode js-base-mode tsx-ts-mode js-ts-mode js-jsx-mode typescript-ts-mode) . add-node-modules-path)
   :custom
   (add-node-modules-path-command '("pnpm bin" "pnpm bin -w"))
 )
