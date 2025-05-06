@@ -98,9 +98,12 @@
                 '(emacs-lisp emacs-lisp-checkdoc emacs-lisp-package sh-shellcheck)))
   ;; (setq truncate-lines nil) ; 如果单行信息很长会自动换行
   (flycheck-add-mode 'javascript-eslint 'js-mode)
+  (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
+  (flycheck-add-mode 'javascript-eslint 'tsx-ts-mode)
   (flycheck-add-mode 'rust-clippy 'rust-mode)
   (flycheck-add-mode 'haskell-ghc 'haskell-mode)
   (flycheck-add-mode 'go-staticcheck 'go-ts-mode)
+  (setq flycheck-javascript-eslint-executable )
   (evil-define-key 'normal prog-mode-map (kbd "]d") 'flycheck-previous-error)
   (evil-define-key 'normal prog-mode-map (kbd "[d") 'flycheck-next-error)
 )

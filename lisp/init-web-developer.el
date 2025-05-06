@@ -44,6 +44,13 @@
   :ensure t
 )
 
+(use-package add-node-modules-path
+  :ensure t
+  :hook((web-mode js-base-mode) . add-node-modules-path)
+  :custom
+  (add-node-modules-path-command '("pnpm bin" "pnpm bin -w"))
+)
+
 (provide 'init-web-developer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
