@@ -39,7 +39,7 @@
   :ensure t
   :after evil
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar vterm ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel))
+  (setq evil-collection-mode-list '(ibuffer calendar vterm ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel cider citre))
   (evil-collection-init))
 
 (use-package evil-surround

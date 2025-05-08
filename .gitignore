@@ -30,3 +30,5 @@
 /org-roam.db
 /persist/
 /projects
+tabsession.el
+/tabsession.el
