@@ -12,6 +12,8 @@
 
 (use-package gptel
   :ensure t
+  :bind
+  ("C-c a" . gptel-menu)
   :config
   (setq gptel-model "deepspek-chat")
   (setq gptel-default-mode 'org-mode)
