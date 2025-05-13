@@ -11,7 +11,7 @@
   :config
   (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
   (setq sort-tab-show-index-number t)
-  ;; (sort-tab-mode 1)
+   (sort-tab-mode 1)
 )
 ;; (use-package dirvish
 ;;   :init
