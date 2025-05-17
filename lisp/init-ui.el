@@ -253,11 +253,9 @@
           (let ((face (funcall tab-bar-tab-face-function tab)))
             (concat
              (propertize "" 'face face)
-             ;; (propertize (number-to-string i) 'face `(:inherit ,face :weight ultra-bold :underline t))
+             ;; (propertize (number-to-string i) 'face `(:inherit ,face :weight ultra-bold :underline t));;去除前面的1，2,3
              (propertize (concat " " (alist-get 'name tab) " ") 'face face)))))
 
-  ;; 我把 meow 的 indicator 也放在 tab-bar 上
-  ;; (setq tab-bar-format '(meow-indicator  tab-bar-format-tabs))
   (setq tab-bar-format '(tab-bar-format-tabs))
 
   (tab-bar--update-tab-bar-lines)
