@@ -2,17 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package rust-ts-mode
-:ensure nil
-:mode "\\.rs\\'"
-)
-
-(use-package go-ts-mode
-:ensure nil
-:mode "\\.go\\'"
-:config
-(setq go-ts-mode-indent-offset 4)
-)
 
 (use-package clojure-ts-mode
 :ensure t
