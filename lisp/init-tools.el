@@ -80,7 +80,6 @@
 (add-to-list 'auto-mode-alist '("\\.yaml\\'". yaml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'". css-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'". go-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.rs\\'". rust-ts-mode))
 (add-to-list 'auto-mode-alist '("\\Dockerfile\\'". dockerfile-ts-mode))
 (setq treesit-font-lock-level 4)
 
@@ -107,23 +106,6 @@
   (evil-define-key 'normal prog-mode-map (kbd "[d") 'flycheck-next-error)
 )
 
-;; (use-package flymake
-;;   :ensure nil
-;;   ;; :hook (prog-mode . flymake-mode)
-;;   :config
-;;   (evil-define-key 'normal prog-mode-map (kbd "]d") 'flymake-goto-prev-error)
-;;   (evil-define-key 'normal prog-mode-map (kbd "[d") 'flymake-goto-next-error)
-;; )
-
-;; (use-package flymake-flycheck
-;;  :ensure t
-;;  :config
-;;  (add-hook 'flymake-mode-hook 'flymake-flycheck-auto)
-;;  (setq eldoc-documentation-function 'eldoc-documentation-compose)
-;;  (add-hook 'flymake-mode-hook
-;;             (lambda ()
-;;                 (add-hook 'eldoc-documentation-functions 'flymake-eldoc-function nil t)))
-;; )
 
 (use-package format-all
   :ensure t
@@ -200,10 +182,6 @@
     )
 )
 
-
-(use-package woman
-  :ensure nil
-)
 
 (use-package atomic-chrome
   :demand t
