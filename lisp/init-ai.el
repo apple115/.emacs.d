@@ -3,7 +3,9 @@
 
 ;;; Code:
 (use-package aider
-  :load-path "./site-lisp/aider.el"
+  :ensure t
+  :bind
+  ("C-c a" 'aider-transient-menu)
   :config
   (setq aider-args '("--no-auto-commits" "--model" "deepseek/deepseek-coder"))
   (setenv "DEEPSEEK_API_KEY" (with-temp-buffer
@@ -13,7 +15,7 @@
 (use-package gptel
   :ensure t
   :bind
-  ("C-c a" . gptel-menu)
+  ("C-c g" . gptel-menu)
   :config
   (setq gptel-model "deepspek-chat")
   (setq gptel-default-mode 'org-mode)
