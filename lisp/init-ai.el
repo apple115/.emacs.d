@@ -5,7 +5,7 @@
 (use-package aider
   :ensure t
   :bind
-  ("C-c a" 'aider-transient-menu)
+  ("C-c a". aider-transient-menu)
   :config
   (setq aider-args '("--no-auto-commits" "--model" "deepseek/deepseek-coder"))
   (setenv "DEEPSEEK_API_KEY" (with-temp-buffer
@@ -15,7 +15,7 @@
 (use-package gptel
   :ensure t
   :bind
-  ("C-c g" . gptel-menu)
+  ("C-c i" . gptel-menu)
   :config
   (setq gptel-model "deepspek-chat")
   (setq gptel-default-mode 'org-mode)
@@ -27,37 +27,8 @@
         :key (with-temp-buffer (with-temp-buffer
                                 (insert-file-contents "~/.config/deepseek/key.txt")
                                 (string-trim (buffer-string))))
-        :models '(deepseek-chat deepseek-coder))
-    ))
-
-;;; code-copilot
-
-;; (use-package copilot
-;;   :ensure t
-;;   :config
-;;   (setq copilot-version nil)
-;;   (setq copilot-node-executable "/opt/homebrew/bin/node")
-;;   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-;;  )
-
-;; (use-package aidermacs
-;;   :load-path "./site-lisp/aidermacs"
-;;   :config
-;;   (setq aidermacs-default-model "deepseek/deepseek-coder")
-;;   ;; Use vterm backend (default is comint)
-;;   (setq aidermacs-backend 'vterm)
-;;   (global-set-key (kbd "C-c a") 'aidermacs-transient-menu)
-;;   ; Enable minor mode for Aider files
-;;   (aidermacs-setup-minor-mode)
-;;   ; See the Configuration section below
-;;   (setq aidermacs-auto-commits t)
-;;   (setq aidermacs-use-architect-mode t)
-;;   ; Ensure emacs can access *_API_KEY through .bashrc or setenv
-;;   (setenv "ANTHROPIC_API_KEY" (with-temp-buffer
-;;                                 (insert-file-contents "~/.config/deepseek/key.txt")
-;;                                 (string-trim (buffer-string)))))
+        :models '(deepseek-chat deepseek-coder))))
 
 (provide 'init-ai)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-ai.el ends here
