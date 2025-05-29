@@ -6,69 +6,99 @@
   :load-path "./site-lisp/my-fork-sort-tab/"
   :after doom-modeline
   :custom
-  (sort-tab-separator "")
+  (sort-tab-separaor "")
   (sort-tab-name-max-length 20)
   :config
+  ;; (add-hook 'tab-bar-tab-post-open-functions (lambda (tab) (sort-tab-turn-on)) t)
   (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
   (setq sort-tab-show-index-number t)
-   (sort-tab-mode 1)
+  (sort-tab-mode 1)
 )
-;; (use-package dirvish
-;;   :init
-;;   (dirvish-override-dired-mode)
-;;   :ensure t
-;;   :config
-;;     (setq dirvish-use-header-line nil)      ; hide header line (show the classic dired header)
-;;     (setq dirvish-use-mode-line nil)        ; hide mode line
-;;     (setq dirvish-attributes
-;;             '(nerd-icons file-time file-size collapse subtree-state vc-state git-msg)
-;;             dirvish-side-attributes
-;;             '(vc-state file-size nerd-icons collapse))
-;;   (setq delete-by-moving-to-trash t)
-;; )
+
+(use-package dirvish
+  :init
+  (dirvish-override-dired-mode)
+  :ensure t
+  :config
+    (setq insert-directory-program "gls")
+    (setq dirvish-default-layout '(0 0.4 0.6))
+    (setq dirvish-use-header-line nil)      ; hide header line (show the classic dired header)
+    ;; (setq dirvish-mode-line-format
+    ;;         '(:left (sort symlink) :right (omit yank index)))
+    (setq dirvish-use-mode-line nil)        ; hide mode line
+    (setq dirvish-large-directory-threshold 20000)
+    (setq dirvish-attributes           ; The order *MATTERS* for some attributes
+            '(vc-state subtree-state nerd-icons collapse file-time file-size)
+            dirvish-side-attributes
+            '(vc-state nerd-icons collapse file-size))
+
+  (setq delete-by-moving-to-trash t)
+  (general-evil-define-key 'normal dirvish-mode-map
+    "q" 'dirvish-quit
+    "o" 'dired-quick-access
+    "TAB" 'dirvish-subtree-toggle
+    "N" 'dirvish-narrow
+    "c" 'dired-do-compress-to
+    "h" 'dired-up-directory
+    "j" 'dired-next-line
+    "k" 'dired-previous-line
+    "l" 'dired-find-file
+    "gr" 'revert-buffer
+    "gy" 'dired-show-file-type
+    "m" 'dired-mark
+    "u" 'dired-unmark
+    "x" 'dired-do-flagged-delete
+    "RET" 'dired-find-file
+
+    "A" 'dired-do-find-regexp
+    "B" 'dired-do-byte-compile
+    "C" 'dired-do-copy
+    "D" 'dired-do-delete
+    "H" 'dired-do-hardlink
+    "G" 'dired-do-chgrp
+    "M" 'dired-do-chmod
+    "O" 'dired-do-chown
+    "R" 'dired-do-rename
+    "S" 'dired-do-symlink
+    "T" 'dired-do-touch
+    "Y" 'dired-copy-filename-as-kill
+    "Z" 'dired-do-compress
+    "!" 'dired-do-shell-command
+    "&" 'dired-do-async-shell-command
+    "+" 'dired-create-directory
+  )
+   :bind ; Bind `dirvish-fd|dirvish-side|dirvish-dwim' as you see fit
+  (("C-c f" . dirvish)
+   :map dirvish-mode-map               ; Dirvish inherits `dired-mode-map'
+   (";"   . dired-up-directory)        ; So you can adjust `dired' bindings here
+   ("?"   . dirvish-dispatch)          ; [?] a helpful cheatsheet
+   ("a"   . dirvish-setup-menu)        ; [a]ttributes settings:`t' toggles mtime, `f' toggles fullframe, etc.
+   ("f"   . dirvish-file-info-menu)    ; [f]ile info
+   ("o"   . dirvish-quick-access)      ; [o]pen `dirvish-quick-access-entries'
+   ("s"   . dirvish-quicksort)         ; [s]ort flie list
+   ("r"   . dirvish-history-jump)      ; [r]ecent visited
+   ("l"   . dirvish-ls-switches-menu)  ; [l]s command flags
+   ("v"   . dirvish-vc-menu)           ; [v]ersion control commands
+   ("*"   . dirvish-mark-menu)
+   ("y"   . dirvish-yank-menu)
+   ("N"   . dirvish-narrow)
+   ("^"   . dirvish-history-last)
+   ("TAB" . dirvish-subtree-toggle)
+   ("M-f" . dirvish-history-go-forward)
+   ("M-b" . dirvish-history-go-backward)
+   ("M-e" . dirvish-emerge-menu)))
 
 (use-package dired
-  :ensure nil
-  :custom
-  (dired-kill-when-opening-new-dired-buffer t)
   :config
-  (setq dired-hide-details-hide-symlink-targets nil)
-  (general-evil-define-key 'normal dired-mode-map
-  "c" 'dired-do-compress-to
-  "q" 'quit-window
-  "h" 'dired-up-directory
-  "j" 'dired-next-line
-  "k" 'dired-previous-line
-  "l" 'dired-find-file
-  "gr" 'revert-buffer
-  "gy" 'dired-show-file-type
-  "m" 'dired-mark
-  "u" 'dired-unmark
-  "x" 'dired-do-flagged-delete
-  "RET" 'dired-find-file
+  (setq dired-listing-switches
+        "-l --almost-all --human-readable --group-directories-first --no-group")
+  ;; this command is useful when you want to close the window of `dirvish-side'
+  ;; automatically when opening a file
+  (put 'dired-find-alternate-file 'disabled nil))
 
-  "A" 'dired-do-find-regexp
-  "B" 'dired-do-byte-compile
-  "C" 'dired-do-copy
-  "D" 'dired-do-delete
-  "H" 'dired-do-hardlink
-  "G" 'dired-do-chgrp
-  "M" 'dired-do-chmod
-  "O" 'dired-do-chown
-  "R" 'dired-do-rename
-  "S" 'dired-do-symlink
-  "T" 'dired-do-touch
-  "Y" 'dired-copy-filename-as-kill
-  "Z" 'dired-do-compress
-  "!" 'dired-do-shell-command
-  "&" 'dired-do-async-shell-command
-  "+" 'dired-create-directory
-  )
-)
-
-(use-package nerd-icons-dired
-    :ensure t
-    :hook(dired-mode . nerd-icons-dired-mode))
+;; (use-package nerd-icons-dired
+;;     :ensure t
+;;     :hook(dired-mode . nerd-icons-dired-mode))
 
 (use-package diredfl
   :ensure t
@@ -155,7 +185,6 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
 
 (use-package nerd-icons
   :ensure t)
-
 
 ;;view large file
 (use-package vlf
