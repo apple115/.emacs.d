@@ -18,8 +18,8 @@
 )
 
 (defun my-apply-font()
-    (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 14 :weight 'medium))
-    (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 14 :weight 'medium))
+    (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 12 :weight 'medium))
+    (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 12 :weight 'medium))
 )
 
 ;; |大家|
