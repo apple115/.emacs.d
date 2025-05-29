@@ -7,7 +7,7 @@
   :bind
   ("C-c a". aider-transient-menu)
   :config
-  (setq aider-args '("--no-auto-commits" "--model" "deepseek/deepseek-coder"))
+  (setq aider-args '("--no-auto-commits" "--model" "deepseek/deepseek-chat"))
   (setenv "DEEPSEEK_API_KEY" (with-temp-buffer
                                (insert-file-contents "~/.config/deepseek/key.txt")
                                (string-trim (buffer-string)))))
