@@ -54,7 +54,9 @@
          "\\*lsp-bridge-doc\\*"
          "\\*fanyi\\*"
          "\\*eshell*\\*"
+         "\\*Warnings*\\*"
          ;; "\\*Org Agenda(t)\\*"
+          go-test-mode
           help-mode
           compilation-mode))
 
