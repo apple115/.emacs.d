@@ -18,6 +18,7 @@
   "s l" '(consult-line :wk "search line in buffer")
  )
  :config
+(setq consult-locate-command "mdfind -name ARG OPTS")
 (setq read-file-name-function #'consult-find-file-with-preview)
 (defun consult-find-file-with-preview (prompt &optional dir default mustmatch initial pred)
   (interactive)
