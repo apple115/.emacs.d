@@ -76,6 +76,7 @@
   (require 'init-ai)
   (require 'init-emacs)
   (require 'init-git)
+  (require 'init-go)
   ;; (require 'init-org-ui)
   (require 'init-lsp-bridge)
   ;;(require 'init-eaf)
