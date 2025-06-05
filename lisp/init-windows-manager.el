@@ -64,6 +64,15 @@
 )                ; For echo area hints
 
 
+(use-package ace-window
+  :ensure t
+  :custom-face
+  (aw-leading-char-face ((t (:inherit font-lock-keyword-face :foreground unspecified :bold t :height 1.0))))
+  (aw-minibuffer-leading-char-face ((t (:inherit font-lock-keyword-face :bold t :height 1.0))))
+  (aw-mode-line-face ((t (:inherit mode-line-emphasis :bold t))))
+  :config
+  (global-set-key (kbd "M-o") 'ace-window)
+)
 (provide 'init-windows-manager)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-windows-manager.el ends here
