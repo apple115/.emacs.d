@@ -14,7 +14,13 @@
   :states '(normal)
   :prefix  "SPC"
   "m" '(nil :wk "Go mode")
-  "m t" '(go-test-current-test :wk "test current")))
+  "m t"'(nil :wk "Go mode test")
+  "m t t" '(go-test-current-test :wk "test current")
+  "m t f" '(go-test-current-file :wk "test file")
+  "m t p" '(go-test-current-file :wk "test project")
+  "m t c" '(go-test-current-coverage :wk "test coverage")
+  "m t b" '(go-test-current-benchmark :wk "test benchmark")
+  ))
 
 
 (provide 'init-go)
