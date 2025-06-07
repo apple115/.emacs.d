@@ -1,4 +1,6 @@
-;;;init-go.el
+;;; init-go.el --- go configuration -*- lexical-binding: t; -*-
+;;; Commentary:
+;;; Code:
 
 (use-package go-ts-mode
 :ensure nil

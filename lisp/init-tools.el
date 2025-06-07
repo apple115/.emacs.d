@@ -1,5 +1,6 @@
 ;;; init-tools.el --- Tools settings -*- lexical-binding: t -*-
-;;; Commentary: Useful tools to make Emacs efficient!
+;;; Commentary:
+;;; Useful tools to make Emacs efficient!
 
 ;;; Code:
 
@@ -18,7 +19,7 @@
         which-key-side-window-max-height 0.25
         which-key-idle-delay 0.8
         which-key-max-description-length 25
-        which-key-allow-imprecisewindow-fit t
+        which-key-allow-imprecise-window-fit t
         which-key-separator " → " ))
 
 (use-package tree-sitter
@@ -28,10 +29,10 @@
   (global-tree-sitter-mode)
 )
 
-(use-package treesit-auto
-  :ensure t
-  :config
-  (global-treesit-auto-mode))
+;; (use-package treesit-auto
+;;   :ensure t
+;;   :config
+;;   (global-treesit-auto-mode))
 
 (use-package tree-sitter-langs
   :defer 1
@@ -39,7 +40,11 @@
   :disabled t
   :after tree-sitter
 )
-(setq treesit-language-source-alist
+
+(use-package treesit
+  :ensure nil
+  :config
+  (setq treesit-language-source-alist
       '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
         (c . ("https://github.com/tree-sitter/tree-sitter-c"))
         (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
@@ -69,7 +74,7 @@
         (vue . ("https://github.com/merico-dev/tree-sitter-vue"))
         (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
         (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
-        (zig . ("https://github.com/GrayJack/tree-sitter-zig"))))
+        (zig . ("https://github.com/GrayJack/tree-sitter-zig")))))
 
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (treesit-parser-create 'elisp)))
 (add-to-list 'auto-mode-alist '("\\.ts\\'". typescript-ts-mode))
@@ -81,7 +86,6 @@
 (add-to-list 'auto-mode-alist '("\\.css\\'". css-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'". go-ts-mode))
 (add-to-list 'auto-mode-alist '("\\Dockerfile\\'". dockerfile-ts-mode))
-(setq treesit-font-lock-level 4)
 
 (setq make-backup-files nil)                                  ; 不自动备份
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
@@ -90,12 +94,12 @@
 (use-package flycheck
   :ensure t
   :config
+    ;; (setq-default
+    ;;     flycheck-disabled-checkers
+    ;;     (append (default-value 'flycheck-disabled-checkers)
+    ;;             '(emacs-lisp emacs-lisp-checkdoc emacs-lisp-package)))
   (global-flycheck-mode)
-    (setq-default
-        flycheck-disabled-checkers
-        (append (default-value 'flycheck-disabled-checkers)
-                '(emacs-lisp emacs-lisp-checkdoc emacs-lisp-package sh-shellcheck)))
-  ;; (setq truncate-lines nil) ; 如果单行信息很长会自动换行
+  (setq truncate-lines nil) ; 如果单行信息很长会自动换行
   (flycheck-add-mode 'javascript-eslint 'js-mode)
   (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
   (flycheck-add-mode 'javascript-eslint 'tsx-ts-mode)

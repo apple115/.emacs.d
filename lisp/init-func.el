@@ -1,19 +1,21 @@
-;;; init-func.el --- func settings -*- lexical-binding: t -*-
-;;; Commentary: func
+;;; init-func.el --- function settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; my personal functions
 
 
+;;; Code:
 (defun my-load-config ()
   "Load Emacs configuration."
   (interactive)
   (load-file "~/.emacs.d/init.el"))
 
 (defun add-list-to-list (dst src)
-  "Similar to `add-to-list', but accepts a list as 2nd argument"
+  "Add elements of SRC to list stored in DST."
   (set dst
        (append (eval dst) src)))
 
 (defun my-open-termial-kitty ()
-  "Open kitty terminal in load filepath"
+  "Open kitty terminal in load file path."
   (interactive)
   (let ((directory (eshell/pwd)))
     (async-shell-command (format "kitty --directory %s" directory))
@@ -32,7 +34,7 @@ regarding the asynchronous search and the arguments."
   (find-file-other-window  (consult--find prompt builder initial))))
 
 (defun my-vterm-apple115-switch ()
-  "Create a new vterm buffer with the fixed name 'apple115'."
+  "Create a new vterm buffer with the fixed name `apple115`."
   (interactive)
   (let ((buffer (get-buffer "terminal")))
     (if (not buffer) ; 检查是否已经存在名为 'apple115' 的缓冲区
@@ -40,7 +42,7 @@ regarding the asynchronous search and the arguments."
     (switch-to-buffer "terminal"))) ; 切换到 'apple115' 缓冲区
 
 (defun +new-vtermN ()
-  "Create a new vterm buffer with a name in the form of 'termN', where N is a number."
+  "Create a new vterm buffer with a name in the form of `termN`', where N is a number."
   (interactive)
   (let ((counter 1)
         (vterm-prefix "term"))
@@ -55,7 +57,7 @@ regarding the asynchronous search and the arguments."
 
 
 (defun get-word-translate-to-bar()
-  "translate current word to bar"
+  "Translate current word to bar."
   (interactive)
   (let ((w (thing-at-point 'word)))
     (when w (with-temp-buffer  (call-process-shell-command (format "busctl --user call org.zbus.MyGreeter /org/zbus/MyGreeter org.zbus.MyGreeter1 SendWord s %s > /dev/null 2>&1" (downcase w)) nil  "*Shell Command Output*" t)))))
@@ -92,7 +94,7 @@ If NEWNAME is a directory, move file to it."
   "Delete current file and kill the buffer."
   (interactive)
   (unless (buffer-file-name)
-    (error "No file is curretly being edited"))
+    (error "No file is currently being edited"))
     (when (yes-or-no-p (format "Really delete '%s'? " (file-name-nondirectory buffer-file-name)))
     (delete-file(buffer-file-name))
     (kill-this-buffer)))
@@ -107,17 +109,17 @@ If NEWNAME is a directory, move file to it."
 
 
 (defun +format-code-and-flycheck()
+  "Format code file."
   (interactive)
   (ignore-errors
   ;; (flycheck-buffer)
   (format-all-buffer)))
 
 (defun +hexo-new()
-  "New a hexo blog"
+  "New a hexo blog."
   (interactive)
   (let ((default-directory "~/blog/"))
-   (hexo-new))
-)
+   (hexo-new)))
 
 
 ;; (use-package tailwindcss-color-mode

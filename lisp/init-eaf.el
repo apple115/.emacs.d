@@ -1,4 +1,4 @@
-;;; init-eaf.el --- Langs settings -*- lexical-binding: t -*-
+;;; init-eaf.el --- EAF settings -*- lexical-binding: t -*-
 ;;; Commentary: eaf
 
 ;;; Code:

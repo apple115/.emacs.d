@@ -1,5 +1,6 @@
-;;; init-ai.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: ai
+;;; init-ai.el --- ai tool settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; ai tool settings
 
 ;;; Code:
 (use-package aider

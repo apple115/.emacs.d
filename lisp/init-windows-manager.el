@@ -1,13 +1,12 @@
-;;; init-windows-manager.el --- tools settings -*- lexical-binding: t -*-
+;;; init-windows-manager.el --- windows manager settings -*- lexical-binding: t -*-
 ;;; Commentary:
-;;; windwos-manager
+;;; windows-manager
 
 ;;; Code:
 (use-package shackle
   :ensure t
   :hook (after-init . shackle-mode)
   :init
-  (setq shackle-lighter "")
   (setq shackle-select-reused-windows nil) ; default nil
   (setq shackle-default-alignment 'below)  ; default below
   (setq shackle-rules

@@ -1,5 +1,6 @@
-;;; init-exec-path-from-shell.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: exec-path-from-shell
+;;; init-exec-path-from-shell.el --- env settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; exec-path-from-shell
 
 ;;; Code:
 (use-package exec-path-from-shell

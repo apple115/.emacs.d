@@ -1,5 +1,6 @@
-;;; init-write.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: write
+;;; init-write.el --- Write settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; write
 
 ;;; Code:
 (use-package org

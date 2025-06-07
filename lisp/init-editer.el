@@ -1,5 +1,6 @@
-;;; init-editer.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: editer
+;;; init-editer.el --- editor settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; editor
 
 ;;; Code:
 (use-package sort-tab
@@ -12,7 +13,6 @@
   ;; (add-hook 'tab-bar-tab-post-open-functions (lambda (tab) (sort-tab-turn-on)) t)
   (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
   (setq sort-tab-show-index-number t)
-  (sort-tab-mode 1)
 )
 
 (use-package dirvish
@@ -149,7 +149,7 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
 
 
 (defun my-paste-to-dired ()
-"使用wl-paste 命令复制在当前文件夹中"
+"使用wl-paste 命令复制在当前文件夹中."
 (interactive)
 (let ((past-file-name (read-file-name "Enter file name:") ))
   (async-shell-command (format "wl-paste > %s" past-file-name) )

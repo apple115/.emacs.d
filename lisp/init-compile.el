@@ -1,5 +1,5 @@
 ;;; init-compile.el --- compile settings -*- lexical-binding: t -*-
-;;;Commentary:
+;;; Commentary:
 
 ;;; Code:
 (setq-default compilation-scroll-output t)

@@ -1,5 +1,6 @@
 ;;; init-org-ui.el --- org-ui -*- lexical-binding: t -*-
-;;; Commentary: org-ui
+;;; Commentary:
+;;; org-ui
 
 ;;; Code:
 (use-package org-modern

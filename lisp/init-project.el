@@ -1,5 +1,6 @@
 ;;; init-project.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: project
+;;; Commentary:
+;;; project management and workspace handling in Emacs.
 
 ;;; Code:
 (use-package project

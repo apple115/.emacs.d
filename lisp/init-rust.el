@@ -1,5 +1,6 @@
 ;;; init-rust.el ---  Initialize Rust configurations.  -*- lexical-binding: t -*-
-;;; Commentary: rust
+;;; Commentary:
+;;; rust settings
 
 ;;; Code:
 (use-package rust-mode

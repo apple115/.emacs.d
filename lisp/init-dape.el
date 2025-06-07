@@ -1,5 +1,6 @@
-;;; init-dape.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: dape
+;;; init-dape.el --- dape settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; dape settings for debugging and profiling Emacs Lisp code.
 
 ;;; Code:
 (use-package dape

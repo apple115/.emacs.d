@@ -1,8 +1,7 @@
-;;; init-keyboard.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: keyboard
+;;; init-keyboard.el --- global key settings -*- lexical-binding: t -*-
+;;; Commentary:
 
 ;;; Code:
-
 (with-eval-after-load 'general
   (+leader-keys
     "SPC" '(consult-buffer :wk "find file")

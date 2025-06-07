@@ -140,7 +140,6 @@
 
  ;; 设置 emacs-lisp 的限制
  (setq max-lisp-eval-depth 10000)        ; 默认值为 800
- (setq max-specpdl-size 10000)           ; 默认值为 1600
 
  ;; 启用 `list-timers', `list-threads' 这两个命令
  (put 'list-timers 'disabled nil)
@@ -165,6 +164,9 @@
 (global-visual-line-mode t)
 
 ;; 在这个prog-mode 和 text-mode 后添加line-number
+(unless (boundp 'display-line-numbers-type)
+  (defvar display-line-numbers-type nil))
+
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 ;; (add-hook 'text-mode-hook 'display-line-numbers-mode)

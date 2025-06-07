@@ -1,5 +1,6 @@
-;;; init-anki.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: anki
+;;; init-anki.el --- Anki tools settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; anki
 
 (use-package anki-helper
  :load-path "./site-lisp/emacs-anki-helper"

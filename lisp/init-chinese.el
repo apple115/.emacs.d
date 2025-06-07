@@ -1,5 +1,6 @@
-;;; init-chinese.el --- Langs settings -*- lexical-binding: t -*-
+;;; init-chinese.el --- Chinese settings -*- lexical-binding: t -*-
 ;;; Commentary:
+;;; Chinese settings
 
 ;;; Code:
 ;; 中国节日设置

@@ -1,5 +1,6 @@
-;;; init-git.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: git
+;;; init-git.el --- Git settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; git related settings for Emacs
 
 ;;; Code:
 (use-package with-editor
