@@ -66,20 +66,29 @@
 
 (use-package evil-textobj-tree-sitter
   :ensure t
-  :after (evil)
+  :after evil
   :config
-  (define-key evil-outer-text-objects-map "m" (cons "evil-outer-function/method" (evil-textobj-tree-sitter-get-textobj "function.outer")))
-  (define-key evil-inner-text-objects-map "m" (cons "evil-inner-function/method" (evil-textobj-tree-sitter-get-textobj "function.inner")))
-  (define-key evil-outer-text-objects-map "f" (cons "evil-outer-call" (evil-textobj-tree-sitter-get-textobj "function.outer")))
-  (define-key evil-inner-text-objects-map "f" (cons "evil-inner-call" (evil-textobj-tree-sitter-get-textobj "function.inner")))
-  (define-key evil-outer-text-objects-map "c" (cons "evil-outer-class" (evil-textobj-tree-sitter-get-textobj "class.outer")))
-  (define-key evil-inner-text-objects-map "c" (cons "evil-inner-class" (evil-textobj-tree-sitter-get-textobj "class.inner")))
-  (define-key evil-outer-text-objects-map "n" (cons "evil-outer-comment" (evil-textobj-tree-sitter-get-textobj "comment.outer")))
-  (define-key evil-inner-text-objects-map "n" (cons "evil-outer-comment" (evil-textobj-tree-sitter-get-textobj "comment.outer")))
-  (define-key evil-outer-text-objects-map "v" (cons "evil-outer-conditional-loop" (evil-textobj-tree-sitter-get-textobj ("conditional.outer" "loop.outer"))))
-  (define-key evil-inner-text-objects-map "v" (cons "evil-inner-conditional-loop" (evil-textobj-tree-sitter-get-textobj ("conditional.inner" "loop.inner"))))
-  (define-key evil-inner-text-objects-map "a" (cons "evil-inner-parameter" (evil-textobj-tree-sitter-get-textobj "parameter.inner")))
-  (define-key evil-outer-text-objects-map "a" (cons "evil-outer-parameter" (evil-textobj-tree-sitter-get-textobj "parameter.outer")))
+  (define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "call.outer"))
+  (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "call.inner"))
+  (define-key evil-outer-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "class.outer"))
+  (define-key evil-inner-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "class.inner"))
+  (define-key evil-outer-text-objects-map "l" (evil-textobj-tree-sitter-get-textobj "loop.outer"))
+  (define-key evil-inner-text-objects-map "l" (evil-textobj-tree-sitter-get-textobj "loop.inner"))
+  (define-key evil-outer-text-objects-map "m" (evil-textobj-tree-sitter-get-textobj "function.outer"))
+  (define-key evil-inner-text-objects-map "m" (evil-textobj-tree-sitter-get-textobj "function.inner"))
+    ;; Goto start of next function
+    (define-key evil-normal-state-map
+                (kbd "]m")
+                (lambda ()
+                (interactive)
+                (evil-textobj-tree-sitter-goto-textobj "function.outer")))
+
+    ;; Goto start of previous function
+    (define-key evil-normal-state-map
+                (kbd "[m")
+                (lambda ()
+                (interactive)
+                (evil-textobj-tree-sitter-goto-textobj "function.outer" t)))
 )
 
 (setq x-select-request-type nil)
