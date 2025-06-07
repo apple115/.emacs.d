@@ -34,6 +34,12 @@
 (global-set-key [remap evil-quit] 'kill-buffer-and-window)
 )
 
+(use-package evil-mc
+  :after evil
+  :ensure t
+  :config
+ (global-evil-mc-mode  1))
+
 
 (use-package evil-collection
   :ensure t
