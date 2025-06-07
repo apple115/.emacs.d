@@ -93,6 +93,8 @@
 
 (use-package flycheck
   :ensure t
+  :custom
+  (flycheck-indication-mode 'nil)
   :config
     ;; (setq-default
     ;;     flycheck-disabled-checkers
