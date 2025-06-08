@@ -22,24 +22,18 @@
         which-key-allow-imprecise-window-fit t
         which-key-separator " → " ))
 
-(use-package tree-sitter
-  :defer 1
+(use-package treesit-fold-indicators
+    :ensure treesit-fold
+    :hook (after-init . global-treesit-fold-indicators-mode)
+    :init (setq treesit-fold-indicators-priority -1))
+
+(use-package treesit-auto
   :ensure t
+  :custom
+  (treesit-auto-install 'prompt)
   :config
-  (global-tree-sitter-mode)
-)
-
-;; (use-package treesit-auto
-;;   :ensure t
-;;   :config
-;;   (global-treesit-auto-mode))
-
-(use-package tree-sitter-langs
-  :defer 1
-  :ensure t
-  :disabled t
-  :after tree-sitter
-)
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 (use-package treesit
   :ensure nil
@@ -53,7 +47,7 @@
         (csharp     . ("https://github.com/tree-sitter/tree-sitter-c-sharp.git"))
         (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
         (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
-        (go . ("https://github.com/tree-sitter/tree-sitter-go"))
+        (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.19.0"))
         (gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
         (html . ("https://github.com/tree-sitter/tree-sitter-html"))
         (java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
@@ -76,20 +70,8 @@
         (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
         (zig . ("https://github.com/GrayJack/tree-sitter-zig")))))
 
-(add-hook 'emacs-lisp-mode-hook #'(lambda () (treesit-parser-create 'elisp)))
-(add-to-list 'auto-mode-alist '("\\.ts\\'". typescript-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'". tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'". js-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.json\\'". json-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.yml\\'". yaml-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml\\'". yaml-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.css\\'". css-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.go\\'". go-ts-mode))
-(add-to-list 'auto-mode-alist '("\\Dockerfile\\'". dockerfile-ts-mode))
-
 (setq make-backup-files nil)                                  ; 不自动备份
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
-
 
 (use-package flycheck
   :ensure t
@@ -187,7 +169,6 @@
             (vterm-send-return))))
     )
 )
-
 
 (use-package atomic-chrome
   :demand t
