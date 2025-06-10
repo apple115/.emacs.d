@@ -34,14 +34,14 @@
   (setq gptel-model "deepspek-chat")
   (setq gptel-default-mode 'org-mode)
   (setq gptel-backend
-          (gptel-make-openai "DeepSeek"
-        :host "api.deepseek.com"
-        :endpoint "/chat/completions"
-        :stream t
-        :key (with-temp-buffer (with-temp-buffer
-                                (insert-file-contents "~/.config/deepseek/key.txt")
-                                (string-trim (buffer-string))))
-        :models '(deepseek-chat deepseek-coder))))
+        (gptel-make-openai "DeepSeek"
+          :host "api.deepseek.com"
+          :endpoint "/chat/completions"
+          :stream t
+          :key (with-temp-buffer (with-temp-buffer
+                                   (insert-file-contents "~/.config/deepseek/key.txt")
+                                   (string-trim (buffer-string))))
+          :models '(deepseek-chat deepseek-coder))))
 
 (provide 'init-ai)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
