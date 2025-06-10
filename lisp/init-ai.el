@@ -5,13 +5,26 @@
 ;;; Code:
 (use-package aider
   :ensure t
-  :bind
-  ("C-c a". aider-transient-menu)
+  ;; :bind
+  ;; ("C-c a". aider-transient-menu)
   :config
   (setq aider-args '("--no-auto-commits" "--model" "deepseek/deepseek-chat"))
   (setenv "DEEPSEEK_API_KEY" (with-temp-buffer
                                (insert-file-contents "~/.config/deepseek/key.txt")
                                (string-trim (buffer-string)))))
+
+(use-package aidermacs
+  :ensure t
+  :bind (("C-c a" . aidermacs-transient-menu))
+  :config
+  (setq aidermacs-default-model "deepseek/deepseek-chat")
+  (setq aidermacs-backend 'vterm)
+  (setq aidermacs-vterm-multiline-newline-key "S-<return>")
+  (setenv "DEEPSEEK_API_KEY" (with-temp-buffer
+                               (insert-file-contents "~/.config/deepseek/key.txt")
+                               (string-trim (buffer-string))))
+  (setq aidermacs-show-diff-after-change t)
+  )
 
 (use-package gptel
   :ensure t
