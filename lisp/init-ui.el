@@ -167,6 +167,10 @@
 (unless (boundp 'display-line-numbers-type)
   (defvar display-line-numbers-type nil))
 
+;; Line numbers are not displayed when large files are used.
+(setq line-number-display-limit large-file-warning-threshold)
+(setq line-number-display-limit-width 1000)
+
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 ;; (add-hook 'text-mode-hook 'display-line-numbers-mode)
