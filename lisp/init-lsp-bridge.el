@@ -1,5 +1,6 @@
-;;; init-lsp-bridge.el --- Langs settings -*- lexical-binding: t -*-
-;;; Commentary: lsp-bridge
+;;; init-lsp-bridge.el --- Lsp tools settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; lsp-bridge is a language server client for Emacs, which provides
 ;;; Code:
 (use-package markdown-mode
   :ensure t
@@ -34,15 +35,15 @@
   (setq lsp-bridge--get-language-id-func t)
   (setq lsp-bridge-enable-hover-diagnostic t)
   (define-key acm-mode-map   (kbd "<tab>") 'yas-expand)
-(evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
-(evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
-(evil-collection-define-key 'normal 'lsp-bridge-mode-map
+  (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
+  (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
+  (evil-collection-define-key 'normal 'lsp-bridge-mode-map
     "K"   'lsp-bridge-popup-documentation
     "gd"  'lsp-bridge-find-def
     "gr" 'lsp-bridge-find-references
-  )
+    )
   (global-lsp-bridge-mode)
-)
+  )
 
 (provide 'init-lsp-bridge)
 
