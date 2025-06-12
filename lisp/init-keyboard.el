@@ -61,7 +61,7 @@
     "e r" '(eval-region :wk "Evaluate elisp in region")
 
     "t" '(:ignore t :wk "Toggle")
-    "t f" '(flymake-mode :wk "open flymake")
+    "t f" '(flychek-mode :wk "open flycheck")
     "t s" '(jinx-mode :wk "open jinx-mode")
     "t n" '(tab-bar-new-tab :wk "one new tab")
 

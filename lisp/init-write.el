@@ -6,7 +6,6 @@
 (use-package org
 :ensure nil
 :mode ("\\.org\\'" . org-mode)
-:hook ((org-mode . visual-line-mode))
 :config
 (require 'cl)
 ;; 为*设置蓝色 *内容*
@@ -300,7 +299,7 @@
 (use-package jinx
    :ensure t
    :config
-   (global-jinx-mode 1)
+   ;; (global-jinx-mode 1)
 (let ((st jinx--base-syntax-table))
   (modify-syntax-entry '(#x4E00 . #x9FFF) "_" st)   ; CJK Unified Ideographs
   (modify-syntax-entry '(#x3400 . #x4DBF) "_" st)   ; CJK Unified Ideographs Extension A

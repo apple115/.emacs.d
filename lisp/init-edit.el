@@ -13,7 +13,11 @@
 
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 ;; (add-hook 'after-init-hook 'auto-save-visited-mode)
-(add-hook 'after-init-hook 'global-hl-line-mode)
+(use-package hl-line
+  :ensure nil
+  :hook ((after-init . global-hl-line-mode)
+         ((dashboard-mode eshell-mode shell-mode term-mode vterm-mode) .
+          (lambda () (setq-local global-hl-line-mode nil)))))
 
 (use-package evil
   :ensure t

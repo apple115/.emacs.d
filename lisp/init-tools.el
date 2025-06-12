@@ -82,7 +82,6 @@
     ;;     flycheck-disabled-checkers
     ;;     (append (default-value 'flycheck-disabled-checkers)
     ;;             '(emacs-lisp emacs-lisp-checkdoc emacs-lisp-package)))
-  (global-flycheck-mode)
   (setq truncate-lines nil) ; 如果单行信息很长会自动换行
   (flycheck-add-mode 'javascript-eslint 'js-mode)
   (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
