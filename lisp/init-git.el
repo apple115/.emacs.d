@@ -12,23 +12,48 @@
   (magit-diff-refine-hunk t)
   (magit-ediff-dwim-show-on-hunks t))
 
-(use-package git-gutter
+;;; 配置来源 https://github.com/seagle0128/.emacs.d/blob/58a3beb7564c89733572ae361299cf5bb91b4c4c/lisp/init-highlight.el#L230
+ ;; Highlight uncommitted changes using VC
+(use-package diff-hl
   :ensure t
-  :hook (prog-mode . git-gutter-mode)
+  :custom (diff-hl-draw-borders nil)
+  :custom-face
+  (diff-hl-change ((t (:inherit custom-changed :foreground unspecified :background unspecified))))
+  (diff-hl-insert ((t (:inherit diff-added :background unspecified))))
+  (diff-hl-delete ((t (:inherit diff-removed :background unspecified))))
+  :bind (:map diff-hl-command-map
+         ("SPC" . diff-hl-mark-hunk))
+  :hook ((after-init . global-diff-hl-mode)
+         (after-init . global-diff-hl-show-hunk-mouse-mode)
+         (dired-mode . diff-hl-dired-mode))
   :config
-  (setq git-gutter:update-interval 0.02))
+  ;; Highlight on-the-fly
+  (diff-hl-flydiff-mode 1)
 
-(use-package git-gutter-fringe
-  :ensure t
-  :config
-  ;; (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
-  ;; (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(center repeated))
-  ;; (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240] nil nil 'bottom)
-    (if (fboundp 'fringe-mode) (fringe-mode '(6 . 8)))
-    ;; thin fringe bitmaps
-    (define-fringe-bitmap 'git-gutter-fr:added [#b111111] nil nil '(center repeated))
-    (define-fringe-bitmap 'git-gutter-fr:modified [#b111111] nil nil '(center repeated))
-    (define-fringe-bitmap 'git-gutter-fr:deleted [#b111111] nil nil '(center repeated)))
+  ;; Set fringe style
+  (setq-default fringes-outside-margins t)
+
+  (with-no-warnings
+    (defun my-diff-hl-fringe-bmp-function (_type _pos)
+      "Fringe bitmap function for use as `diff-hl-fringe-bmp-function'."
+      (define-fringe-bitmap 'my-diff-hl-bmp
+        (vector (if sys/linuxp #b11111100 #b11100000))
+        1 8
+        '(center t)))
+    (setq diff-hl-fringe-bmp-function #'my-diff-hl-fringe-bmp-function)
+
+    (unless (display-graphic-p)
+      ;; Fall back to the display margin since the fringe is unavailable in tty
+      (diff-hl-margin-mode 1)
+      ;; Avoid restoring `diff-hl-margin-mode'
+      (with-eval-after-load 'desktop
+        (add-to-list 'desktop-minor-mode-table
+                     '(diff-hl-margin-mode nil))))
+
+    ;; Integration with magit
+    (with-eval-after-load 'magit
+      (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+      (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))))
 
 
 
