@@ -33,6 +33,10 @@
   (sh-basic-offset 2)
   (sh-indentation 2))
 
+(use-package fish-mode
+  :mode (("\\.fish\\'" . fish-mode))
+ :ensure t)
+
 (provide 'init-langs)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-langs.el ends here
