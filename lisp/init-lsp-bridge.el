@@ -16,7 +16,7 @@
   :load-path "./site-lisp/lsp-bridge"
   :config
   ;; (setq lsp-bridge-enable-log t)
-  (setq lsp-bridge-python-command  "/Users/apple115/.emacs.d/site-lisp/my-emacs-python/bin/python3")
+  (setq lsp-bridge-python-command  "/Users/apple115/.emacs.d/site-lisp/lsp-bridge/.venv/bin/python3.13")
   (setq acm-enable-copilot t)
   (setq acm-enable-citre t)
   (setq acm-candidate-match-function 'orderless-flex)
