@@ -41,6 +41,18 @@
  (setq inhibit-startup-buffer-menu t)    ; 不显示缓冲区列表
  (setq cursor-type nil)                  ; 不显示鼠标
 
+;;; https://github.com/doomemacs/doomemacs/blob/master/lisp/doom-ui.el#L208
+;;; Cursor
+;; The blinking cursor is distracting, but also interferes with cursor settings
+;; in some minor modes that try to change it buffer-locally (like treemacs) and
+;; can cause freezing for folks (esp on macOS) with customized & color cursors.
+(blink-cursor-mode -1)
+;; Don't blink the paren matching the one at point, it's too distracting.
+(setq blink-matching-paren nil)
+;; Don't stretch the cursor to fit wide characters, it is disorienting,
+;; especially for tabs.
+(setq x-stretch-cursor nil)
+
  ;; 草稿缓冲区默认文字设置
  (setq initial-scratch-message (concat ";; Happy hacking, "
                                        (capitalize user-login-name) " - Emacs ♥ you!\n\n"))
@@ -67,9 +79,6 @@
 
  ;; 禁止响铃
  (setq ring-bell-function 'ignore)
-
- ;; 禁止闪烁光标
- (blink-cursor-mode -1)
 
  ;; 在光标处而非鼠标所在位置粘贴
  (setq mouse-yank-at-point t)
