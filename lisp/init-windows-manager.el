@@ -5,7 +5,7 @@
 ;;; Code:
 (use-package shackle
   :ensure t
-  :hook (after-init . shackle-mode)
+  :hook (after-elpaca-init . shackle-mode)
   :init
   (setq shackle-select-reused-windows nil) ; default nil
   (setq shackle-default-alignment 'below)  ; default below

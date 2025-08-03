@@ -3,6 +3,12 @@
 
 ;;; Code:
 (with-eval-after-load 'general
+  (general-create-definer +leader-keys
+    :states '(normal visual)
+    :states 'nil
+    :keymaps 'override
+    :prefix "SPC" ;; set leader
+    :global-prefix "C-SPC") ;; access leader in insert mode
   (+leader-keys
     "SPC" '(consult-buffer :wk "find file")
     "=" '(+format-code-and-flycheck :wk "flycheck and format")
@@ -49,7 +55,7 @@
     "b ," '(switch-to-prev-buffer :wk "prev-buffer")
     "b ." '(switch-to-next-buffer :wk "next-buffer")
     "b /" '(consult-buffer-other-window :wk "Switch buffer to other window")
-    "b k" '(kill-buffer :wk "kill buffer")
+    "b k" '(kill-current-buffer :wk "kill buffer")
     "b i" '(ibuffer :wk "ibuffer")
     "b r" '(revert-buffer :wk "Reload buffer")
 

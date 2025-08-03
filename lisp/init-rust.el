@@ -6,7 +6,7 @@
 (use-package rust-mode
   :init
   (setq rust-mode-treesitter-derive t)
-  :ensure t
+  :straight t
   :general
    (:keymaps 'rust-mode
    :states '(normal)

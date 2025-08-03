@@ -2,11 +2,48 @@
 ;;; Commentary:
 
 ;;; Code:
-(require 'package)
+(defvar elpaca-installer-version 0.11)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil :depth 1 :inherit ignore
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (when (<= emacs-major-version 28) (require 'subr-x))
+    (condition-case-unless-debug err
+        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                  ,@(when-let* ((depth (plist-get order :depth)))
+                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                  ,(plist-get order :repo) ,repo))))
+                  ((zerop (call-process "git" nil buffer t "checkout"
+                                        (or (plist-get order :ref) "--"))))
+                  (emacs (concat invocation-directory invocation-name))
+                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                  ((require 'elpaca))
+                  ((elpaca-generate-autoloads "elpaca" repo)))
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
 
 ;; 设置垃圾回收参数
 (setq gc-cons-threshold most-positive-fixnum)
-(setq gc-cons-percentage 0.6)
+(setq gc-cons-percentage 1)
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
 (setq gc-cons-threshold 80000000) ;; original value * 100
@@ -27,32 +64,28 @@
 (setq inhibit-splash-screen t)
 (setq use-file-dialog nil)
 
-;; (add-to-list 'default-frame-alist '(undecorated . t))
-;; (add-to-list 'default-frame-alist '(undecorated-round . t))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-;; (add-to-list 'default-frame-alist '(ns-appearance . dark))
-
-;; (setq default-frame-alist '((undecorated . t)))
-;; (add-to-list 'default-frame-alist '(drag-internal-border . 5))
-;; (add-to-list 'default-frame-alist '(internal-border-width . 5))
-
-(setq package-archives
-      '(("melpa"  . "https://melpa.org/packages/")
-        ("gnu"    . "https://elpa.gnu.org/packages/")
-        ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
-(package-initialize)
 ;; 将lisp目录放到加载路径的前面以加快启动速度
 (let
     ((dir
       (locate-user-emacs-file "lisp")))
   (add-to-list 'load-path
                (file-name-as-directory dir)))
+
+;; Install use-package support
+(elpaca elpaca-use-package
+  ;; Enable use-package :ensure support for Elpaca.
+  (elpaca-use-package-mode))
+
+(elpaca-wait)
 ;; 加载各模块化配置
 ;; 不要在`*message*'缓冲区显示加载模块化配置的信息
 (with-temp-message ""
+  (require 'init-base)
   (require 'init-custom)
   (require 'init-edit)
   (require 'init-tools)
+  (require 'init-keyboard)
   (require 'init-ui)
   (require 'init-completion)
   (require 'init-langs)
@@ -72,59 +105,19 @@
   (require 'init-anki)
   (require 'init-sql)
   (require 'init-project)
-  (require 'init-keyboard)
   (require 'init-chinese)
   (require 'init-ai)
   (require 'init-emacs)
   (require 'init-git)
   (require 'init-go)
   (require 'init-prog)
-  ;; (require 'init-org-ui)
   (require 'init-lsp-bridge)
+  ;; (require 'init-org-ui)
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
   )
-(when
-    (memq window-system
-          '(mac ns x))
-  (exec-path-from-shell-initialize))
-
-(when (daemonp)
-  (exec-path-from-shell-initialize))
-   (server-start)
+   ;; (server-start)
 
 (provide 'init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ace-window add-node-modules-path aider aidermacs atomic-chrome auto-yasnippet
-                cal-china-x citre clojure-ts-mode colorful-mode consult-notes
-                consult-todo dape denote devdocs diredfl dirvish docker
-                doom-modeline dumb-jump dwim-shell-command eglot ejc-sql
-                embark-consult emmet-mode engine-mode evil-collection
-                evil-matchit evil-mc evil-nerd-commenter evil-surround
-                evil-textobj-tree-sitter exec-path-from-shell fish-mode
-                flycheck-vale flymake-flycheck format-all general
-                git-gutter-fringe go-dlv go-fill-struct go-gen-test go-impl
-                go-tag gotest gptel graphviz-dot-mode gruvbox-theme haskell-mode
-                ibuffer-project jinx ligature link-hint marginalia
-                nerd-icons-dired nerd-icons-ibuffer ob-go ob-restclient olivetti
-                orderless org-appear org-auto-tangle org-contrib org-modern
-                org-modern-indent org-roam ox-gfm ox-reveal pinyinlib
-                plantuml-mode popper python-mode pyvenv quickrun
-                rainbow-delimiters rust-mode scss-mode shackle sis sudo-edit
-                tabspaces tree-sitter treesit-auto treesit-fold ultra-scroll
-                vertico virtualenvwrapper vlf vterm-toggle web-mode))
- '(package-vc-selected-packages
-   '((ultra-scroll :url "https://github.com/jdtsmith/ultra-scroll"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

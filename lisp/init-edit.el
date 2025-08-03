@@ -9,14 +9,19 @@
 ;; 可以是 async-shell-command 自动填充上一个命令
 ;; 中文
 (advice-add #'read-shell-command
- :filter-args #'(lambda(args) (list (car args) (car shell-command-history))))
+            :filter-args #'(lambda(args) (list (car args) (car shell-command-history))))
 
-(add-hook 'prog-mode-hook 'hs-minor-mode)
-;; (add-hook 'after-init-hook 'auto-save-visited-mode)
+(global-so-long-mode 1)
 
 (use-package evil
   :ensure t
+  :demand t
   :init
+  (setq evil-ex-search-vim-style-regexp t
+        evil-ex-visual-char-range t
+        evil-mode-line-format 'nil
+        evil-symbol-word-search t)
+
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-vsplit-window-right t)
@@ -25,38 +30,51 @@
   (setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
   (setq evil-want-C-d-scroll t) ;; allow scroll down with 'C-d'
   (setq evil-want-integration t) ;; necessary for evil collection
+  (setq evil-visual-update-x-selection-p nil)
   (evil-mode 1)
   :config
+  ;; (add-hook '(magit-mode-hook so-long-minor-mode-hook) ')
+  ;; (add-hook '(magit-mode-hoo) (lambda () (evil-ex-hl-update-delay 0.25)
+  ;; (setq-hook! '(magit-mode-hook so-long-minor-mode-hook)
+  ;;             evil-ex-hl-update-delay 0.25)
   (evil-add-command-properties #'citre-jump :jump t)
-    (define-key evil-insert-state-map (kbd "C-h") 'backward-delete-char)
-    (evil-define-key 'normal prog-mode-map (kbd "s") 'evil-avy-goto-char-timer)
-(global-set-key [remap evil-quit] 'kill-buffer-and-window)
-)
+  (define-key evil-insert-state-map (kbd "C-h") 'backward-delete-char)
+  (evil-define-key 'normal prog-mode-map (kbd "s") 'evil-avy-goto-char-timer)
+  (global-set-key [remap evil-quit] 'kill-buffer-and-window)
 
-(use-package evil-mc
-  :after evil
-  :ensure t
-  :config
- (global-evil-mc-mode  1))
+  (use-package evil-indent-plus
+    :ensure t
+    :after evil
+    :config
+    (define-key evil-inner-text-objects-map "i" 'evil-indent-plus-i-indent)
+    (define-key evil-outer-text-objects-map "i" 'evil-indent-plus-a-indent)
+    (define-key evil-inner-text-objects-map "I" 'evil-indent-plus-i-indent-up)
+    (define-key evil-outer-text-objects-map "I" 'evil-indent-plus-a-indent-up)
+    (define-key evil-inner-text-objects-map "J" 'evil-indent-plus-i-indent-up-down)
+    (define-key evil-outer-text-objects-map "J" 'evil-indent-plus-a-indent-up-down)
+    )
 
+  (use-package evil-surround
+    :ensure t
+    :after evil
+    :config
+    (global-evil-surround-mode 1))
+
+  (use-package evil-nerd-commenter
+    :ensure t
+    :init
+    (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
+    (define-key evil-visual-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines))
+
+  )
 
 (use-package evil-collection
   :ensure t
-  :after evil
+  :demand t
   :config
   (setq evil-collection-mode-list '(ibuffer calendar vterm ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel cider citre))
   (evil-collection-init))
 
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-nerd-commenter
-  :ensure t
-  :init
-  (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
-  (define-key evil-visual-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines))
 
 (use-package evil-matchit
   :ensure t
@@ -75,20 +93,20 @@
   (define-key evil-inner-text-objects-map "l" (evil-textobj-tree-sitter-get-textobj "loop.inner"))
   (define-key evil-outer-text-objects-map "m" (evil-textobj-tree-sitter-get-textobj "function.outer"))
   (define-key evil-inner-text-objects-map "m" (evil-textobj-tree-sitter-get-textobj "function.inner"))
-    ;; Goto start of next function
-    (define-key evil-normal-state-map
-                (kbd "]m")
-                (lambda ()
+  ;; Goto start of next function
+  (define-key evil-normal-state-map
+              (kbd "]m")
+              (lambda ()
                 (interactive)
                 (evil-textobj-tree-sitter-goto-textobj "function.outer")))
 
-    ;; Goto start of previous function
-    (define-key evil-normal-state-map
-                (kbd "[m")
-                (lambda ()
+  ;; Goto start of previous function
+  (define-key evil-normal-state-map
+              (kbd "[m")
+              (lambda ()
                 (interactive)
                 (evil-textobj-tree-sitter-goto-textobj "function.outer" t)))
-)
+  )
 
 (setq x-select-request-type nil)
 
@@ -99,7 +117,7 @@
   :ensure t
   :config
   (sudo-edit-indicator-mode)
-)
+  )
 
 (use-package saveplace
   :ensure nil
@@ -114,19 +132,6 @@
   :hook (prog-mode . electric-pair-local-mode)
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
-(use-package general
-  :ensure t
-  :config
-  (general-evil-setup)
-
-  ;; set up 'SPC' as the global leader key
-  (general-create-definer +leader-keys
-    :states '(normal visual)
-    :states 'nil
-    :keymaps 'override
-    :prefix "SPC" ;; set leader
-    :global-prefix "C-SPC") ;; access leader in insert mode
- )
 
 ;; vim keymap setting
 (setq mark-ring-max 6)
@@ -137,25 +142,26 @@
 (global-set-key (kbd "C-'") nil)
 
 (use-package hippie-exp
-:ensure nil
-:config
-(setq-default hippie-expand-try-functions-list
+  :ensure nil
+  :config
+  (setq-default hippie-expand-try-functions-list
                 '(yas-hippie-try-expand emmet-expand-line)))
 
-(use-package sis
- :ensure t
- :hook
- (((text-mode prog-mode) . sis-context-mode)
-   ((text-mode prog-mode) . sis-inline-mode))
- :config
-(sis-ism-lazyman-config
-   "com.apple.keylayout.ABC"
-   "com.apple.inputmethod.SCIM.Shuangpin"
-)
-(sis-global-cursor-color-mode t)
-(sis-global-respect-mode t)
-(setq sis-inline-with-other t)
-)
+
+;; (use-package sis
+;;   :ensure t
+;;   :hook
+;;   (((text-mode prog-mode) . sis-context-mode)
+;;    ((text-mode prog-mode) . sis-inline-mode))
+;;   :config
+;;   (sis-ism-lazyman-config
+;;    "com.apple.keylayout.ABC"
+;;    "com.apple.inputmethod.SCIM.Shuangpin"
+;;    )
+;;   (sis-global-cursor-color-mode t)
+;;   (sis-global-respect-mode t)
+;;   (setq sis-inline-with-other t)
+;;   )
 
 (provide 'init-edit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

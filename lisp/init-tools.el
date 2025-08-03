@@ -5,7 +5,7 @@
 ;;; Code:
 
 (use-package which-key
-  :ensure t
+  :ensure nil
   :init
     (which-key-mode 1)
   :config
@@ -22,10 +22,6 @@
         which-key-allow-imprecise-window-fit t
         which-key-separator " → " ))
 
-(use-package treesit-fold-indicators
-    :ensure treesit-fold
-    :hook (after-init . global-treesit-fold-indicators-mode)
-    :init (setq treesit-fold-indicators-priority -1))
 
 (use-package treesit-auto
   :ensure t
@@ -146,7 +142,7 @@
   (setq vterm-shell "/opt/homebrew/bin/fish")
     (use-package vterm-toggle
     :ensure t
-    :bind (   :map vterm-mode-map
+    :bind (:map vterm-mode-map
                 ([(control return)] . vterm-toggle-insert-cd))
     :config
     (setq vterm-toggle-cd-auto-create-buffer nil)
@@ -169,11 +165,6 @@
     )
 )
 
-(use-package atomic-chrome
-  :demand t
-  :vc (:url "https://github.com/KarimAziev/atomic-chrome")
-  :commands (atomic-chrome-start-server)
-  :config (atomic-chrome-start-server))
 
 (use-package dwim-shell-command
   :ensure t)

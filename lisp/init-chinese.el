@@ -7,6 +7,7 @@
 (use-package cal-china-x
   :ensure t
   :commands cal-china-x-setup
+  :after org-mode
   :hook (after-init . cal-china-x-setup)
   :config
   ;; 重要节日设置

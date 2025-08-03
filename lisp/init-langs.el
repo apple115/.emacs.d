@@ -1,8 +1,7 @@
-;;; init-langs.el --- Langs settings -*- lexical-binding: t -*-
+;;;init-langs.el --- Langs settings -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
-
-
+;;;
 (use-package clojure-ts-mode
 :ensure t
 )

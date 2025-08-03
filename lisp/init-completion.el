@@ -1,6 +1,7 @@
 ;;; init-completion.el --- Completion settings -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
+;;;
 (use-package yasnippet
   :ensure t
   :general
@@ -55,7 +56,7 @@
 ;;; Code:
 (use-package vertico
   :ensure t
-  :hook (after-init . vertico-mode)
+  :hook (elpaca-after-init . vertico-mode)
   :config
   (vertico-mode t)
 )

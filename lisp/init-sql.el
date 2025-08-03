@@ -3,9 +3,9 @@
 ;;; database interaction with Emacs using ejc
 
 ;;; Code:
-(use-package ejc-sql
-  :ensure t
-)
+;; (use-package ejc-sql
+;;   :ensure t
+;; )
 
 
 (provide 'init-sql)

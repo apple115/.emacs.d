@@ -1,7 +1,7 @@
 ;;; init-ui.el --- UI settings -*- lexical-binding: t -*-
 ;;; Commentary:
 
-;;; Code:
+;;; Code
 ;; (add-to-list 'default-frame-alist '(undecorated-round . t))
 ;; Initial frame
 (setq initial-frame-alist '((top . 0.5)
@@ -25,8 +25,8 @@
   (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 12 :weight 'medium))
   )
 
-;; |大家|
-;; |aabb|大家
+ ;; |大家|
+ ;; |aabb|大家
 
 (my-apply-font)
 
@@ -34,6 +34,7 @@
           (lambda (frame)
             (select-frame frame)
             (my-apply-font)))
+
 ;;测试一下这个
 
 ;; 禁用一些GUI特性
@@ -209,7 +210,7 @@
 
 (use-package doom-modeline
   :ensure t
-  :hook (after-init . doom-modeline-mode)
+  :hook (elpaca-after-init . doom-modeline-mode)
   :hook (doom-modeline-mode . size-indication-mode) ; filesize in modeline
   :hook (doom-modeline-mode . column-number-mode)   ; cursor column in modeline
   :init
@@ -292,17 +293,17 @@
               #'(lambda (&rest _) (force-mode-line-update))))
   )
 
-(use-package ultra-scroll
-  :vc (:url "https://github.com/jdtsmith/ultra-scroll")
-  :hook (after-init . ultra-scroll-mode)
-  :init
-  (setq scroll-conservatively 101 ; important!
-        scroll-margin 0)
-  )
+;; (use-package ultra-scroll
+;;   :vc (:url "https://github.com/jdtsmith/ultra-scroll")
+;;   :hook (after-init . ultra-scroll-mode)
+;;   :init
+;;   (setq scroll-conservatively 101 ; important!
+;;         scroll-margin 0)
+;;   )
 
 (use-package hl-line
-  :ensure t
-  :hook(after-init . global-hl-line-mode)
+  :ensure nil
+  :hook(elpaca-after-init . global-hl-line-mode)
   :init
   (defvar global-hl-line-modes
     '(prog-mode text-mode conf-mode special-mode

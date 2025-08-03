@@ -13,7 +13,13 @@
         ("C-c C-e" . markdown-do)))
 
 (use-package lsp-bridge
-  :load-path "./site-lisp/lsp-bridge"
+  :after (markdown-mode yasnippet)
+  :init (yas-global-mode 1)
+  :elpaca '(lsp-bridge
+              :host github
+              :repo "manateelazycat/lsp-bridge"
+              :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources" "icons")
+              :build (:not elpaca--byte-compile))
   :config
   ;; (setq lsp-bridge-enable-log t)
   (setq lsp-bridge-python-command  "/Users/apple115/.emacs.d/site-lisp/lsp-bridge/.venv/bin/python3.13")
