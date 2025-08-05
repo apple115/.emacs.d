@@ -10,7 +10,14 @@
   :ensure t
   :custom
   (magit-diff-refine-hunk t)
-  (magit-ediff-dwim-show-on-hunks t))
+  (magit-ediff-dwim-show-on-hunks t)
+  :config
+(setq magit-refresh-status-buffer nil)
+(remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+(remove-hook 'server-switch-hook 'magit-commit-diff)
+(remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff)
+
+)
 
 ;;; 配置来源 https://github.com/seagle0128/.emacs.d/blob/58a3beb7564c89733572ae361299cf5bb91b4c4c/lisp/init-highlight.el#L230
  ;; Highlight uncommitted changes using VC
