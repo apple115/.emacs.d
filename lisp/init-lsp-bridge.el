@@ -15,7 +15,7 @@
 (use-package lsp-bridge
   :after (markdown-mode yasnippet)
   :init (yas-global-mode 1)
-  :elpaca '(lsp-bridge
+  :ensure '(lsp-bridge
               :host github
               :repo "manateelazycat/lsp-bridge"
               :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources" "icons")

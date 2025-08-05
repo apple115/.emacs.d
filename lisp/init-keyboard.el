@@ -79,6 +79,7 @@
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
     "o b" '(hexo-my-blog  :wk "open hexo")
+    "o f" '(dwim-shell-commands-macos-reveal-in-finder)
 
     "d" '(:ignore t :wk "dired")
     "d d" '(pwd :wk "pwd")

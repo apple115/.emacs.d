@@ -3,7 +3,7 @@
 
 ;;; Code:
 (use-package realgud
- :straight t)
+ :ensure t)
 
 (provide 'init-realgud)
 

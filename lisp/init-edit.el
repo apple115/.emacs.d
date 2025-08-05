@@ -42,31 +42,32 @@
   (evil-define-key 'normal prog-mode-map (kbd "s") 'evil-avy-goto-char-timer)
   (global-set-key [remap evil-quit] 'kill-buffer-and-window)
 
-  (use-package evil-indent-plus
-    :ensure t
-    :after evil
-    :config
-    (define-key evil-inner-text-objects-map "i" 'evil-indent-plus-i-indent)
-    (define-key evil-outer-text-objects-map "i" 'evil-indent-plus-a-indent)
-    (define-key evil-inner-text-objects-map "I" 'evil-indent-plus-i-indent-up)
-    (define-key evil-outer-text-objects-map "I" 'evil-indent-plus-a-indent-up)
-    (define-key evil-inner-text-objects-map "J" 'evil-indent-plus-i-indent-up-down)
-    (define-key evil-outer-text-objects-map "J" 'evil-indent-plus-a-indent-up-down)
-    )
-
-  (use-package evil-surround
-    :ensure t
-    :after evil
-    :config
-    (global-evil-surround-mode 1))
-
-  (use-package evil-nerd-commenter
-    :ensure t
-    :init
-    (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
-    (define-key evil-visual-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines))
-
   )
+
+(use-package evil-indent-plus
+  :ensure t
+  :after evil
+  :config
+  (define-key evil-inner-text-objects-map "i" 'evil-indent-plus-i-indent)
+  (define-key evil-outer-text-objects-map "i" 'evil-indent-plus-a-indent)
+  (define-key evil-inner-text-objects-map "I" 'evil-indent-plus-i-indent-up)
+  (define-key evil-outer-text-objects-map "I" 'evil-indent-plus-a-indent-up)
+  (define-key evil-inner-text-objects-map "J" 'evil-indent-plus-i-indent-up-down)
+  (define-key evil-outer-text-objects-map "J" 'evil-indent-plus-a-indent-up-down)
+  )
+
+(use-package evil-surround
+  :ensure t
+  :after evil
+  :config
+  (global-evil-surround-mode 1))
+
+ (use-package evil-nerd-commenter
+   :ensure t
+   :after (evil evil-collection)
+   :init
+   (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
+   (define-key evil-visual-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines))
 
 (use-package evil-collection
   :ensure t
@@ -141,11 +142,11 @@
 (global-set-key (kbd "C-;") nil)
 (global-set-key (kbd "C-'") nil)
 
-(use-package hippie-exp
-  :ensure nil
-  :config
-  (setq-default hippie-expand-try-functions-list
-                '(yas-hippie-try-expand emmet-expand-line)))
+;; (use-package hippie-exp
+;;   :ensure nil
+;;   :config
+;;   (setq-default hippie-expand-try-functions-list
+;;                 '(yas-hippie-try-expand emmet-expand-line)))
 
 
 ;; (use-package sis
