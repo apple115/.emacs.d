@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; my personal functions
 
+(eval-when-compile
+  (require 'init-custom))
 
 ;;; Code:
 (defun my-load-config ()
@@ -129,6 +131,96 @@ If NEWNAME is a directory, move file to it."
 ;; (use-package mini-bar
 ;;  :load-path "./site-lisp/mini-tab.el"
 ;; )
+
+
+;; copy https://github.com/seagle0128/.emacs.d/blob/c9ce9bc4d6bb8340dd23bfcc54a5cef299f5ef7d/lisp/init-funcs.el#L648
+;; Network Proxy
+(defun show-http-proxy ()
+  "Show HTTP/HTTPS proxy."
+  (interactive)
+  (if url-proxy-services
+      (message "Current HTTP proxy is `%s'" my-proxy)
+    (message "No HTTP proxy")))
+
+(defun enable-http-proxy ()
+  "Enable HTTP/HTTPS proxy."
+  (interactive)
+  (setq url-proxy-services
+        `(("http" . ,my-proxy)
+          ("https" . ,my-proxy)
+          ("no_proxy" . "^\\(localhost\\|192.168.*\\|10.*\\)")))
+  (show-http-proxy))
+
+(defun disable-http-proxy ()
+  "Disable HTTP/HTTPS proxy."
+  (interactive)
+  (setq url-proxy-services nil)
+  (show-http-proxy))
+
+(defun toggle-http-proxy ()
+  "Toggle HTTP/HTTPS proxy."
+  (interactive)
+  (if (bound-and-true-p url-proxy-services)
+      (disable-http-proxy)
+    (enable-http-proxy)))
+
+(defun show-socks-proxy ()
+  "Show SOCKS proxy."
+  (interactive)
+  (if (bound-and-true-p socks-noproxy)
+      (message "Current SOCKS%d proxy is %s:%s"
+               (cadddr socks-server) (cadr socks-server) (caddr socks-server))
+    (message "No SOCKS proxy")))
+
+(defun enable-socks-proxy ()
+  "Enable SOCKS proxy."
+  (interactive)
+  (require 'socks)
+  (setq url-gateway-method 'socks
+        socks-noproxy '("localhost"))
+  (let* ((proxy (split-string my-socks-proxy ":"))
+         (host (car proxy))
+         (port (string-to-number (cadr proxy))))
+    (setq socks-server `("Default server" ,host ,port 5)))
+  (setenv "all_proxy" (concat "socks5://" my-socks-proxy))
+  (show-socks-proxy))
+
+(defun disable-socks-proxy ()
+  "Disable SOCKS proxy."
+  (interactive)
+  (setq url-gateway-method 'native
+        socks-noproxy nil
+        socks-server nil)
+  (setenv "all_proxy" "")
+  (show-socks-proxy))
+
+(defun toggle-socks-proxy ()
+  "Toggle SOCKS proxy."
+  (interactive)
+  (if (bound-and-true-p socks-server)
+      (disable-socks-proxy)
+    (enable-socks-proxy)))
+
+(defun enable-proxy ()
+  "Enbale proxy."
+  (interactive)
+  (enable-http-proxy)
+  (enable-socks-proxy))
+
+(defun disable-proxy ()
+  "Disable proxy."
+  (interactive)
+  (disable-http-proxy)
+  (disable-socks-proxy))
+
+(defun toggle-proxy ()
+  "Toggle proxy."
+  (interactive)
+  (toggle-http-proxy))
+
+;; Enable proxy
+(enable-http-proxy)
+(enable-socks-proxy)
 
 (provide 'init-func)
 
