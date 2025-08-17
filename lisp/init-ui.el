@@ -200,10 +200,14 @@
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
-(use-package rainbow-delimiters
+;; (use-package rainbow-delimiters
+;;   :ensure t
+;;   :hook (prog-mode . rainbow-delimiters-mode))
+;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+
+(use-package highlight-parentheses
   :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode))
-(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+  :hook((prog-mode . highlight-parentheses-mode)))
 
 (setq-default auto-fill-function nil)
 (setq-default visual-line-mode nil)

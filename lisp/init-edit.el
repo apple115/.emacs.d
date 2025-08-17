@@ -131,8 +131,10 @@
 (use-package elec-pair
   :ensure nil
   :hook (prog-mode . electric-pair-local-mode)
-  :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
-
+  :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+  :config
+  (setq electric-pair-pairs
+        '((?< . ?>))))
 
 ;; vim keymap setting
 (setq mark-ring-max 6)
