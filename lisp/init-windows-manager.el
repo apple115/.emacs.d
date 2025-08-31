@@ -6,7 +6,7 @@
 (use-package shackle
   :ensure t
   :hook (after-elpaca-init . shackle-mode)
-  :init
+  :config
   (setq shackle-select-reused-windows nil) ; default nil
   (setq shackle-default-alignment 'below)  ; default below
   (setq shackle-rules
@@ -74,6 +74,7 @@
   :config
   (global-set-key (kbd "M-o") 'ace-window)
 )
+
 (provide 'init-windows-manager)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-windows-manager.el ends here

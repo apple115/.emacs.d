@@ -35,10 +35,36 @@
         '(
           ;; (("jsx"). "typescript_tailwindcss")
           ;; (("html"). "html_emmet")
-          ;; (("tsx"). "typescript_tailwindcss_emmet")
+          (("tsx"). "tsx_tailwindcss")
           ))
   ;; (setq lsp-bridge-enable-org-babel t) ;;error 与denote冲突
-  (setq lsp-bridge--get-language-id-func t)
+  (setq lsp-bridge-get-language-id
+        (lambda (project-path file-path server-name extension-name)
+            (cond
+            ((string-equal server-name "typescript")
+            (cond
+            ((string-equal extension-name "ts")
+                "typescript")
+            ((string-equal extension-name "tsx")
+                "typescriptreact")
+            (t extension-name)))
+
+            ((string-equal server-name "tailwindcss")
+            (cond
+            ((string-equal extension-name "ts")
+                "typescript")
+            ((string-equal extension-name "tsx")
+                "typescriptreact")
+            ((string-equal extension-name "jsx")
+                "javascriptreact")
+            ((string-equal extension-name "js")
+                "javascript")
+            ((string-equal extension-name "svelte")
+                "svelte")
+            ((string-equal extension-name "vue")
+                "vue")
+            (t extension-name)))
+            (t extension-name))))
   (setq lsp-bridge-enable-hover-diagnostic t)
   (define-key acm-mode-map   (kbd "<tab>") 'yas-expand)
   (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)

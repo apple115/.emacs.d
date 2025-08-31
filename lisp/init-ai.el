@@ -13,34 +13,42 @@
 ;;                                (insert-file-contents "~/.config/deepseek/key.txt")
 ;;                                (string-trim (buffer-string)))))
 
-(use-package aidermacs
-  :ensure t
-  :bind (("C-c a" . aidermacs-transient-menu))
-  :config
-  (setq aidermacs-default-model "deepseek/deepseek-chat")
-  (setq aidermacs-backend 'vterm)
-  (setq aidermacs-vterm-multiline-newline-key "S-<return>")
-  (setenv "DEEPSEEK_API_KEY" (with-temp-buffer
-                               (insert-file-contents "~/.config/deepseek/key.txt")
-                               (string-trim (buffer-string))))
-  (setq aidermacs-show-diff-after-change t))
+;; (use-package aidermacs
+;;   :ensure t
+;;   :bind (("C-c a" . aidermacs-transient-menu))
+;;   :config
+;;   (setq aidermacs-default-model "deepseek/deepseek-chat")
+;;   (setq aidermacs-backend 'vterm)
+;;   (setq aidermacs-vterm-multiline-newline-key "S-<return>")
+;;   (setenv "DEEPSEEK_API_KEY" (with-temp-buffer
+;;                                (insert-file-contents "~/.config/deepseek/key.txt")
+;;                                (string-trim (buffer-string))))
+;;   (setq aidermacs-show-diff-after-change t))
 
-(use-package gptel
-  :ensure t
-  :bind
-  ("C-c i" . gptel-menu)
+;; (use-package gptel
+;;   :ensure t
+;;   :bind
+;;   ("C-c i" . gptel-menu)
+;;   :config
+;;   (setq gptel-model "deepspek-chat")
+;;   (setq gptel-default-mode 'org-mode)
+;;   (setq gptel-backend
+;;         (gptel-make-openai "DeepSeek"
+;;           :host "api.deepseek.com"
+;;           :endpoint "/chat/completions"
+;;           :stream t
+;;           :key (with-temp-buffer (with-temp-buffer
+;;                                    (insert-file-contents "~/.config/deepseek/key.txt")
+;;                                    (string-trim (buffer-string))))
+;;           :models '(deepseek-chat deepseek-coder))))
+
+
+(use-package claude-code-ide
+  :ensure (:host github
+                 :repo "manzaltu/claude-code-ide.el")
+  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
   :config
-  (setq gptel-model "deepspek-chat")
-  (setq gptel-default-mode 'org-mode)
-  (setq gptel-backend
-        (gptel-make-openai "DeepSeek"
-          :host "api.deepseek.com"
-          :endpoint "/chat/completions"
-          :stream t
-          :key (with-temp-buffer (with-temp-buffer
-                                   (insert-file-contents "~/.config/deepseek/key.txt")
-                                   (string-trim (buffer-string))))
-          :models '(deepseek-chat deepseek-coder))))
+  (claude-code-ide-emacs-tools-setup))
 
 (provide 'init-ai)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

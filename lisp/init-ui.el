@@ -70,12 +70,11 @@
 
 ;; 设置缓冲区的文字无
 (setq-default bidi-display-reordering nil)
+;; 禁止使用双向括号算法
 (setq bidi-inhibit-bpa t
       long-line-threshold 1000
       large-hscroll-threshold 1000
       syntax-wholeline-max 1000)
-;; 禁止使用双向括号算法
-;; (setq bidi-inhibit-bpa t)
 
 ;; 设置自动折行宽度为80个字符，默认值为70
 (setq-default fill-column 80)
