@@ -41,8 +41,15 @@
   (define-key evil-insert-state-map (kbd "C-h") 'backward-delete-char)
   (evil-define-key 'normal prog-mode-map (kbd "s") 'evil-avy-goto-char-timer)
   (global-set-key [remap evil-quit] 'kill-buffer-and-window)
-
-  )
+  ;; 设置C-a C-e为行首行尾 insert模式下
+  (define-key evil-insert-state-map (kbd "C-a") 'evil-beginning-of-line)
+  (define-key evil-insert-state-map (kbd "C-e") 'evil-end-of-line)
+  ;; C-f C-b
+  (define-key evil-insert-state-map (kbd "C-f") 'forward-char)
+  (define-key evil-insert-state-map (kbd "C-b") 'backward-char)
+  ;;C-u C-k
+  (define-key evil-insert-state-map (kbd "C-u") 'evil-delete-back-to-indentation)
+  (define-key evil-insert-state-map (kbd "C-k") 'delete-line))
 
 (use-package evil-indent-plus
   :ensure t
