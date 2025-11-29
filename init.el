@@ -2,44 +2,30 @@
 ;;; Commentary:
 
 ;;; Code:
-(defvar elpaca-installer-version 0.11)
-(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                              :ref nil :depth 1 :inherit ignore
-                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                              :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-       (build (expand-file-name "elpaca/" elpaca-builds-directory))
-       (order (cdr elpaca-order))
-       (default-directory repo))
-  (add-to-list 'load-path (if (file-exists-p build) build repo))
-  (unless (file-exists-p repo)
-    (make-directory repo t)
-    (when (<= emacs-major-version 28) (require 'subr-x))
-    (condition-case-unless-debug err
-        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                  ,@(when-let* ((depth (plist-get order :depth)))
-                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
-                                                  ,(plist-get order :repo) ,repo))))
-                  ((zerop (call-process "git" nil buffer t "checkout"
-                                        (or (plist-get order :ref) "--"))))
-                  (emacs (concat invocation-directory invocation-name))
-                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                  ((require 'elpaca))
-                  ((elpaca-generate-autoloads "elpaca" repo)))
-            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-          (error "%s" (with-current-buffer buffer (buffer-string))))
-      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-  (unless (require 'elpaca-autoloads nil t)
-    (require 'elpaca)
-    (elpaca-generate-autoloads "elpaca" repo)
-    (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
-(add-hook 'after-init-hook #'elpaca-process-queues)
-(elpaca `(,@elpaca-order))
+;; ==================== 包管理配置 ====================
+;; 配置 package.el
+(require 'package)
+
+;; 设置包源
+(setq package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+
+;; 初始化包管理器
+(package-initialize)
+
+;; 确保 use-package 已安装
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+;; 配置 use-package
+(eval-when-compile
+  (require 'use-package))
+
+(setq use-package-always-ensure t)  ;; 自动安装包
+(setq use-package-expand-minimally t)
+(setq use-package-compute-statistics t)  ;; 统计加载时间
 
 ;; 设置垃圾回收参数
 (setq gc-cons-threshold most-positive-fixnum)
@@ -72,18 +58,16 @@
   (add-to-list 'load-path
                (file-name-as-directory dir)))
 
-;; Install use-package support
-(elpaca elpaca-use-package
-  ;; Enable use-package :ensure support for Elpaca.
-  (elpaca-use-package-mode))
+;; 设置警告级别
+(setq warning-minimum-level :error)
 
-(elpaca-wait)
 ;; 加载各模块化配置
 ;; 不要在`*message*'缓冲区显示加载模块化配置的信息
 (with-temp-message ""
   (require 'init-base)
   (require 'init-custom)
   (require 'init-edit)
+  ;; 以下模块可以异步加载，利用 :after 管理依赖关系
   (require 'init-tools)
   (require 'init-keyboard)
   (require 'init-ui)
@@ -111,7 +95,7 @@
   (require 'init-go)
   (require 'init-prog)
   (require 'init-rust)
-  (require 'init-lsp-bridge)
+  ;; (require 'init-lsp-bridge)  ;; 已切换到 corfu + eglot
   ;; (require 'init-org-ui)
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
@@ -126,6 +110,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil)
+ '(package-vc-selected-packages
+   '((claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")))
  '(warning-suppress-log-types '((treesit) (treesit)))
  '(warning-suppress-types '((treesit) (treesit))))
 (custom-set-faces

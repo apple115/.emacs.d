@@ -2,14 +2,17 @@
 ;;; Commentary:
 
 ;;; Code:
-(with-eval-after-load 'general
-  (general-create-definer +leader-keys
-    :states '(normal visual)
-    :states 'nil
-    :keymaps 'override
-    :prefix "SPC" ;; set leader
-    :global-prefix "C-SPC") ;; access leader in insert mode
-  (+leader-keys
+;; 确保 general 已加载
+(require 'general)
+
+(general-create-definer +leader-keys
+  :states '(normal visual)
+  :states 'nil
+  :keymaps 'override
+  :prefix "SPC" ;; set leader
+  :global-prefix "C-SPC") ;; access leader in insert mode
+
+(+leader-keys
     "SPC" '(consult-buffer :wk "find file")
     "=" '(+format-code-and-flycheck :wk "flycheck and format")
     "/" '(split-window-horizontally :wk"split window horizontally")
@@ -69,7 +72,9 @@
     "t" '(:ignore t :wk "Toggle")
     "t f" '(flychek-mode :wk "open flycheck")
     "t s" '(jinx-mode :wk "open jinx-mode")
+    "t d" '(eldoc-box-hover-mode :wk "toggle eldoc-box auto display")
     "t n" '(tab-bar-new-tab :wk "one new tab")
+    "t k" '(tab-close :wk "close current tab")
 
     "o" '(:ignore t :wk "open")
     "o o" '(embark-act :wk "embark-act")
@@ -90,8 +95,7 @@
     "n t" '(+new-vtermN :wk "new term")
     "n a t" '(my-open-termial-kitty :wk "open terminal")
 
-    "x" '(:ignore t :wk "fix or delete")
-))
+    "x" '(:ignore t :wk "fix or delete"))
 
 (provide 'init-keyboard)
 

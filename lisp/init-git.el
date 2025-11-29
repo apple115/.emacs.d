@@ -4,10 +4,12 @@
 
 ;;; Code:
 (use-package with-editor
-  :ensure t)
+  :ensure t
+  :demand t)
 
 (use-package magit
   :ensure t
+  :after (transient with-editor)
   :custom
   (magit-diff-refine-hunk t)
   (magit-ediff-dwim-show-on-hunks t)

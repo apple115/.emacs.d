@@ -13,6 +13,8 @@
 
 (global-so-long-mode 1)
 
+(setq evil-want-keybinding nil)
+
 (use-package evil
   :ensure t
   :demand t
@@ -139,9 +141,8 @@
   :ensure nil
   :hook (prog-mode . electric-pair-local-mode)
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
-  :config
-  (setq electric-pair-pairs
-        '((?< . ?>))))
+)
+
 
 ;; vim keymap setting
 (setq mark-ring-max 6)

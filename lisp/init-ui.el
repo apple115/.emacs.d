@@ -20,14 +20,14 @@
   (load-theme 'doom-gruvbox-light t)
   (doom-themes-treemacs-config))
 
-;; (defun my-apply-font()
-;;   (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 12 :weight 'medium))
-;;   (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 12 :weight 'medium))
-;;   )
-
 (defun my-apply-font()
-  (set-face-attribute 'default nil :font (font-spec :family "Maple Mono NF CN" :size 12 :weight 'medium) :slant 'italic)
-)
+  (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 12 :weight 'medium))
+  (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 12 :weight 'medium))
+  )
+
+;; (defun my-apply-font()
+;;   (set-face-attribute 'default nil :font (font-spec :family "Maple Mono NF CN" :size 12 :weight 'medium) :slant 'italic)
+;; )
 
 
  ;; |大家|
@@ -218,7 +218,7 @@
 
 (use-package doom-modeline
   :ensure t
-  :hook (elpaca-after-init . doom-modeline-mode)
+  :hook (after-init . doom-modeline-mode)
   :hook (doom-modeline-mode . size-indication-mode) ; filesize in modeline
   :hook (doom-modeline-mode . column-number-mode)   ; cursor column in modeline
   :init
@@ -311,7 +311,7 @@
 
 (use-package hl-line
   :ensure nil
-  :hook(elpaca-after-init . global-hl-line-mode)
+  :hook(after-init . global-hl-line-mode)
   :init
   (defvar global-hl-line-modes
     '(prog-mode text-mode conf-mode special-mode

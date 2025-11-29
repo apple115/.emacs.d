@@ -44,9 +44,8 @@
 
 
 (use-package claude-code-ide
-  :ensure (:host github
-                 :repo "manzaltu/claude-code-ide.el")
-  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+  :vc (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")
+  :bind ("C-c C-'" . claude-code-ide-menu)
   :config
   (claude-code-ide-emacs-tools-setup)
   (setq claude-code-ide-use-ide-diff nil)

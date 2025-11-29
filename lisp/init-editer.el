@@ -16,43 +16,44 @@
 )
 
 (use-package dired
+  :after evil
   :config
   ;; (setq dired-listing-switches
   ;;       "-l --almost-all --human-readable --group-directories-first --no-group")
   ;; this command is useful when you want to close the window of `dirvish-side'
   ;; automatically when opening a file
   ;; (put 'dired-find-alternate-file 'disabled nil)
-  (general-evil-define-key 'normal dired-mode-map
-    "q" 'quit-window
-    "o" 'dired-quick-access
-    "c" 'dired-do-compress-to
-    "h" 'dired-up-directory
-    "j" 'dired-next-line
-    "k" 'dired-previous-line
-    "l" 'dired-find-file
-    "gr" 'revert-buffer
-    "gy" 'dired-show-file-type
-    "m" 'dired-mark
-    "u" 'dired-unmark
-    "x" 'dired-do-flagged-delete
-    "RET" 'dired-find-file
+  (evil-define-key 'normal dired-mode-map
+    (kbd "q") 'quit-window
+    (kbd "o") 'dired-quick-access
+    (kbd "c") 'dired-do-compress-to
+    (kbd "h") 'dired-up-directory
+    (kbd "j") 'dired-next-line
+    (kbd "k") 'dired-previous-line
+    (kbd "l") 'dired-find-file
+    (kbd "gr") 'revert-buffer
+    (kbd "gy") 'dired-show-file-type
+    (kbd "m") 'dired-mark
+    (kbd "u") 'dired-unmark
+    (kbd "x") 'dired-do-flagged-delete
+    (kbd "RET") 'dired-find-file
 
-    "A" 'dired-do-find-regexp
-    "B" 'dired-do-byte-compile
-    "C" 'dired-do-copy
-    "D" 'dired-do-delete
-    "H" 'dired-do-hardlink
-    "G" 'dired-do-chgrp
-    "M" 'dired-do-chmod
-    "O" 'dired-do-chown
-    "R" 'dired-do-rename
-    "S" 'dired-do-symlink
-    "T" 'dired-do-touch
-    "Y" 'dired-copy-filename-as-kill
-    "Z" 'dired-do-compress
-    "!" 'dired-do-shell-command
-    "&" 'dired-do-async-shell-command
-    "+" 'dired-create-directory
+    (kbd "A") 'dired-do-find-regexp
+    (kbd "B") 'dired-do-byte-compile
+    (kbd "C") 'dired-do-copy
+    (kbd "D") 'dired-do-delete
+    (kbd "H") 'dired-do-hardlink
+    (kbd "G") 'dired-do-chgrp
+    (kbd "M") 'dired-do-chmod
+    (kbd "O") 'dired-do-chown
+    (kbd "R") 'dired-do-rename
+    (kbd "S") 'dired-do-symlink
+    (kbd "T") 'dired-do-touch
+    (kbd "Y") 'dired-copy-filename-as-kill
+    (kbd "Z") 'dired-do-compress
+    (kbd "!") 'dired-do-shell-command
+    (kbd "&") 'dired-do-async-shell-command
+    (kbd "+") 'dired-create-directory
 ))
 
 (use-package nerd-icons-dired
@@ -147,7 +148,9 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
 
 ;;view large file
 (use-package vlf
- :ensure t)
+ :ensure t
+ :config
+ (require 'vlf-setup))
 
 (provide 'init-editer)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

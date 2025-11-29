@@ -2,13 +2,13 @@
 ;;; Commentary:
 ;;; Code:
 ;;;
-(use-package clojure-ts-mode
-:ensure t
-)
+;;(use-package clojure-ts-mode
+;;:ensure t
+;;)
 
-(use-package cider
- :ensure t
-)
+;;(use-package cider
+;; :ensure t
+;;)
 
 (use-package haskell-mode
 :ensure t

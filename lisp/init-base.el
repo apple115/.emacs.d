@@ -18,6 +18,8 @@
 ;;
 ;;; Code:
 ;;;
+
+
 (use-package exec-path-from-shell
   :ensure t
   :demand t
@@ -35,9 +37,9 @@
 ;;   :ensure t
 ;;   :demand t)
 
-(elpaca-wait)
-
-(use-package transient :ensure t)
+(use-package transient 
+  :ensure t
+  :demand t)
 
 (provide 'init-base)
 ;;; init-base.el ends here

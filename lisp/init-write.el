@@ -160,11 +160,7 @@
 (use-package plantuml-mode
   :ensure t
   :mode ("\\.plantuml\\'" . plantuml-mode)
-  :init
-  ;; enable plantuml babel support
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               (append org-babel-load-languages
-                                       '((plantuml . t))))
+  :after org
   :config
   (setq org-plantuml-exec-mode 'plantuml)
   (setq org-plantuml-executable-path "plantuml")
@@ -175,6 +171,10 @@
         '((:exports . "results")
           (:results . "file")
           ))
+  ;; enable plantuml babel support
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               (append org-babel-load-languages
+                                       '((plantuml . t))))
   )
 
 (use-package org-excalidraw
@@ -215,6 +215,7 @@
 (use-package ob-go
   :ensure t
   )
+
 
 ;; (use-package org-appear
 ;;   :ensure t
@@ -267,13 +268,14 @@
 
 (use-package graphviz-dot-mode
   :ensure t
-  :init
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               (append org-babel-load-languages
-                                       '((dot . t))))
+  :after org
   :config
   (setq graphviz-dot-indent-width 4)
   (add-to-list 'org-src-lang-modes (quote ("dot" . graphviz-dot)))
+  ;; enable graphviz babel support
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               (append org-babel-load-languages
+                                       '((dot . t))))
   )
 
 (use-package org-roam

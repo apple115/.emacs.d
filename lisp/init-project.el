@@ -30,9 +30,10 @@
 ;; (setq project-vc-ignores'("nix/store/"  "node_modules/"  "go/pkg/"  ".direnv/" "vendor/"))
 )
 
+;; 添加启动
 (use-package tabspaces
   :ensure t
-  :hook (after-init . tabspaces-mode) ;; use this only if you want the minor-mode loaded at startup.
+  :hook (after-init-hook . tabspaces-mode)
   :commands (tabspaces-switch-or-create-workspace
              tabspaces-open-or-create-project-and-workspace)
   :general
@@ -57,6 +58,7 @@
   ;; (tabspaces-session-auto-restore t)
   (tab-bar-new-tab-choice "*scratch*"))
   :config
+;; (add-hook 'after-init-hook  tabspaces-mode)
 (with-eval-after-load 'consult
 ;; hide full buffer list (still available with "b" prefix)
 (consult-customize consult--source-buffer :hidden t :default nil)
