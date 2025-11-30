@@ -136,34 +136,47 @@
 (add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
 )
 
-(use-package vterm
+;; vterm - 已替换为 eat
+;; (use-package vterm
+;;   :ensure t
+;;   :config
+;;   (setq vterm-shell "/opt/homebrew/bin/fish")
+;;     (use-package vterm-toggle
+;;     :ensure t
+;;     :bind (:map vterm-mode-map
+;;                 ([(control return)] . vterm-toggle-insert-cd))
+;;     :config
+;;     (setq vterm-toggle-cd-auto-create-buffer nil)
+;;     (defvar vterm-compile-buffer nil)
+;;     (defun vterm-compile ()
+;;         "Compile the program including the current buffer in `vterm'."
+;;         (interactive)
+;;         (setq compile-command (compilation-read-command compile-command))
+;;         (let ((vterm-toggle-use-dedicated-buffer t)
+;;             (vterm-toggle--vterm-dedicated-buffer (if (vterm-toggle--get-window)
+;;                                                         (vterm-toggle-hide)
+;;                                                     vterm-compile-buffer)))
+;;         (with-current-buffer (vterm-toggle-cd)
+;;             (setq vterm-compile-buffer (current-buffer))
+;;             (rename-buffer "*vterm compilation*")
+;;             (compilation-shell-minor-mode 1)
+;;             (vterm-send-M-w)
+;;            (vterm-send-string compile-command t)
+;;             (vterm-send-return))))
+;;     )
+;; )
+
+;; Eat - Emulate A Terminal (更好的终端模拟器)
+(use-package eat
   :ensure t
+  :custom
+  (eat-term-name "xterm-256color")
+  (eat-kill-buffer-on-exit t)  ;; 退出时自动关闭 buffer
   :config
-  (setq vterm-shell "/opt/homebrew/bin/fish")
-    (use-package vterm-toggle
-    :ensure t
-    :bind (:map vterm-mode-map
-                ([(control return)] . vterm-toggle-insert-cd))
-    :config
-    (setq vterm-toggle-cd-auto-create-buffer nil)
-    (defvar vterm-compile-buffer nil)
-    (defun vterm-compile ()
-        "Compile the program including the current buffer in `vterm'."
-        (interactive)
-        (setq compile-command (compilation-read-command compile-command))
-        (let ((vterm-toggle-use-dedicated-buffer t)
-            (vterm-toggle--vterm-dedicated-buffer (if (vterm-toggle--get-window)
-                                                        (vterm-toggle-hide)
-                                                    vterm-compile-buffer)))
-        (with-current-buffer (vterm-toggle-cd)
-            (setq vterm-compile-buffer (current-buffer))
-            (rename-buffer "*vterm compilation*")
-            (compilation-shell-minor-mode 1)
-            (vterm-send-M-w)
-           (vterm-send-string compile-command t)
-            (vterm-send-return))))
-    )
-)
+  ;; 在 eshell 中集成 eat
+  (eat-eshell-mode)
+  ;; 在 project.el 中使用 eat
+  (eat-eshell-visual-command-mode))
 
 
 (use-package dwim-shell-command

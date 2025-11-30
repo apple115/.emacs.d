@@ -35,27 +35,37 @@ regarding the asynchronous search and the arguments."
                (builder (consult--fd-make-builder paths)))
   (find-file-other-window  (consult--find prompt builder initial))))
 
-(defun my-vterm-apple115-switch ()
-  "Create a new vterm buffer with the fixed name `apple115`."
-  (interactive)
-  (let ((buffer (get-buffer "terminal")))
-    (if (not buffer) ; 检查是否已经存在名为 'apple115' 的缓冲区
-        (vterm "terminal")) ; 如果不存在，创建一个名为 'apple115' 的 vterm 缓冲区
-    (switch-to-buffer "terminal"))) ; 切换到 'apple115' 缓冲区
+;; vterm 函数 - 已替换为 eat
+;; (defun my-vterm-apple115-switch ()
+;;   "Create a new vterm buffer with the fixed name `apple115`."
+;;   (interactive)
+;;   (let ((buffer (get-buffer "terminal")))
+;;     (if (not buffer)
+;;         (vterm "terminal"))
+;;     (switch-to-buffer "terminal")))
 
-(defun +new-vtermN ()
-  "Create a new vterm buffer with a name in the form of `termN`', where N is a number."
+;; (defun +new-vtermN ()
+;;   "Create a new vterm buffer with a name in the form of `termN`', where N is a number."
+;;   (interactive)
+;;   (let ((counter 1)
+;;         (vterm-prefix "term"))
+;;     (while (get-buffer (concat vterm-prefix (number-to-string counter)))
+;;       (setq counter (1+ counter)))
+;;     (let ((vterm-name (concat vterm-prefix (number-to-string counter))))
+;;     (vterm vterm-name)
+;;     (switch-to-buffer vterm-name))))
+
+;; Eat 终端函数
+(defun +new-eat ()
+  "Create a new eat terminal session with numbered name."
   (interactive)
-  (let ((counter 1)
-        (vterm-prefix "term"))
-    ;; Find the next available number to use for the vterm buffer name
-    (while (get-buffer (concat vterm-prefix (number-to-string counter)))
+  (let ((counter 1))
+    ;; 找到下一个可用的编号
+    (while (get-buffer (format "*eat<%d>*" counter))
       (setq counter (1+ counter)))
-    ;; Create the vterm buffer with the unique name
-    (let ((vterm-name (concat vterm-prefix (number-to-string counter))))
-    (vterm vterm-name)
-    ;; Switch to the new buffer
-    (switch-to-buffer vterm-name))))
+    ;; 使用数字参数创建新的 eat 会话
+    ;; eat 会自动创建名为 *eat<N>* 的 buffer
+    (eat nil counter)))
 
 
 (defun get-word-translate-to-bar()

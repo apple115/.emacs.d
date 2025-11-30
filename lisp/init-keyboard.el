@@ -79,7 +79,7 @@
     "o" '(:ignore t :wk "open")
     "o o" '(embark-act :wk "embark-act")
     "o e" '(compile :wk "compile")
-    "o t" '(vterm-toggle :wk "open-vterm")
+    "o t" '(eat :wk "open eat terminal")
     "o s" '(async-shell-command :wk "open async shell command")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
@@ -92,7 +92,7 @@
     "n" '(:ignore t :wk "new")
     "n n" '(denote :wk "new note")
     "n b" '(+hexo-new :wk "new blog")
-    "n t" '(+new-vtermN :wk "new term")
+    "n t" '(+new-eat :wk "new terminal")
     "n a t" '(my-open-termial-kitty :wk "open terminal")
 
     "x" '(:ignore t :wk "fix or delete"))

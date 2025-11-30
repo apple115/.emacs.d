@@ -23,13 +23,13 @@
 (eval-when-compile
   (require 'use-package))
 
-(setq use-package-always-ensure t)  ;; 自动安装包
+;;(setq use-package-always-ensure t)  ;; 自动安装包
 (setq use-package-expand-minimally t)
 (setq use-package-compute-statistics t)  ;; 统计加载时间
 
 ;; 设置垃圾回收参数
-(setq gc-cons-threshold most-positive-fixnum)
-(setq gc-cons-percentage 1)
+;;(setq gc-cons-threshold most-positive-fixnum)
+;;(setq gc-cons-percentage 1)
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
 (setq gc-cons-threshold 80000000) ;; original value * 100

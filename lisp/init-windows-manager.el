@@ -16,14 +16,16 @@
           ;; ("\\*Async Shell.*\\*" :regexp t :ignore t)
           ("*format-all-errors*"         :select nil                        :size 0.3  :align t     :popup t)
           (compilation-mode              :select nil                        :size 0.3  :align t     :popup t)
-          ("*vterm*"                     :select t                          :size 0.3  :align t     :popup t)
+          ;; ("*vterm*"                     :select t                          :size 0.3  :align t     :popup t)
+          ;; Eat 弹窗：只匹配 *eat*，不匹配 *eat<N>*
+          ("^\\*eat\\*$"         :regexp t :select t                       :size 0.3  :align t     :popup t)
 ;;          ("\\*corfu.*\\*"       :regexp t :ignore t)
           ("*eshell*"                    :select t                          :size 0.3  :align t     :popup t)
           (helpful-mode                  :select t                          :size 0.6  :align right :popup t)
           ("*Messages*"                  :select nil                        :size 0.3  :align t     :popup t)
           ;; ("*Org Agenda(t)*"             :select nil                        :size 0.3  :align right :popup t)
           ("*Async Shell Command*"       :select nil                        :size 0.3  :align t     :popup t)
-          ("*vterm compilation*"         :select nil                        :size 0.3  :align t     :popup t)
+          ;; ("*vterm compilation*"         :select nil                        :size 0.3  :align t     :popup t)
           ("*lsp-bridge-doc*"            :select nil                        :size 0.3  :align t     :popup t)
           ("*fanyi*"                     :select nil                        :size 0.3  :align t     :popup t)
           ("*Calendar*"                  :select t                          :size 0.3  :align t     :popup t)
@@ -47,9 +49,10 @@
           "\\*quickrun\\*"
           "Aweshell"
          "\\*compilation\\*"
-         "\\*vterm compilation\\*"
+         ;; "\\*vterm compilation\\*"
+         "^\\*eat\\*$"  ;; 只匹配 *eat*，不匹配 *eat<N>*
          "help-mode"
-         "\\*vterm\\*"
+         ;; "\\*vterm\\*"
          "\\*lsp-bridge-doc\\*"
          "\\*fanyi\\*"
          "\\*eshell*\\*"
