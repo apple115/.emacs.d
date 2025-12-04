@@ -13,6 +13,9 @@
 (add-to-list 'compilation-error-regexp-alist-alist
              '(go-test "^\\s-*\\(.*\\.go\\):\\([0-9]+\\):" 1 2 nil 2))
 (add-to-list 'compilation-error-regexp-alist 'go-test)
+(add-to-list 'compilation-error-regexp-alist
+             '("\\([a-zA-Z0-9\\.]+\\)(\\([0-9]+\\)\\(,\\([0-9]+\\)\\)?) \\(Warning:\\)?"
+               1 2 (4) (5)))
 )
 
 (use-package quickrun
