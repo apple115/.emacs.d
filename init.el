@@ -67,11 +67,11 @@
   (require 'init-base)
   (require 'init-custom)
   (require 'init-edit)
-  ;; 以下模块可以异步加载，利用 :after 管理依赖关系
   (require 'init-tools)
   (require 'init-keyboard)
   (require 'init-ui)
   (require 'init-completion)
+  (require 'init-lsp-bridge)  ;; 已切换到 corfu + eglot
   (require 'init-langs)
   (require 'init-write)
   (require 'init-editer)
@@ -95,7 +95,6 @@
   (require 'init-go)
   (require 'init-prog)
   (require 'init-rust)
-  ;; (require 'init-lsp-bridge)  ;; 已切换到 corfu + eglot
   ;; (require 'init-org-ui)
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
@@ -110,11 +109,24 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(ace-window add-node-modules-path auto-yasnippet buffer-terminator citre
+                claude-code-ide colorful-mode consult-notes consult-todo dape
+                denote devdocs diff-hl diredfl docker doom-modeline doom-themes
+                dumb-jump dwim-shell-command eat eldoc-box embark-consult
+                emmet-mode engine-mode evil-collection evil-indent-plus
+                evil-matchit evil-nerd-commenter evil-surround
+                evil-textobj-tree-sitter exec-path-from-shell fish-mode flycheck
+                format-all general go-dlv go-fill-struct go-gen-test go-impl
+                go-tag gotest graphviz-dot-mode haskell-mode
+                highlight-parentheses ibuffer-project jinx ligature link-hint
+                magit marginalia markdown-mode nerd-icons-corfu nerd-icons-dired
+                nerd-icons-ibuffer ob-go ob-restclient orderless org-auto-tangle
+                org-roam ox-gfm ox-reveal pinyinlib plantuml-mode popper
+                python-mode quickrun rust-mode scss-mode shackle sudo-edit
+                tabspaces treesit-auto vertico virtualenvwrapper vlf web-mode))
  '(package-vc-selected-packages
-   '((claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")))
- '(warning-suppress-log-types '((treesit) (treesit)))
- '(warning-suppress-types '((treesit) (treesit))))
+   '((lsp-proxy :url "https://github.com/jadestrong/lsp-proxy"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

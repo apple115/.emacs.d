@@ -34,3 +34,6 @@
 [submodule "site-lisp/lsp-bridge"]
 	path = site-lisp/lsp-bridge
 	url = git@github.com:manateelazycat/lsp-bridge.git
+[submodule "site-lisp/emacs-libvterm"]
+	path = site-lisp/emacs-libvterm
+	url = git@github.com:xhcoding/emacs-libvterm.git

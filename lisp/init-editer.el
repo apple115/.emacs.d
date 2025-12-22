@@ -15,15 +15,15 @@
   (setq sort-tab-show-index-number t)
 )
 
-(use-package dired
-  :after evil
-  :config
+;; dired 是内置包，不需要 use-package
+;; 使用 evil-collection-define-key 来定义键绑定
+(with-eval-after-load 'evil-collection
   ;; (setq dired-listing-switches
   ;;       "-l --almost-all --human-readable --group-directories-first --no-group")
   ;; this command is useful when you want to close the window of `dirvish-side'
   ;; automatically when opening a file
   ;; (put 'dired-find-alternate-file 'disabled nil)
-  (evil-define-key 'normal dired-mode-map
+  (evil-collection-define-key 'normal 'dired-mode-map
     (kbd "q") 'quit-window
     (kbd "o") 'dired-quick-access
     (kbd "c") 'dired-do-compress-to
@@ -53,8 +53,7 @@
     (kbd "Z") 'dired-do-compress
     (kbd "!") 'dired-do-shell-command
     (kbd "&") 'dired-do-async-shell-command
-    (kbd "+") 'dired-create-directory
-))
+    (kbd "+") 'dired-create-directory))
 
 (use-package nerd-icons-dired
     :ensure t

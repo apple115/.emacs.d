@@ -51,6 +51,7 @@
   (setq claude-code-ide-use-ide-diff nil)
   (setq claude-code-ide-window-side 'right
         claude-code-ide-window-width 100)
+  (setq claude-code-ide-terminal-backend 'eat)
   )
 
 (provide 'init-ai)

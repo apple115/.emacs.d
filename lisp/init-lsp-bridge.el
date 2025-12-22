@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; lsp-bridge is a language server client for Emacs, which provides
 ;;; Code:
+
 (use-package markdown-mode
   :ensure t
   :mode
@@ -14,14 +15,13 @@
 
 (use-package lsp-bridge
   :load-path "site-lisp/lsp-bridge"
-  :after (markdown-mode yasnippet)
-  :init (yas-global-mode 1)
   :config
-  ;; (setq lsp-bridge-enable-log t)
-  (setq lsp-bridge-python-command  "/Users/apple115/.emacs.d/site-lisp/lsp-bridge/.venv/bin/python3.13")
-  (setq acm-enable-copilot t)
+  ;; (setq lsp-bridge-log-level 'debug)
+  (setq lsp-bridge-python-command  "~/.emacs.d/site-lisp/lsp-bridge/.venv/Scripts/python.exe")
+  ;; (setq acm-enable-copilot t)
   (setq acm-enable-citre t)
   (setq acm-candidate-match-function 'orderless-flex)
+  (setq acm-enable-icon 'nil)
   ;; (setq lsp-bridge-enable-auto-format-code t);;自动格式化
   (setq lsp-bridge-enable-completion-in-string t)
   (setq lsp-bridge-enable-search-words  t)
@@ -29,11 +29,15 @@
   (setq lsp-bridge-find-ref-fallback-function 'citre-jump-to-reference)
   (setq lsp-bridge-multi-lang-server-extension-list
         '(
-          ;; (("jsx"). "typescript_tailwindcss")
-          ;; (("html"). "html_emmet")
-          (("tsx"). "tsx_tailwindcss")
-          ))
+          ;; (("jsx" . "typescript_tailwindcss"))
+          ;; (("html" . "html_emmet"))
+          (("tsx") . "tsx_tailwindcss")))
   ;; (setq lsp-bridge-enable-org-babel t) ;;error 与denote冲突
+  (setq lsp-bridge-get-project-path-by-filepath
+    (lambda (filepath)
+        (let ((root (locate-dominating-file filepath "go.mod")))
+        (when root
+            (expand-file-name root)))))
   (setq lsp-bridge-get-language-id
         (lambda (project-path file-path server-name extension-name)
             (cond
@@ -70,8 +74,8 @@
     "gd"  'lsp-bridge-find-def
     "gr" 'lsp-bridge-find-references
     )
-  (global-lsp-bridge-mode)
-  )
+
+)
 
 (provide 'init-lsp-bridge)
 

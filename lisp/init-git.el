@@ -15,7 +15,7 @@
   (magit-ediff-dwim-show-on-hunks t)
   :config
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  (setq magit-git-executable "/usr/bin/git")
+  (setq magit-git-executable "C:\\Program Files\\Git\\bin\\git.exe")
   (setq magit-refresh-status-buffer nil)
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (remove-hook 'server-switch-hook 'magit-commit-diff)

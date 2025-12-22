@@ -136,47 +136,22 @@
 (add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
 )
 
-;; vterm
-(use-package vterm
-  :ensure t
-  :config
-  (setq vterm-shell "/opt/homebrew/bin/fish")
-    (use-package vterm-toggle
-    :ensure t
-    :bind (:map vterm-mode-map
-                ([(control return)] . vterm-toggle-insert-cd))
-    :config
-    (setq vterm-toggle-cd-auto-create-buffer nil)
-    (defvar vterm-compile-buffer nil)
-    (defun vterm-compile ()
-        "Compile the program including the current buffer in `vterm'."
-        (interactive)
-        (setq compile-command (compilation-read-command compile-command))
-        (let ((vterm-toggle-use-dedicated-buffer t)
-            (vterm-toggle--vterm-dedicated-buffer (if (vterm-toggle--get-window)
-                                                        (vterm-toggle-hide)
-                                                    vterm-compile-buffer)))
-        (with-current-buffer (vterm-toggle-cd)
-            (setq vterm-compile-buffer (current-buffer))
-            (rename-buffer "*vterm compilation*")
-            (compilation-shell-minor-mode 1)
-            (vterm-send-M-w)
-           (vterm-send-string compile-command t)
-            (vterm-send-return))))
-    )
-)
+;; vterm 配置已禁用（使用 eat）
+(add-to-list 'load-path (expand-file-name "bin" user-emacs-directory))
+;; (add-to-list 'load-path (expand-file-name "site-lisp/emacs-libvterm" user-emacs-directory))
+;; (use-package vterm ...)
 
-;; Eat - Emulate A Terminal (已禁用)
-;; (use-package eat
-;;   :ensure t
-;;   :custom
-;;   (eat-term-name "xterm-256color")
-;;   (eat-kill-buffer-on-exit t)
-;;   :config
-;;   (eat-eshell-mode)
-;;   (eat-eshell-visual-command-mode)
-;; )
-  
+;; Eat - Emulate A Terminal (使用 eshell)
+(use-package eat
+  :ensure t
+  :custom
+  (eat-term-name (if (eq system-type 'windows-nt) "dumb" "xterm-256color"))
+  (eat-kill-buffer-on-exit t)
+  :config
+  ;; 启用 eshell 集成（使用 eshell 而不是直接调用外部 shell）
+  (eat-eshell-mode)
+  (eat-eshell-visual-command-mode))
+
 
 
 (use-package dwim-shell-command
@@ -189,7 +164,7 @@
         (("C-c C-o" . dumb-jump-go-other-window)
          ("C-c C-j" . dumb-jump-go)
          ("C-c C-i" . dumb-jump-go-prompt)))
- )
+)
 
 (use-package buffer-terminator
   :ensure t

@@ -197,21 +197,23 @@
 (set-default-coding-systems 'utf-8)
 (set-language-environment 'utf-8)
 (set-clipboard-coding-system 'utf-8)
-(set-file-name-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setq file-name-coding-system 'gbk)
 (set-buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (modify-coding-system-alist 'process "*" 'utf-8)
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
-;; (use-package rainbow-delimiters
-;;   :ensure t
-;;   :hook (prog-mode . rainbow-delimiters-mode))
-;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
-
-(use-package highlight-parentheses
+(use-package rainbow-delimiters
   :ensure t
-  :hook((prog-mode . highlight-parentheses-mode)))
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+;; 性能消耗太大
+;; (use-package highlight-parentheses
+;;   :ensure t
+;;   :hook((prog-mode . highlight-parentheses-mode)))
 
 (setq-default auto-fill-function nil)
 (setq-default visual-line-mode nil)
@@ -231,6 +233,7 @@
         doom-modeline-buffer-file-name-style 'relative-from-project
         ;; Only show file encoding if it's non-UTF-8 and different line endings
         ;; than the current OSes preference
+        doom-modeline-vcs-icon nil
         doom-modeline-buffer-encoding 'nondefault
         doom-modeline-default-eol-type (if (featurep :system 'windows) 1 0))
   :config
