@@ -34,48 +34,48 @@
   )
 )
 
-(use-package corfu
-  :ensure t
-  :custom
-  (corfu-auto nil)                  ;; 禁用自动补全，改为手动触发
-  (corfu-preview-current nil)       ;; 不预览当前候选
-  (corfu-popupinfo-delay '(0.4 . 0.2))
-  (corfu-quit-no-match 'separator)  ;; 没有匹配时的行为
-  :bind (:map corfu-map
-         ;; 补全菜单内的导航（和 Vim 一样）
-         ("C-n" . corfu-next)        ;; 下一个候选
-         ("C-p" . corfu-previous)    ;; 上一个候选
-         ("RET" . corfu-insert)      ;; 回车确认
-         ("<escape>" . corfu-quit))  ;; ESC 退出
-  :hook ((after-init . global-corfu-mode)
-         (global-corfu-mode . corfu-popupinfo-mode))
-  :config
-  ;; Vim 风格的补全：C-n 触发补全并选择下一项，C-p 选择上一项
-  (with-eval-after-load 'evil
-    ;; 定义智能补全函数
-    (defun my/corfu-complete-or-next ()
-      "触发补全或选择下一项（类似 Vim 的 C-n）"
-      (interactive)
-      (if (and (corfu-mode) completion-in-region-mode)
-          (corfu-next)
-        (completion-at-point)))
-
-    (defun my/corfu-complete-or-previous ()
-      "触发补全或选择上一项（类似 Vim 的 C-p）"
-      (interactive)
-      (if (and (corfu-mode) completion-in-region-mode)
-          (corfu-previous)
-        (completion-at-point)))
-
-    ;; 在 insert 模式绑定 C-n/C-p
-    (define-key evil-insert-state-map (kbd "C-n") #'my/corfu-complete-or-next)
-    (define-key evil-insert-state-map (kbd "C-p") #'my/corfu-complete-or-previous))
-
-  (use-package nerd-icons-corfu
-    :ensure t
-    :config
-    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)))
-
+;;(use-package corfu
+;;  :ensure t
+;;  :custom
+;;  (corfu-auto nil)                  ;; 禁用自动补全，改为手动触发
+;;  (corfu-preview-current nil)       ;; 不预览当前候选
+;;  (corfu-popupinfo-delay '(0.4 . 0.2))
+;;  (corfu-quit-no-match 'separator)  ;; 没有匹配时的行为
+;;  :bind (:map corfu-map
+;;         ;; 补全菜单内的导航（和 Vim 一样）
+;;         ("C-n" . corfu-next)        ;; 下一个候选
+;;         ("C-p" . corfu-previous)    ;; 上一个候选
+;;         ("RET" . corfu-insert)      ;; 回车确认
+;;         ("<escape>" . corfu-quit))  ;; ESC 退出
+;;  :hook ((after-init . global-corfu-mode)
+;;         (global-corfu-mode . corfu-popupinfo-mode))
+;;  :config
+;;  ;; Vim 风格的补全：C-n 触发补全并选择下一项，C-p 选择上一项
+;;  (with-eval-after-load 'evil
+;;    ;; 定义智能补全函数
+;;    (defun my/corfu-complete-or-next ()
+;;      "触发补全或选择下一项（类似 Vim 的 C-n）"
+;;      (interactive)
+;;      (if (and (corfu-mode) completion-in-region-mode)
+;;          (corfu-next)
+;;        (completion-at-point)))
+;;
+;;    (defun my/corfu-complete-or-previous ()
+;;      "触发补全或选择上一项（类似 Vim 的 C-p）"
+;;      (interactive)
+;;      (if (and (corfu-mode) completion-in-region-mode)
+;;          (corfu-previous)
+;;        (completion-at-point)))
+;;
+;;    ;; 在 insert 模式绑定 C-n/C-p
+;;    (define-key evil-insert-state-map (kbd "C-n") #'my/corfu-complete-or-next)
+;;    (define-key evil-insert-state-map (kbd "C-p") #'my/corfu-complete-or-previous))
+;;
+;;  (use-package nerd-icons-corfu
+;;    :ensure t
+;;    :config
+;;    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)))
+;;
 ;;; Code:
 (use-package vertico
   :ensure t
@@ -138,47 +138,47 @@
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode)
 )
 
-(use-package cape
-  :ensure t
-  :init
-  ;; 添加补全源到 completion-at-point-functions
-  ;; 注意：LSP/Eglot 补全会自动添加，这里只添加额外的补全源
-
-  ;; 文件路径补全（在字符串和注释中很有用）
-  (add-hook 'completion-at-point-functions #'cape-file)
-
-  ;; 当前缓冲区的词语补全（类似 dabbrev）
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-
-  ;; 编程语言关键字补全
-  (add-hook 'completion-at-point-functions #'cape-keyword)
-
-  :config
-  ;; 优化 eglot 补全（避免缓存过期）
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
-
-  ;; 让补全更安静（避免错误消息）
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-silent)
-
-  ;; Emacs 28 及以下版本需要的补丁
-  (when (< emacs-major-version 29)
-    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
-    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
-
-  ;; 为特定模式添加额外的补全源
-
-  ;; Shell/Eshell: 添加历史补全
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (add-hook 'completion-at-point-functions #'cape-history 0 t)))
-
-  (add-hook 'shell-mode-hook
-            (lambda ()
-              (add-hook 'completion-at-point-functions #'cape-history 0 t)))
-
-  ;; 任何地方都可以补全 Elisp 符号（用于配置和文档）
-  ;; 可以通过 M-x cape-elisp-symbol 手动触发
-  )
+;;(use-package cape
+;;  :ensure t
+;;  :init
+;;  ;; 添加补全源到 completion-at-point-functions
+;;  ;; 注意：LSP/Eglot 补全会自动添加，这里只添加额外的补全源
+;;
+;;  ;; 文件路径补全（在字符串和注释中很有用）
+;;  (add-hook 'completion-at-point-functions #'cape-file)
+;;
+;;  ;; 当前缓冲区的词语补全（类似 dabbrev）
+;;  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+;;
+;;  ;; 编程语言关键字补全
+;;  (add-hook 'completion-at-point-functions #'cape-keyword)
+;;
+;;  :config
+;;  ;; 优化 eglot 补全（避免缓存过期）
+;;  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+;;
+;;  ;; 让补全更安静（避免错误消息）
+;;  (advice-add 'eglot-completion-at-point :around #'cape-wrap-silent)
+;;
+;;  ;; Emacs 28 及以下版本需要的补丁
+;;  (when (< emacs-major-version 29)
+;;    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+;;    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+;;
+;;  ;; 为特定模式添加额外的补全源
+;;
+;;  ;; Shell/Eshell: 添加历史补全
+;;  (add-hook 'eshell-mode-hook
+;;            (lambda ()
+;;              (add-hook 'completion-at-point-functions #'cape-history 0 t)))
+;;
+;;  (add-hook 'shell-mode-hook
+;;            (lambda ()
+;;              (add-hook 'completion-at-point-functions #'cape-history 0 t)))
+;;
+;;  ;; 任何地方都可以补全 Elisp 符号（用于配置和文档）
+;;  ;; 可以通过 M-x cape-elisp-symbol 手动触发
+;;  )
 
 ; Consult users will also want the embark-consult package.
 (use-package embark-consult
@@ -187,37 +187,37 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(use-package eglot
-  :ensure nil  ;; Emacs 内置
-  ;; :hook (prog-mode . eglot-ensure)  ;; 如需自动启动，取消注释
-  :general
-  (:keymaps 'override
-   :states '(normal visual)
-   :prefix  "SPC"
-   "t l" '(eglot :wk "toggle eglot")
-   "l" '(:ignore t :wk "lsp")
-   "l r" '(eglot-rename :wk "rename")
-   "l a" '(eglot-code-actions :wk "code action")
-   "l f" '(eglot-format :wk "format")
-   "l d" '(xref-find-definitions :wk "find definition")
-   "l D" '(xref-find-references :wk "find references")
-   "l i" '(eglot-find-implementation :wk "find implementation"))
-  (:keymaps 'eglot-mode-map
-   :states 'normal
-   "K" 'eldoc-box-help-at-point       ;; 显示浮动文档框
-   "gd" 'xref-find-definitions
-   "gr" 'xref-find-references
-   "gi" 'eglot-find-implementation)
-  :custom
-  (eglot-autoshutdown t)  ;; 关闭缓冲区时自动停止 LSP 服务器
-  (eglot-send-changes-idle-time 0.5)  ;; 延迟发送更改
-  (eglot-events-buffer-size 0)  ;; 禁用事件日志缓冲区以提升性能
-  :config
-  (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
-  ;; 添加语言服务器配置
-  (add-to-list 'eglot-server-programs '(rust-ts-mode . ("rust-analyzer")))
-  (add-to-list 'eglot-server-programs '(tsx-ts-mode . ("typescript-language-server" "--stdio")))
-  (add-to-list 'eglot-server-programs '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
+;;(use-package eglot
+;;  :ensure nil  ;; Emacs 内置
+;;  ;; :hook (prog-mode . eglot-ensure)  ;; 如需自动启动，取消注释
+;;  :general
+;;  (:keymaps 'override
+;;   :states '(normal visual)
+;;   :prefix  "SPC"
+;;   "t l" '(eglot :wk "toggle eglot")
+;;   "l" '(:ignore t :wk "lsp")
+;;   "l r" '(eglot-rename :wk "rename")
+;;   "l a" '(eglot-code-actions :wk "code action")
+;;   "l f" '(eglot-format :wk "format")
+;;   "l d" '(xref-find-definitions :wk "find definition")
+;;   "l D" '(xref-find-references :wk "find references")
+;;   "l i" '(eglot-find-implementation :wk "find implementation"))
+;;  (:keymaps 'eglot-mode-map
+;;   :states 'normal
+;;   "K" 'eldoc-box-help-at-point       ;; 显示浮动文档框
+;;   "gd" 'xref-find-definitions
+;;   "gr" 'xref-find-references
+;;   "gi" 'eglot-find-implementation)
+;;  :custom
+;;  (eglot-autoshutdown t)  ;; 关闭缓冲区时自动停止 LSP 服务器
+;;  (eglot-send-changes-idle-time 0.5)  ;; 延迟发送更改
+;;  (eglot-events-buffer-size 0)  ;; 禁用事件日志缓冲区以提升性能
+;;  :config
+;;  (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
+;;  ;; 添加语言服务器配置
+;;  (add-to-list 'eglot-server-programs '(rust-ts-mode . ("rust-analyzer")))
+;;  (add-to-list 'eglot-server-programs '(tsx-ts-mode . ("typescript-language-server" "--stdio")))
+;;  (add-to-list 'eglot-server-programs '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
 
 (use-package eglot-booster
   :vc (eglot-booster :url "https://github.com/jdtsmith/eglot-booster")
