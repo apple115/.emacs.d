@@ -216,25 +216,88 @@
 (setq-default auto-fill-function nil)
 (setq-default visual-line-mode nil)
 
-(use-package doom-modeline
-  :ensure t
-  :hook (after-init . doom-modeline-mode)
-  :hook (doom-modeline-mode . size-indication-mode) ; filesize in modeline
-  :hook (doom-modeline-mode . column-number-mode)   ; cursor column in modeline
-  :init
-  (setq doom-modeline-bar-width 3
-        doom-modeline-github nil
-        doom-modeline-mu4e nil
-        doom-modeline-persp-name nil
-        doom-modeline-minor-modes nil
-        doom-modeline-major-mode-icon nil
-        doom-modeline-buffer-file-name-style 'relative-from-project
-        ;; Only show file encoding if it's non-UTF-8 and different line endings
-        ;; than the current OSes preference
-        doom-modeline-buffer-encoding 'nondefault
-        doom-modeline-default-eol-type (if (featurep :system 'windows) 1 0))
-  :config
-  )
+(defun my-header-line-vc ()
+  (if (and (boundp 'vc-mode) vc-mode)
+      (concat " #" (substring vc-mode 5)) ;; 直接截取分支名
+    ""))
+;; --- 2. 状态块颜色逻辑 (保持 Evil 用户的直观感) ---
+(defun my-header-line-evil-face ()
+  (cond ((evil-normal-state-p) '(:background "#51afef" :foreground "black" :weight bold))
+        ((evil-insert-state-p) '(:background "#98be65" :foreground "black" :weight bold))
+        ((evil-visual-state-p) '(:background "#a9a1e1" :foreground "black" :weight bold))
+        (t '(:background "#444444" :foreground "white"))))
+(defun my-header-line-render ()
+  (let* ((buffer-name (propertize (format-mode-line " %b ") 'face '(:weight bold)))
+         (git-info (propertize (my-header-line-vc) 'face '(:foreground "#ecbe7b")))
+         (evil-tag (propertize (concat " " (upcase (symbol-name evil-state)) " ")
+                               'face (my-header-line-evil-face))))
+    (concat
+     evil-tag      ; Evil 模式块
+     buffer-name   ; 文件名
+     git-info      ; Git 分支
+     ;; 将行列号推到最右侧
+     (propertize " " 'display `(space :align-to (- right 8)))
+     (format-mode-line "%l:%c"))))
+
+;; --- 4. 设置与隐藏 ---
+(setq-default header-line-format '((:eval (my-header-line-render))))
+(setq-default mode-line-format nil)
+
+;; 只有在这些动作发生时才更新，而不是每次移动光标都更新
+(dolist (hook '(evil-normal-state-entry-hook
+                evil-insert-state-entry-hook
+                evil-visual-state-entry-hook
+                after-save-hook      ;; 保存后更新
+                window-configuration-change-hook)) ;; 切换窗口后更新
+  (add-hook hook #'force-mode-line-update))
+
+;; (use-package smart-mode-line
+;;   :ensure t
+;;   :init
+;;   (setq sml/no-package-menus t)  ;; 减少干扰
+;;   (setq sml/shorten-directory t) ;; 自动缩短路径 (非常适合 mini-modeline)
+;;   (setq sml/shorten-modes t)     ;; 自动缩短模式名称 (例如 Emacs-Lisp -> EL)
+;;   :config
+;;   (sml/setup)
+;; )
+
+;; (use-package mini-modeline
+;;   :ensure t
+;;   :after smart-mode-line
+;;   :init
+;;   (setq-default mode-line-format nil)
+;;   :config
+;;   (mini-modeline-mode 1)
+;;   ;; 定制：只显示最核心的信息，避免干扰底部的命令输入
+;;   (setq mini-modeline-right-buttons nil) ;; 去掉不必要的按钮
+;;   (setq mini-modeline-display-gui-line t) ;; 在底部画一根超细的线区分编辑区
+;; )
+
+;; (setq-default mode-line-format
+;;       '((:eval
+;;          (propertize " "
+;;                      'display '(space :height (1)) ;; 只有 1 像素高
+;;                      'face '(:background "#cccccc"))))) ;; 线的颜色，可以根据主题调浅
+
+;; (use-package doom-modeline
+;;   :ensure t
+;;   :hook (after-init . doom-modeline-mode)
+;;   :hook (doom-modeline-mode . size-indication-mode) ; filesize in modeline
+;;   :hook (doom-modeline-mode . column-number-mode)   ; cursor column in modeline
+;;   :init
+;;   (setq doom-modeline-bar-width 3
+;;         doom-modeline-github nil
+;;         doom-modeline-mu4e nil
+;;         doom-modeline-persp-name nil
+;;         doom-modeline-minor-modes nil
+;;         doom-modeline-major-mode-icon nil
+;;         doom-modeline-buffer-file-name-style 'relative-from-project
+;;         ;; Only show file encoding if it's non-UTF-8 and different line endings
+;;         ;; than the current OSes preference
+;;         doom-modeline-buffer-encoding 'nondefault
+;;         doom-modeline-default-eol-type (if (featurep :system 'windows) 1 0))
+;;   :config
+;;   )
 
 (use-package ligature
   :ensure t
@@ -265,34 +328,35 @@
         tab-bar-new-tab-choice "*scratch*"
         tab-bar-tab-name-truncated-max 20
         tab-bar-auto-width nil
+        tab-bar-show nil
+        tab-bar-format nil
         tab-bar-close-button-show nil)
 
-  ;; 使用 super-1 super-2 ... 来切换 tab
-  (customize-set-variable 'tab-bar-select-tab-modifiers '(super))
+  ;; ;; 使用 super-1 super-2 ... 来切换 tab
+  ;; (customize-set-variable 'tab-bar-select-tab-modifiers '(super))
 
-  ;; 自动截取 tab name，并且添加在每个 tab 上添加数字，方便用快捷键切换
-  (setq tab-bar-tab-name-function
-        (lambda () (let* ((raw-tab-name (buffer-name (window-buffer (minibuffer-selected-window))))
-                          (count (length (window-list-1 nil 'nomini)))
-                          (truncated-tab-name (if (< (length raw-tab-name)
-                                                     tab-bar-tab-name-truncated-max)
-                                                  raw-tab-name
-                                                (truncate-string-to-width raw-tab-name
-                                                                          tab-bar-tab-name-truncated-max
-                                                                          nil nil tab-bar-tab-name-ellipsis))))
-                     truncated-tab-name)))
+  ;; ;; 自动截取 tab name，并且添加在每个 tab 上添加数字，方便用快捷键切换
+  ;; (setq tab-bar-tab-name-function
+  ;;       (lambda () (let* ((raw-tab-name (buffer-name (window-buffer (minibuffer-selected-window))))
+  ;;                         (count (length (window-list-1 nil 'nomini)))
+  ;;                         (truncated-tab-name (if (< (length raw-tab-name)
+  ;;                                                    tab-bar-tab-name-truncated-max)
+  ;;                                                 raw-tab-name
+  ;;                                               (truncate-string-to-width raw-tab-name
+  ;;                                                                         tab-bar-tab-name-truncated-max
+  ;;                                                                         nil nil tab-bar-tab-name-ellipsis))))
+  ;;                    truncated-tab-name)))
 
-  ;; 给 tab 两边加上空格，更好看
-  (setq tab-bar-tab-name-format-function
-        (lambda (tab i)
-          (let ((face (funcall tab-bar-tab-face-function tab)))
-            (concat
-             (propertize "" 'face face)
-             ;; (propertize (number-to-string i) 'face `(:inherit ,face :weight ultra-bold :underline t));;去除前面的1，2,3
-             (propertize (concat " " (alist-get 'name tab) " ") 'face face)))))
+  ;; ;; 给 tab 两边加上空格，更好看
+  ;; (setq tab-bar-tab-name-format-function
+  ;;       (lambda (tab i)
+  ;;         (let ((face (funcall tab-bar-tab-face-function tab)))
+  ;;           (concat
+  ;;            (propertize "" 'face face)
+  ;;            ;; (propertize (number-to-string i) 'face `(:inherit ,face :weight ultra-bold :underline t));;去除前面的1，2,3
+  ;;            (propertize (concat " " (alist-get 'name tab) " ") 'face face)))))
 
-  (setq tab-bar-format '(tab-bar-format-tabs))
-
+  ;; (setq tab-bar-format '(tab-bar-format-tabs))
   (tab-bar--update-tab-bar-lines)
 
   ;; WORKAROUND: update tab-bar for daemon
