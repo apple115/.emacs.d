@@ -207,6 +207,11 @@
   :config
   (buffer-terminator-mode 1))
 
+(use-package tramp-hlo
+    :ensure t
+    :config
+    (tramp-hlo-setup)
+)
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
