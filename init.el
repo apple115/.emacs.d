@@ -111,10 +111,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ace-window add-node-modules-path auto-yasnippet buffer-terminator cape citre
-                claude-code-ide colorful-mode compile-angel consult-dir
-                consult-notes consult-todo corfu dape denote devdocs diff-hl
-                diredfl docker doom-modeline doom-themes dumb-jump
+   '(ace-window add-node-modules-path agent-shell auto-yasnippet buffer-terminator
+                cape citre claude-code-ide colorful-mode compile-angel
+                consult-dir consult-notes consult-todo corfu dape denote devdocs
+                diff-hl diredfl docker doom-modeline doom-themes dumb-jump
                 dwim-shell-command eat eglot-booster eldoc-box embark-consult
                 emmet-mode engine-mode evil-collection evil-indent-plus
                 evil-matchit evil-nerd-commenter evil-surround

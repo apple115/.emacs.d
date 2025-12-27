@@ -5,7 +5,6 @@
 ;;; Code:
 (use-package sort-tab
   :load-path "./site-lisp/my-fork-sort-tab/"
-  :after doom-modeline
   :custom
   (sort-tab-separaor "")
   (sort-tab-name-max-length 20)

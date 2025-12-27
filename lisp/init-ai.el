@@ -43,15 +43,18 @@
 ;;           :models '(deepseek-chat deepseek-coder))))
 
 
-(use-package claude-code-ide
-  :vc (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")
-  :bind ("C-c C-'" . claude-code-ide-menu)
-  :config
-  (claude-code-ide-emacs-tools-setup)
-  (setq claude-code-ide-use-ide-diff nil)
-  (setq claude-code-ide-window-side 'right
-        claude-code-ide-window-width 100)
-  )
+;; (use-package claude-code-ide
+;;   :vc (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")
+;;   :bind ("C-c C-'" . claude-code-ide-menu)
+;;   :config
+;;   (claude-code-ide-emacs-tools-setup)
+;;   (setq claude-code-ide-use-ide-diff nil)
+;;   (setq claude-code-ide-window-side 'right
+;;         claude-code-ide-window-width 100)
+;;   )
+
+(use-package agent-shell
+    :ensure t)
 
 (provide 'init-ai)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

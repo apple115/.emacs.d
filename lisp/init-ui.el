@@ -18,7 +18,9 @@
   (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'doom-gruvbox-light t)
-  (doom-themes-treemacs-config))
+  (doom-themes-treemacs-config)
+  ;;(doom-themes-vterm-config)
+  )
 
 (defun my-apply-font()
   (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 12 :weight 'medium))

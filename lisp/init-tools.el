@@ -140,43 +140,6 @@
 (use-package vterm
   :ensure t
   :config
-    (let ((bg   "#fbf1c7")
-            (fg   "#282828")
-            (red  "#9d0006")
-            (green "#79740e")
-            (yellow "#b57614")
-            (blue "#076678")
-            (magenta "#b16286")
-            (cyan "#427b58")
-            (base2 "#d5c4a1")
-            (base4 "#a89984")
-            (base8 "#1d2021")
-            (f-red "#cc241d")
-            (f-green "#98971a")
-            (f-yellow "#d79921")
-            (f-blue "#458588")
-            (f-aqua "#689d6a")
-            (violet "#8f3f71"))
-
-        (custom-set-faces
-        `(vterm-color-black ((t (:foreground ,fg :background ,fg))))
-        `(vterm-color-red ((t (:foreground ,red :background ,red))))
-        `(vterm-color-green ((t (:foreground ,green :background ,green))))
-        `(vterm-color-yellow ((t (:foreground ,yellow :background ,yellow))))
-        `(vterm-color-blue ((t (:foreground ,blue :background ,blue))))
-        `(vterm-color-magenta ((t (:foreground ,magenta :background ,magenta))))
-        `(vterm-color-cyan ((t (:foreground ,cyan :background ,cyan))))
-        `(vterm-color-white ((t (:foreground ,base2 :background ,base2))))
-
-        `(vterm-color-bright-black ((t (:foreground ,base4 :background ,base4))))
-        `(vterm-color-bright-red ((t (:foreground ,f-red :background ,f-red))))
-        `(vterm-color-bright-green ((t (:foreground ,f-green :background ,f-green))))
-        `(vterm-color-bright-yellow ((t (:foreground ,f-yellow :background ,f-yellow))))
-        `(vterm-color-bright-blue ((t (:foreground ,f-blue :background ,f-blue))))
-        `(vterm-color-bright-magenta ((t (:foreground ,violet :background ,violet))))
-        `(vterm-color-bright-cyan ((t (:foreground ,f-aqua :background ,f-aqua))))
-        `(vterm-color-bright-white ((t (:foreground ,base8 :background ,base8))))))
-  ;; --- Gruvbox Light 颜色适配结束 ---
   (setq vterm-shell "/opt/homebrew/bin/fish")
     (use-package vterm-toggle
     :ensure t
