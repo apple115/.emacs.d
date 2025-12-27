@@ -96,6 +96,7 @@
   (require 'init-prog)
   (require 'init-rust)
   (require 'init-lsp-bridge)  ;; 已切换到 corfu + eglot
+  (require 'init-my-theme)
   ;; (require 'init-org-ui)
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)

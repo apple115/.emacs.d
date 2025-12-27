@@ -11,21 +11,21 @@
                             (fullscreen)))
 
 
-(use-package doom-themes
-  :ensure t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
-	doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-gruvbox-light t)
-  (doom-themes-treemacs-config)
-  ;;(doom-themes-vterm-config)
-  )
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
+;; 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-gruvbox-light t)
+;;   (doom-themes-treemacs-config)
+;;   ;;(doom-themes-vterm-config)
+;;   )
 
 (defun my-apply-font()
   (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 12 :weight 'medium))
   (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 12 :weight 'medium))
-  )
+)
 
 ;; (defun my-apply-font()
 ;;   (set-face-attribute 'default nil :font (font-spec :family "Maple Mono NF CN" :size 12 :weight 'medium) :slant 'italic)
@@ -224,10 +224,11 @@
     ""))
 ;; --- 2. 状态块颜色逻辑 (保持 Evil 用户的直观感) ---
 (defun my-header-line-evil-face ()
-  (cond ((evil-normal-state-p) '(:background "#51afef" :foreground "black" :weight bold))
-        ((evil-insert-state-p) '(:background "#98be65" :foreground "black" :weight bold))
-        ((evil-visual-state-p) '(:background "#a9a1e1" :foreground "black" :weight bold))
-        (t '(:background "#444444" :foreground "white"))))
+  (cond ((evil-normal-state-p) '(:background "#d5c4a1" :foreground "#3c3836" ))
+        ((evil-insert-state-p) '(:background "#b8bb26" :foreground "#fbf1c7" ))
+        ((evil-visual-state-p) '(:background "#d3869b" :foreground "#fbf1c7" ))
+        (t '(:background "#ebdbb2" :foreground "#3c3836"))))
+
 (defun my-header-line-render ()
   (let* ((buffer-name (propertize (format-mode-line " %b ") 'face '(:weight bold)))
          (git-info (propertize (my-header-line-vc) 'face '(:foreground "#ecbe7b")))
