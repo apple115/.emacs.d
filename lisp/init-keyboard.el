@@ -75,6 +75,7 @@
     "t d" '(eldoc-box-hover-mode :wk "toggle eldoc-box auto display")
     "t n" '(tab-bar-new-tab :wk "one new tab")
     "t k" '(tab-close :wk "close current tab")
+    "t t" '(tab-switch :wk "switch tab")
 
     "o" '(:ignore t :wk "open")
     "o o" '(embark-act :wk "embark-act")

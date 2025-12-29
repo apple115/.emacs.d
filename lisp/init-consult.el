@@ -17,6 +17,7 @@
   "s f" '(consult-fd :wk "find file")
   "s e" '(consult-flymake :wk "search diagnostic")
   "s l" '(consult-line :wk "search line in buffer")
+  "s d" '(consult-dir :wk "search dir")
  )
  :config
 (setq consult-locate-command "mdfind -name ARG OPTS")
@@ -32,6 +33,26 @@
 ;;   )
 )
 
+(use-package consult-dir
+  :ensure t
+  :defer t
+  :config
+  (setq consult-dir-default-command #'consult-dir-dired)
+
+  (defun consult-dir--zoxide-dirs ()
+    "Return list of zoxide dirs."
+    (split-string (shell-command-to-string "zoxide query -l") "\n" t))
+
+  (defvar consult-dir--source-zoxide
+    `(:name "zoxide"
+      :narrow ?z
+      :category file
+      :face consult-file
+      :history file-name-history
+      :enabled ,(lambda () (executable-find "zoxide"))
+      :items ,#'consult-dir--zoxide-dirs)
+    "zoxide directory source for `consult-dir'.")
+  (add-to-list 'consult-dir-sources 'consult-dir--source-zoxide t))
 
 (use-package engine-mode
   :ensure t
