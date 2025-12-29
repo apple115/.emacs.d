@@ -172,16 +172,18 @@
   )
 )
 
-;; Eat - Emulate A Terminal (使用 eshell)
-(use-package eat
-  :ensure t
-  :custom
-  (eat-term-name (if (eq system-type 'windows-nt) "dumb" "xterm-256color"))
-  (eat-kill-buffer-on-exit t)
-  :config
-  ;; 启用 eshell 集成（使用 eshell 而不是直接调用外部 shell）
-  (eat-eshell-mode)
-  (eat-eshell-visual-command-mode))
+;; Eat - Emulate A Terminal (已禁用)
+;; (use-package eat
+;;   :ensure t
+;;   :custom
+;;   (eat-term-name "xterm-256color")
+;;   (eat-kill-buffer-on-exit t)
+;;   :config
+;;   (eat-eshell-mode)
+;;   (eat-eshell-visual-command-mode)
+;; )
+
+
 
 (use-package dwim-shell-command
   :ensure t)
@@ -213,6 +215,11 @@
   :config
   (buffer-terminator-mode 1))
 
+(use-package tramp-hlo
+    :ensure t
+    :config
+    (tramp-hlo-setup)
+)
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

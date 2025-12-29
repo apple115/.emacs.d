@@ -4,17 +4,17 @@
 
 ;;; Code:
 (use-package project
- :ensure nil
- :general
+  :ensure nil
+  :general
   (:keymaps 'override
-   :states '(normal visual)
-   :prefix  "SPC"
-    "p" '(:ignore t :wk "project")
-    "p d" '(project-dired :wk "project dired")
-    "p k " '(project-forget-project :wk "project forget")
-    "p c " '(project-compile :wk "project compile ")
-    "p r " '(project-remember-projects-under :wk "project remember")
-  )
+            :states '(normal visual)
+            :prefix  "SPC"
+            "p" '(:ignore t :wk "project")
+            "p d" '(project-dired :wk "project dired")
+            "p k " '(project-forget-project :wk "project forget")
+            "p c " '(project-compile :wk "project compile ")
+            "p r " '(project-remember-projects-under :wk "project remember")
+            )
   :config
     (defun my/project-files-in-directory (dir)
     "Use `fd' to list files in DIR."
@@ -51,14 +51,14 @@
              tabspaces-open-or-create-project-and-workspace)
   :general
   (:keymaps 'override
-   :states '(normal visual)
-   :prefix  "SPC"
-    "p" '(:ignore t :wk "project")
-    "p p" '(tabspaces-open-or-create-project-and-workspace :wk "find project")
-    "p q" '(tabspaces-kill-buffers-close-workspace :wk"kill project buffer")
-    "p s" '(tabspaces-save-current-project-session :wk"save project sessions")
-    "p r" '(tabspaces-restore-session :wk"restore project sessions")
-  )
+            :states '(normal visual)
+            :prefix  "SPC"
+            "p" '(:ignore t :wk "project")
+            "p p" '(tabspaces-open-or-create-project-and-workspace :wk "find project")
+            "p q" '(tabspaces-kill-buffers-close-workspace :wk"kill project buffer")
+            "p s" '(tabspaces-save-current-project-session :wk"save project sessions")
+            "p r" '(tabspaces-restore-session :wk"restore project sessions")
+            )
   :custom
   (tabspaces-use-filtered-buffers-as-default t)
   (tabspaces-default-tab "Default")
@@ -70,32 +70,32 @@
   ;; (tabspaces-session t)
   ;; (tabspaces-session-auto-restore t)
   (tab-bar-new-tab-choice "*scratch*"))
-  :config
+:config
 ;; (add-hook 'after-init-hook  tabspaces-mode)
 (with-eval-after-load 'consult
-;; hide full buffer list (still available with "b" prefix)
-(consult-customize consult--source-buffer :hidden t :default nil)
+  ;; hide full buffer list (still available with "b" prefix)
+  (consult-customize consult--source-buffer :hidden t :default nil)
 
-(defun consult--filter-sort-tab-buffers (buf)
-  "Filter out the *sort-tab* buffer and check if buffer is local to tabspace."
-  (and (not (string= (buffer-name buf) "*sort-tab*"))
-       (tabspaces--local-buffer-p buf)))
+  (defun consult--filter-sort-tab-buffers (buf)
+    "Filter out the *sort-tab* buffer and check if buffer is local to tabspace."
+    (and (not (string= (buffer-name buf) "*sort-tab*"))
+         (tabspaces--local-buffer-p buf)))
 
-;; set consult-workspace buffer list
-(defvar consult--source-workspace
-  (list :name     "Workspace Buffers"
-        :narrow   ?w
-        :history  'buffer-name-history
-        :category 'buffer
-        :state    #'consult--buffer-state
-        :default  t
-        :items    (lambda () (consult--buffer-query
-                         :predicate #'consult--filter-sort-tab-buffers
-                         :sort 'visibility
-                         :as #'buffer-name)))
+  ;; set consult-workspace buffer list
+  (defvar consult--source-workspace
+    (list :name     "Workspace Buffers"
+          :narrow   ?w
+          :history  'buffer-name-history
+          :category 'buffer
+          :state    #'consult--buffer-state
+          :default  t
+          :items    (lambda () (consult--buffer-query
+                                :predicate #'consult--filter-sort-tab-buffers
+                                :sort 'visibility
+                                :as #'buffer-name)))
 
-  "Set workspace buffer list for consult-buffer.")
-(add-to-list 'consult-buffer-sources 'consult--source-workspace))
+    "Set workspace buffer list for consult-buffer.")
+  (add-to-list 'consult-buffer-sources 'consult--source-workspace))
 
 
 (provide 'init-project)
