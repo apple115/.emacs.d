@@ -67,7 +67,6 @@
   (require 'init-base)
   (require 'init-custom)
   (require 'init-edit)
-  ;; 以下模块可以异步加载，利用 :after 管理依赖关系
   (require 'init-tools)
   (require 'init-keyboard)
   (require 'init-ui)
@@ -95,8 +94,9 @@
   (require 'init-go)
   (require 'init-prog)
   (require 'init-rust)
-  (require 'init-lsp-bridge)  ;; 已切换到 corfu + eglot
+  (require 'init-lsp-bridge)
   (require 'init-my-theme)
+  (require 'init-read)
   ;; (require 'init-org-ui)
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
@@ -124,12 +124,12 @@
                 graphviz-dot-mode haskell-mode highlight-parentheses
                 ibuffer-project jinx ligature link-hint magit marginalia
                 markdown-mode mini-modeline nerd-icons-corfu nerd-icons-dired
-                nerd-icons-ibuffer ob-go ob-restclient orderless org-auto-tangle
-                org-download org-roam ox-gfm ox-reveal pinyinlib plantuml-mode
-                popper python-mode quickrun rainbow-delimiters rust-mode
-                scss-mode shackle sis smart-mode-line sudo-edit tabspaces
-                tramp-hlo treesit-auto vertico virtualenvwrapper vlf
-                vterm-toggle web-mode))
+                nerd-icons-ibuffer nov ob-go ob-restclient orderless
+                org-auto-tangle org-download org-roam ox-gfm ox-reveal pdf-tools
+                pinyinlib plantuml-mode popper python-mode quickrun
+                rainbow-delimiters rust-mode scss-mode shackle sis
+                smart-mode-line sudo-edit tabspaces tramp-hlo treesit-auto
+                vertico virtualenvwrapper vlf vterm-toggle web-mode))
  '(package-vc-selected-packages
    '((claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")))
  '(warning-suppress-log-types '((treesit) (treesit)))
