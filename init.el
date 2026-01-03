@@ -101,7 +101,7 @@
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
   )
-   ;; (server-start)
+(server-start)
 
 (provide 'init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -125,10 +125,11 @@
                 ibuffer-project jinx ligature link-hint magit marginalia
                 markdown-mode mini-modeline nerd-icons-corfu nerd-icons-dired
                 nerd-icons-ibuffer ob-go ob-restclient orderless org-auto-tangle
-                org-roam ox-gfm ox-reveal pinyinlib plantuml-mode popper
-                python-mode quickrun rainbow-delimiters rust-mode scss-mode
-                shackle smart-mode-line sudo-edit tabspaces tramp-hlo
-                treesit-auto vertico virtualenvwrapper vlf vterm-toggle web-mode))
+                org-download org-roam ox-gfm ox-reveal pinyinlib plantuml-mode
+                popper python-mode quickrun rainbow-delimiters rust-mode
+                scss-mode shackle sis smart-mode-line sudo-edit tabspaces
+                tramp-hlo treesit-auto vertico virtualenvwrapper vlf
+                vterm-toggle web-mode))
  '(package-vc-selected-packages
    '((claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")))
  '(warning-suppress-log-types '((treesit) (treesit)))

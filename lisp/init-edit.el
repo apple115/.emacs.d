@@ -51,7 +51,22 @@
   (define-key evil-insert-state-map (kbd "C-b") 'backward-char)
   ;;C-u C-k
   (define-key evil-insert-state-map (kbd "C-u") 'evil-delete-back-to-indentation)
-  (define-key evil-insert-state-map (kbd "C-k") 'delete-line))
+  (define-key evil-insert-state-map (kbd "C-k") 'delete-line)
+
+(defun my-switch-to-english-async ()
+"异步切换到英文输入法，不阻塞 UI。"
+(interactive)
+;; 使用 start-process 开启异步子进程，不等待返回结果
+(start-process "set-im" nil "macism" "com.apple.keylayout.ABC"))
+
+;; 在 Evil 退出插入模式时触发
+(when(eq system-type 'darwin)
+    (add-hook 'evil-insert-state-exit-hook #'my-switch-to-english-async)
+)
+
+;; 消除 ESC 延迟 (关键！)
+(setq evil-esc-delay 0)
+  )
 
 (use-package evil-indent-plus
   :ensure t
@@ -161,18 +176,18 @@
 
 ;; (use-package sis
 ;;   :ensure t
-;;   :hook
-;;   (((text-mode prog-mode) . sis-context-mode)
-;;    ((text-mode prog-mode) . sis-inline-mode))
+;;   ;; :hook
+;;   ;; ((text-mode  . sis-respect-start)
+;;   ;;  (text-mode . sis-inline-mode))
 ;;   :config
 ;;   (sis-ism-lazyman-config
 ;;    "com.apple.keylayout.ABC"
 ;;    "com.apple.inputmethod.SCIM.Shuangpin"
 ;;    )
-;;   (sis-global-cursor-color-mode t)
+;;   ;; (sis-global-cursor-color-mode nil)
 ;;   (sis-global-respect-mode t)
-;;   (setq sis-inline-with-other t)
-;;   )
+;;   ;; (setq sis-inline-with-other t)
+;; )
 
 (provide 'init-edit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

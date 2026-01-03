@@ -1,5 +1,4 @@
 ;; Gruvbox Light Minimal Theme - 基于Alabaster设计理念
-;; 使用自定义face设置而不是deftheme，避免主题文件路径问题
 
 ;; Gruvbox Light 配色
 (defconst my-gruvbox-colors

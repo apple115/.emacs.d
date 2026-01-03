@@ -296,6 +296,14 @@
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
 
+(use-package org-download
+  :ensure t
+  :config
+  (add-hook 'dired-mode-hook 'org-download-enable)
+)
+
+;; Drag-and-drop to `dired`
+
 (provide 'init-write)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

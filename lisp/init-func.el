@@ -130,6 +130,36 @@ If NEWNAME is a directory, move file to it."
   (let ((default-directory "~/blog/"))
    (hexo-new)))
 
+;;https://mbork.pl/2021-05-02_Org-mode_to_Markdown_via_the_clipboard 来源
+(defun org-copy-region-as-markdown ()
+  "Copy the region (in Org) to the system clipboard as Markdown."
+  (interactive)
+  (if (use-region-p)
+      (let* ((region
+	      (buffer-substring-no-properties
+		      (region-beginning)
+		      (region-end)))
+	     (markdown
+	      (org-export-string-as region 'md t '(:with-toc nil))))
+	(gui-set-selection 'CLIPBOARD markdown))))
+
+;;http://yummymelon.com/devnull/import-markdown-to-org-with-the-clipboard-in-emacs.html
+(defun cc/yank-markdown-as-org ()
+  "Yank Markdown text as Org.
+
+This command will convert Markdown text in the top of the `kill-ring'
+and convert it to Org using the pandoc utility."
+  (interactive)
+  (save-excursion
+    (with-temp-buffer
+      (yank)
+      (shell-command-on-region
+       (point-min) (point-max)
+       "pandoc -f markdown -t org --wrap=preserve" t t)
+      (kill-region (point-min) (point-max)))
+    (yank)))
+
+
 
 ;; (use-package tailwindcss-color-mode
 ;;  :load-path "./site-lisp/tailwindcss-color-mode"
