@@ -113,27 +113,24 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    '(ace-window add-node-modules-path agent-shell auto-yasnippet buffer-terminator
-                cape citre colorful-mode compile-angel consult-dir consult-notes
-                consult-todo corfu dape denote devdocs diff-hl diredfl docker
-                doom-modeline doom-themes dumb-jump dwim-shell-command
-                eglot-booster eldoc-box embark-consult emmet-mode engine-mode
-                evil-collection evil-indent-plus evil-matchit
-                evil-nerd-commenter evil-surround evil-textobj-tree-sitter
-                exec-path-from-shell fish-mode flycheck format-all general
-                go-dlv go-fill-struct go-gen-test go-impl go-tag gotest
-                graphviz-dot-mode haskell-mode highlight-parentheses
-                ibuffer-project jinx ligature link-hint magit marginalia
-                markdown-mode mini-modeline nerd-icons-corfu nerd-icons-dired
-                nerd-icons-ibuffer nov ob-go ob-restclient orderless
-                org-auto-tangle org-download org-roam ox-gfm ox-reveal pdf-tools
-                pinyinlib plantuml-mode popper python-mode quickrun
-                rainbow-delimiters rust-mode scss-mode shackle sis
-                smart-mode-line sudo-edit tabspaces tramp-hlo treesit-auto
-                vertico virtualenvwrapper vlf vterm-toggle web-mode))
- '(package-vc-selected-packages
-   '((claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")))
- '(warning-suppress-log-types '((treesit) (treesit)))
- '(warning-suppress-types '((treesit) (treesit))))
+                cape citre claude-code-ide colorful-mode compile-angel
+                consult-dir consult-notes consult-todo corfu dape denote devdocs
+                diff-hl dired-sidebar diredfl docker doom-modeline doom-themes
+                dumb-jump dwim-shell-command eglot-booster eldoc-box
+                embark-consult emmet-mode engine-mode evil-collection
+                evil-indent-plus evil-matchit evil-nerd-commenter evil-surround
+                evil-textobj-tree-sitter exec-path-from-shell fish-mode flycheck
+                format-all general go-dlv go-fill-struct go-gen-test go-impl
+                go-tag gotest graphviz-dot-mode haskell-mode
+                highlight-parentheses ibuffer-project jinx ligature link-hint
+                magit marginalia markdown-mode mini-modeline monet
+                nerd-icons-corfu nerd-icons-dired nerd-icons-ibuffer nov ob-go
+                ob-restclient orderless org-auto-tangle org-download org-roam
+                ox-gfm ox-reveal pdf-tools pinyinlib plantuml-mode popper
+                python-mode quickrun rainbow-delimiters rust-mode scss-mode
+                shackle sis smart-mode-line sudo-edit tabspaces tramp-hlo
+                treesit-auto vertico virtualenvwrapper vlf vterm-toggle web-mode))
+ '(package-vc-selected-packages '((monet :url "https://github.com/stevemolitor/monet"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -180,20 +177,4 @@
  '(show-paren-match ((t (:background "#f2e5bc"))))
  '(show-paren-mismatch ((t (:background "#cc241d" :foreground "#fbf1c7"))))
  '(vertico-current ((t (:background "#f2e5bc" :extend t))))
- '(vterm-color-black ((t (:foreground "#282828" :background "#282828"))))
- '(vterm-color-blue ((t (:foreground "#076678" :background "#076678"))))
- '(vterm-color-bright-black ((t (:foreground "#a89984" :background "#a89984"))))
- '(vterm-color-bright-blue ((t (:foreground "#458588" :background "#458588"))))
- '(vterm-color-bright-cyan ((t (:foreground "#689d6a" :background "#689d6a"))))
- '(vterm-color-bright-green ((t (:foreground "#98971a" :background "#98971a"))))
- '(vterm-color-bright-magenta ((t (:foreground "#8f3f71" :background "#8f3f71"))))
- '(vterm-color-bright-red ((t (:foreground "#cc241d" :background "#cc241d"))))
- '(vterm-color-bright-white ((t (:foreground "#1d2021" :background "#1d2021"))))
- '(vterm-color-bright-yellow ((t (:foreground "#d79921" :background "#d79921"))))
- '(vterm-color-cyan ((t (:foreground "#427b58" :background "#427b58"))))
- '(vterm-color-green ((t (:foreground "#79740e" :background "#79740e"))))
- '(vterm-color-magenta ((t (:foreground "#b16286" :background "#b16286"))))
- '(vterm-color-red ((t (:foreground "#9d0006" :background "#9d0006"))))
- '(vterm-color-white ((t (:foreground "#d5c4a1" :background "#d5c4a1"))))
- '(vterm-color-yellow ((t (:foreground "#b57614" :background "#b57614"))))
  '(warning ((t (:foreground "#d79921")))))
