@@ -113,24 +113,28 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    '(ace-window add-node-modules-path agent-shell auto-yasnippet buffer-terminator
-                cape citre claude-code-ide colorful-mode compile-angel
-                consult-dir consult-notes consult-todo corfu dape denote devdocs
-                diff-hl dired-sidebar diredfl docker doom-modeline doom-themes
-                dumb-jump dwim-shell-command eglot-booster eldoc-box
-                embark-consult emmet-mode engine-mode evil-collection
-                evil-indent-plus evil-matchit evil-nerd-commenter evil-surround
-                evil-textobj-tree-sitter exec-path-from-shell fish-mode flycheck
-                format-all general go-dlv go-fill-struct go-gen-test go-impl
-                go-tag gotest graphviz-dot-mode haskell-mode
-                highlight-parentheses ibuffer-project jinx ligature link-hint
-                magit marginalia markdown-mode mini-modeline monet
-                nerd-icons-corfu nerd-icons-dired nerd-icons-ibuffer nov ob-go
-                ob-restclient orderless org-auto-tangle org-download org-roam
-                ox-gfm ox-reveal pdf-tools pinyinlib plantuml-mode popper
-                python-mode quickrun rainbow-delimiters rust-mode scss-mode
-                shackle sis smart-mode-line sudo-edit tabspaces tramp-hlo
-                treesit-auto vertico virtualenvwrapper vlf vterm-toggle web-mode))
- '(package-vc-selected-packages '((monet :url "https://github.com/stevemolitor/monet"))))
+                cape citre claude-code claude-code-ide colorful-mode
+                compile-angel consult-dir consult-notes consult-todo corfu dape
+                denote devdocs diff-hl dired-sidebar diredfl docker
+                doom-modeline doom-themes dumb-jump dwim-shell-command
+                eglot-booster eldoc-box embark-consult emmet-mode engine-mode
+                evil-collection evil-indent-plus evil-matchit
+                evil-nerd-commenter evil-surround evil-textobj-tree-sitter
+                exec-path-from-shell fish-mode flycheck format-all general
+                go-dlv go-fill-struct go-gen-test go-impl go-tag gotest
+                graphviz-dot-mode haskell-mode highlight-parentheses
+                ibuffer-project jinx ligature link-hint magit marginalia
+                markdown-mode mini-modeline monet nerd-icons-corfu
+                nerd-icons-dired nerd-icons-ibuffer nov ob-go ob-restclient
+                orderless org-auto-tangle org-download org-roam ox-gfm ox-reveal
+                pdf-tools pinyinlib plantuml-mode popper python-mode quickrun
+                rainbow-delimiters rust-mode scss-mode shackle sis
+                smart-mode-line sudo-edit tabspaces tramp-hlo treesit-auto
+                vertico virtualenvwrapper vlf vterm-toggle web-mode))
+ '(package-vc-selected-packages
+   '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
+     (monet :url "https://github.com/stevemolitor/monet")))
+ '(safe-local-variable-values '((i18n-quick-file-path . src/locale/zh-CN/))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -141,6 +145,14 @@
  '(completions-first-difference ((t (:foreground "#3c3836" :weight normal))))
  '(consult-highlight-line ((t (:background "#f7efd0" :extend t))))
  '(consult-preview-match ((t (:foreground "#458588" :background nil))))
+ '(dired-directory ((t (:background nil :foreground "#af3a03" :weight bold))))
+ '(dired-flagged ((t (:foreground "#cc241d" :weight bold))))
+ '(dired-header ((t (:background nil :inherit default))))
+ '(dired-ignored ((t (:foreground "#928374"))))
+ '(dired-perm-write ((t (:background nil :foreground "#cc241d"))))
+ '(dired-set-id ((t (:background nil :foreground "#d79921" :underline t))))
+ '(dired-special ((t (:background nil :foreground "#8f3f71"))))
+ '(dired-symlink ((t (:background nil :foreground "#8f3f71"))))
  '(error ((t (:foreground "#cc241d"))))
  '(font-lock-builtin-face ((t (:foreground "#3c3836"))))
  '(font-lock-comment-delimiter-face ((t (:foreground "#458588"))))

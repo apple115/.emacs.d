@@ -43,35 +43,42 @@
 ;;           :models '(deepseek-chat deepseek-coder))))
 
 
-(use-package claude-code-ide
-  :vc (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")
-  :bind ("C-c C-'" . claude-code-ide-menu)
-  :config
-  (claude-code-ide-emacs-tools-setup)
-  (setq claude-code-ide-use-ide-diff nil)
-  (setq claude-code-ide-window-side 'right
-        claude-code-ide-window-width 100)
-)
-
-;; (use-package monet
-;;   :vc (:url "https://github.com/stevemolitor/monet" :rev :newest))
-
-;; ;; NOTE: This will take a while due to massive GIFs in the repo!
-;; (use-package claude-code
-;;   :ensure t
-;;   :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
-
+;; (use-package claude-code-ide
+;;   :vc (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")
+;;   :bind ("C-c C-'" . claude-code-ide-menu)
 ;;   :config
-;;   ;; optional IDE integration with Monet
-;;   (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
-;;   (monet-mode 1)
+;;   (claude-code-ide-emacs-tools-setup)
+;;   (setq claude-code-ide-use-ide-diff nil)
+;;   (setq claude-code-ide-window-side 'right
+;;         claude-code-ide-window-width 100)
+;; )
 
-;;   (claude-code-mode)
-;;   :bind-keymap ("C-c c" . claude-code-command-map)
+(use-package monet
+  :vc (:url "https://github.com/stevemolitor/monet" :rev :newest))
 
-;;   ;; Optionally define a repeat map so that "M" will cycle thru Claude auto-accept/plan/confirm modes after invoking claude-code-cycle-mode / C-c M.
-;;   :bind
-;;   (:repeat-map my-claude-code-map ("M" . claude-code-cycle-mode)))
+;; NOTE: This will take a while due to massive GIFs in the repo!
+(use-package claude-code
+  :ensure t
+  :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
+
+  :config
+    (defun my-claude-display-right (buffer)
+    "Display Claude buffer in right side window."
+    (display-buffer buffer '((display-buffer-in-side-window)
+                            (side . right)
+                            (window-width . 90))))
+    (setq claude-code-display-window-fn #'my-claude-display-right)
+  ;; optional IDE integration with Monet
+  (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
+  (monet-mode 1)
+  (setq claude-code-terminal-backend 'vterm)
+
+  (claude-code-mode)
+  :bind-keymap ("C-c c" . claude-code-command-map)
+
+  ;; Optionally define a repeat map so that "M" will cycle thru Claude auto-accept/plan/confirm modes after invoking claude-code-cycle-mode / C-c M.
+  :bind
+  (:repeat-map my-claude-code-map ("M" . claude-code-cycle-mode)))
 
 (use-package agent-shell
     :ensure t)
