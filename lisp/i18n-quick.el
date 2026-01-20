@@ -1,23 +1,42 @@
-;;; i18n-quick.el --- Pure Native i18n Minor Mode  -*- lexical-binding: t; -*-
+;;; i18n-quick.el --- Modern i18n tool with dedicated Consult search -*- lexical-binding: t; -*-
 
 (require 'cl-lib)
 (require 'json)
 (require 'pulse)
+(require 'embark)
+(require 'consult)
 
 ;; ==========================================
-;; 1. 配置
+;; 1. 配置与变量
 ;; ==========================================
+(defvar embark-keymap-alist nil)
 
-(defgroup i18n-quick nil "Native i18n quick tool." :group 'tools)
-
-(defcustom i18n-quick-file-path "src/locale/zh-CN/"
-  "翻译文件或目录的相对路径。" :type 'string :safe #'stringp)
+(defgroup i18n-quick nil "Modern i18n tool." :group 'tools)
 
 (defcustom i18n-quick-style 'nested
-  "嵌套格式 (nested) 或 扁平格式 (flat)。" :type '(choice (const nested) (const flat)) :safe #'symbolp)
+  "嵌套格式 (nested) 或 扁平格式 (flat)。" :type '(choice (const nested) (const flat)))
+
+(defcustom i18n-quick-languages
+  '(("zh-CN" . "src/locale/zh-CN/")
+    ("en-US" . "src/locale/en-US/"))
+  "i18n 语言路径映射" :type '(alist :key-type string :value-type string))
+
+(defcustom i18n-quick-max-width 50
+  "翻译显示的最大宽度，超过的部分会显示为 ..."
+  :type 'integer
+  :group 'i18n-quick)
+
+(defvar i18n-quick-current-lang "zh-CN" "当前选中的语言名称")
+(defvar i18n-quick--file-cache (make-hash-table :test 'equal) "JSON 数据缓存")
+
+(defun i18n-quick--truncate (str len)
+  "如果 STR 超过 LEN，则截断并添加省略号。"
+  (if (and str (> (length str) len))
+      (concat (substring str 0 (- len 3)) "...")
+    str))
 
 ;; ==========================================
-;; 2. 核心逻辑 (Native C 引擎)
+;; 2. 核心数据层
 ;; ==========================================
 
 (cl-defstruct i18n-quick--ctx file-or-dir style root)
@@ -26,125 +45,211 @@
   (let* ((root (or (and (fboundp 'projectile-project-root) (projectile-project-root))
                    (locate-dominating-file default-directory ".git")
                    default-directory))
-         ;; 容错处理：
-         ;; 1. 如果是 symbol (如通过 add-dir-local 没加引号加的), 转为 string
-         ;; 2. 确保拿到的值不是 nil
-         (raw-path i18n-quick-file-path)
-         (path (cond ((stringp raw-path) raw-path)
-                     ((symbolp raw-path) (symbol-name raw-path))
-                     (t (error "i18n-quick-file-path 必须是字符串或符号")))))
-    (make-i18n-quick--ctx
-     :root root
-     :file-or-dir (expand-file-name path root)
-     :style i18n-quick-style)))
+         (raw-path (or (cdr (assoc i18n-quick-current-lang i18n-quick-languages))
+                       (cdar i18n-quick-languages)))
+         (path (if (symbolp raw-path) (symbol-name raw-path) raw-path)))
+    (make-i18n-quick--ctx :root root :file-or-dir (expand-file-name path root) :style i18n-quick-style)))
 
 (defun i18n-quick--resolve-target (ctx key)
-  "使用 file-directory-p 判断 Split Mode。"
   (let* ((base (i18n-quick--ctx-file-or-dir ctx)))
     (if (file-directory-p base)
         (let* ((parts (split-string key "\\."))
                (file-part (car parts))
                (inner-part (if (cdr parts) (mapconcat #'identity (cdr parts) ".") file-part))
-               ;; 安全清洗文件名并拼接 .json
                (filename (concat (replace-regexp-in-string "[^[:alnum:].-]" "" file-part) ".json")))
           (cons (expand-file-name filename base) inner-part))
       (cons base key))))
 
 (defun i18n-quick--read-json (file)
-  (when (and file (file-exists-p file))
-    (with-temp-buffer
-      (insert-file-contents file)
-      (condition-case nil (json-parse-buffer :object-type 'alist) (error nil)))))
+  (let* ((attrs (file-attributes file))
+         (mtime (and attrs (file-attribute-modification-time attrs)))
+         (cache-entry (gethash file i18n-quick--file-cache)))
+    (if (and cache-entry (equal (car cache-entry) mtime))
+        (cdr cache-entry)
+      (when (and file (file-exists-p file))
+        (let ((data (with-temp-buffer
+                      (insert-file-contents file)
+                      (condition-case nil (json-parse-buffer :object-type 'alist
+                                                             ) (error nil)))))
+          (puthash file (cons mtime data) i18n-quick--file-cache)
+          data)))))
+
+;; (defun i18n-quick--save (file alist)
+;;   "高性能保存函数。确保 alist 中没有不规范的占位符。"
+;;   (with-temp-file file
+;;     (insert (json-serialize alist
+;;                             :pretty t
+;;                             )))
+;;   (remhash file i18n-quick--file-cache))
 
 (defun i18n-quick--save (file alist)
-  "Native C 序列化写回。"
+  "使用 json-insert 高性能直接写入文件，减少内存中转。"
   (with-temp-file file
-    (insert (json-serialize alist :pretty t :true t :null nil))))
+    (json-insert alist
+                 :pretty t
+                 ))
+  (remhash file i18n-quick--file-cache))
 
-(defun i18n-quick--update-alist (alist keys value)
-  "递归更新 Alist 结构。"
-  (if (null keys) value
-    (let* ((k (car keys))
-           (sub (cdr (assoc k alist #'string=))))
-      (setf (alist-get k alist nil nil #'string=)
-            (i18n-quick--update-alist (if (listp sub) sub nil) (cdr keys) value))
-      alist)))
+(defun i18n-quick-get-translation (key)
+  (when (and key (stringp key))
+    (let* ((ctx (i18n-quick--get-ctx))
+           (target (i18n-quick--resolve-target ctx key))
+           (file (car target))
+           (inner-key (cdr target))
+           (data (i18n-quick--read-json file))
+           (keys (if (eq (i18n-quick--ctx-style ctx) 'flat) (list inner-key) (split-string inner-key "\\.")))
+           (val data))
+      (dolist (k keys) (setq val (if (listp val) (cdr (assoc k val #'string=)) nil)))
+      (when (stringp val) val))))
 
 ;; ==========================================
-;; 3. 交互功能
+;; 3. 生态接入 (Embark)
 ;; ==========================================
 
-(defun i18n-quick--get-key-at-point ()
-  "精准识别 t('...') 或 i18nKey='...'"
-  (let* ((case-fold-search t)
-         (re "\\(?:t(\\|i18nKey=\\)['\"]\\([^'\"{}() ]+\\)['\"]")
-         (p (point))
-         (line-start (line-beginning-position))
-         (line-end (line-end-position))
-         (found nil))
+(defun i18n-quick-embark-target-finder ()
+  "识别当前光标下的 i18n key。"
+  (when i18n-quick-mode
     (save-excursion
-      (goto-char line-start)
-      (while (and (not found) (re-search-forward re line-end t))
-        (when (and (>= p (match-beginning 0)) (<= p (match-end 0)))
-          (setq found (match-string-no-properties 1))))
-      found)))
+      (let* ((re "\\(?:t(\\|i18nKey=\\)['\"]\\([^'\"{}() ]+\\)['\"]")
+             (p (point))
+             (line-beg (line-beginning-position))
+             (line-end (line-end-position)))
+        (goto-char line-beg)
+        (let (found-key bounds)
+          (while (and (not found-key) (re-search-forward re line-end t))
+            (when (and (>= p (match-beginning 1)) (<= p (match-end 1)))
+              (setq found-key (match-string-no-properties 1))
+              (setq bounds (cons (match-beginning 1) (match-end 1)))))
+          (when (and found-key bounds)
+            `(i18n-key ,found-key . ,bounds)))))))
 
-(defun i18n-quick-view ()
-  "查看翻译内容。"
-  (interactive)
-  (let ((key (i18n-quick--get-key-at-point)))
-    (if (not key) (message "[i18n] 未识别到 Key")
-      (let* ((ctx (i18n-quick--get-ctx))
-             (target (i18n-quick--resolve-target ctx key))
-             (file (car target))
-             (inner-key (cdr target)))
-        (if (not (file-exists-p file))
-            (message "[i18n-Error] 路径不存在: %s" file)
-          (let* ((data (i18n-quick--read-json file))
-                 (keys (if (eq (i18n-quick--ctx-style ctx) 'flat) (list inner-key) (split-string inner-key "\\.")))
-                 (val data))
-            (dolist (k keys) (when (listp val) (setq val (cdr (assoc k val #'string=)))))
-            (if (stringp val) (message "[i18n] %s" val)
-              (message "[i18n] 未在 %s 中找到: %s" (file-name-nondirectory file) inner-key))))))))
-
-(defun i18n-quick-jump-or-create ()
-  "跳转到定义位置，如果不存在则原地创建。"
-  (interactive)
-  (let ((key (i18n-quick--get-key-at-point)))
-    (if (not key) (message "[i18n] 未识别到 Key")
-      (let* ((ctx (i18n-quick--get-ctx))
-             (target (i18n-quick--resolve-target ctx key))
-             (file (car target))
-             (inner-key (cdr target))
-             (data (i18n-quick--read-json file))
-             (keys (if (eq (i18n-quick--ctx-style ctx) 'flat) (list inner-key) (split-string inner-key "\\.")))
-             (val data))
-        (dolist (k keys) (when (listp val) (setq val (cdr (assoc k val #'string=)))))
-        (if (stringp val)
-            (progn (find-file file) (goto-char (point-min))
-                   (when (search-forward (format "\"%s\"" (car (last keys))) nil t)
-                     (pulse-momentary-highlight-one-line (point)) (recenter)))
-          (let ((new-val (read-string (format "创建翻译 [%s]: " inner-key))))
-            (unless (string-empty-p new-val)
-              (i18n-quick--save file (i18n-quick--update-alist data keys new-val))
-              (message "[i18n] 已保存至 %s" (file-name-nondirectory file)))))))))
-
-;; ==========================================
-;; 4. Mode 定义
-;; ==========================================
-
-(defvar i18n-quick-mode-map
+(defvar i18n-quick-embark-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c i v") #'i18n-quick-view)
-    (define-key map (kbd "C-c i j") #'i18n-quick-jump-or-create)
+    (set-keymap-parent map embark-general-map)
+    (define-key map "j" #'i18n-quick-jump-or-create)
+    (define-key map "s" #'i18n-quick-switch-lang)
     map))
 
-(define-minor-mode i18n-quick-mode
-  "Quick i18n Minor Mode." :lighter " i18n" :keymap i18n-quick-mode-map)
+;; ==========================================
+;; 4. 专属搜索命令 (核心改进)
+;; ==========================================
 
-;;TODO
-;;1. 如果没有则创建一个
-;;2. 支持多个语言 给用户选择
-;;3. 添加这个view-mode 将i18显示成 当前类型
+(defun i18n-quick-consult-line ()
+  "针对当前 Buffer 内 i18n Key 的专属搜索视图。"
+  (interactive)
+  (let* ((candidates nil)
+         (re "\\(?:t(\\|i18nKey=\\)['\"]\\([^'\"{}() ]+\\)['\"]"))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward re nil t)
+        (let* ((line (line-number-at-pos))
+               (key (match-string-no-properties 1))
+               (content (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+               (marker (copy-marker (match-beginning 1)))
+               ;; 将数据封装在文本属性中
+               (cand (propertize (format "%4d: %s" line (string-trim content))
+                                 'consult-location (cons marker line)
+                                 'i18n-key key)))
+          (push cand candidates))))
+
+    (if (not candidates)
+        (message "当前文件未发现 i18n Key")
+      (consult--read
+       (nreverse candidates)
+       :prompt "Search i18n Key: "
+       :category 'i18n-key
+       :sort nil
+       :require-match t
+       ;; 使用内置标注，支持长翻译自动截断
+       :annotate (lambda (cand)
+                   (when-let* ((key (get-text-property 0 'i18n-key cand))
+                               (val (i18n-quick-get-translation key)))
+                     (let ((truncated-val (i18n-quick--truncate val i18n-quick-max-width)))
+                       (format "  # %s" (propertize truncated-val 'face 'marginalia-archive)))))
+       :lookup #'consult--lookup-location
+       :state (consult--location-state candidates)))))
+
+;; ==========================================
+;; 5. 交互命令
+;; ==========================================
+
+(defun i18n-quick-jump-or-create ()
+  "跳转或创建翻译。如果 Key 不存在，不询问直接创建空值并跳转。"
+  (interactive)
+  (let* ((cand (when (derived-mode-p 'minibuffer-mode)
+                 (embark--target-get-status 'target)))
+         (key (if cand
+                  (or (get-text-property 0 'i18n-key cand)
+                      (when (string-match "['\"]\\([^'\" ]+\\)['\"]" cand) (match-string 1 cand)))
+                (let ((target (i18n-quick-embark-target-finder)))
+                  (if (listp target) (cadr target) target)))))
+    (unless key (setq key (read-string "I18n Key: ")))
+    (let* ((ctx (i18n-quick--get-ctx))
+           (target (i18n-quick--resolve-target ctx key))
+           (file (car target))
+           (inner-key (cdr target))
+           (data (i18n-quick--read-json file))
+           (keys (split-string inner-key "\\."))
+           (val (i18n-quick-get-translation key)))
+
+      (if val
+          ;; --- 分支 1: 存在则直接跳转 ---
+          (progn
+            (find-file file)
+            (goto-char (point-min))
+            ;; 搜索对应的 Key 字符 (末位 Key)
+            (if (re-search-forward (format "\"%s\"\\s-*:" (regexp-quote (car (last keys)))) nil t)
+                (progn
+                  (goto-char (match-beginning 0))
+                  (when (looking-at "[\"']") (forward-char 1)) ; 严格精准落点
+                  (pulse-momentary-highlight-one-line (point))
+                  (recenter))
+              (message "找到文件但未匹配到具体的 Key 文本")))
+
+        ;; --- 分支 2: 不存在则“静默创建” ---
+        (let ((new-data (i18n-quick--update-alist data keys "")))
+          (i18n-quick--save file new-data)
+          ;; 重要：创建完成后再次调用自己，触发上面的“分支 1”进行跳转
+          (i18n-quick-jump-or-create))))))
+
+(defun i18n-quick-switch-lang ()
+  (interactive)
+  (let* ((langs (mapcar #'car i18n-quick-languages))
+         (choice (completing-read "选择语言: " langs nil t)))
+    (setq i18n-quick-current-lang choice)
+    (message "已切换到: %s" choice)))
+
+(defun i18n-quick--update-alist (alist keys value)
+  "递归构建标准的点对 alist，确保 json-serialize 不报错。"
+  (let* ((alist (if (and (listp alist) (cl-every #'consp alist))
+                    alist
+                  nil))
+         (k (car keys))
+         (rest (cdr keys)))
+    (if (null rest)
+        ;; 最后一层：插入 ("key" . "")
+        (cons (cons k value)
+              (cl-remove k alist :key #'car :test #'string=))
+      ;; 中间层：递归向下构建对象
+      (let* ((old-cell (assoc k alist #'string=))
+             (old-val (cdr old-cell))
+             (new-child (i18n-quick--update-alist old-val rest value)))
+        (cons (cons k new-child)
+              (cl-remove k alist :key #'car :test #'string=))))))
+
+;; ==========================================
+;; 6. Mode 定义
+;; ==========================================
+(define-minor-mode i18n-quick-mode
+  "Modern i18n tool." :lighter " i18n"
+  (if i18n-quick-mode
+      (progn
+        ;; 注册 Embark 目标识别
+        (add-hook 'embark-target-finders #'i18n-quick-embark-target-finder)
+        ;; 注册 Embark 动作菜单
+        (with-eval-after-load 'embark
+          (setf (alist-get 'i18n-key embark-keymap-alist) 'i18n-quick-embark-map)))
+    ;; 退出模式时移除钩子
+    (remove-hook 'embark-target-finders #'i18n-quick-embark-target-finder)))
 
 (provide 'i18n-quick)

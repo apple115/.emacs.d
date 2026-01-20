@@ -121,16 +121,16 @@
                 evil-collection evil-indent-plus evil-matchit
                 evil-nerd-commenter evil-surround evil-textobj-tree-sitter
                 exec-path-from-shell fish-mode flycheck format-all general
-                go-dlv go-fill-struct go-gen-test go-impl go-tag gotest
+                go-dlv go-fill-struct go-gen-test go-impl go-tag gotest gptel
                 graphviz-dot-mode haskell-mode highlight-parentheses
                 ibuffer-project jinx ligature link-hint magit marginalia
                 markdown-mode mini-modeline monet nerd-icons-corfu
                 nerd-icons-dired nerd-icons-ibuffer nov ob-go ob-restclient
                 orderless org-auto-tangle org-download org-roam ox-gfm ox-reveal
                 pdf-tools pinyinlib plantuml-mode popper python-mode quickrun
-                rainbow-delimiters rust-mode scss-mode shackle sis
-                smart-mode-line sudo-edit tabspaces tramp-hlo treesit-auto
-                vertico virtualenvwrapper vlf vterm-toggle web-mode))
+                rainbow-delimiters rust-mode scss-mode shackle smart-mode-line
+                sudo-edit tabspaces tramp-hlo treesit-auto vertico
+                virtualenvwrapper vlf vterm-toggle web-mode wgrep))
  '(package-vc-selected-packages
    '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
      (monet :url "https://github.com/stevemolitor/monet")))

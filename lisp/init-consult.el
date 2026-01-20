@@ -33,6 +33,8 @@
 ;;   )
 )
 
+(use-package embark-consult)
+
 (use-package consult-dir
   :ensure t
   :defer t
@@ -79,6 +81,14 @@
 (use-package consult-todo
   :ensure t
 )
+
+(use-package wgrep
+  :ensure t
+  :config
+  ;; 设置为 t，可以在保存 wgrep buffer 时自动保存受影响的文件
+  (setq wgrep-auto-save-buffer t)
+  ;; 修改完后直接用习惯的 C-x C-s 保存也可以（如果你绑定了的话）
+  (define-key grep-mode-map (kbd "C-c C-p") 'wgrep-change-to-wgrep-mode))
 
 (provide 'init-consult)
 
