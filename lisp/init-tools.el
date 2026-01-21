@@ -140,7 +140,26 @@
 (use-package vterm
   :ensure t
   :config
-  (setq vterm-shell "/opt/homebrew/bin/fish")
+ ;; (setq vterm-shell "/opt/homebrew/bin/fish")
+  (setq vterm-shell
+        (cond
+         ;;macos (homebrew)
+         ((eq system-type 'darwin)
+          (if (file-exists-p "/opt/homebrew/bin/fish")
+              "/opt/hombrew/bin/fish"
+            "/bin/zsh"))
+
+          ;;linux wsl
+          ((eq system-type 'gnu/linux)
+           (if (file-exists-p "/usr/bin/fish")
+               "/usr/bin/fish"
+             "/bin/bash"))
+
+           ;;Windows
+           ((eq system-type 'windows-nt)
+            "powershell.exe")
+
+           (t "/bin/sh")))
     (use-package vterm-toggle
     :ensure t
     :bind (:map vterm-mode-map
@@ -212,6 +231,20 @@
     :config
     (tramp-hlo-setup)
 )
+
+(use-package rime
+  :ensure t
+  :init
+   (setq default-input-method "rime")
+  :config
+	(setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
+	(setq rime-posframe-properties
+      (list :background-color "#333333"
+            :foreground-color "#dcdccc"
+            :internal-border-width 10))
+     (setq rime-show-candidate 'posframe)
+)
+;;; Code:
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -18,7 +18,7 @@
   ;;:init (yas-global-mode 1)
   :config
   ;;(setq lsp-bridge-log-level 'debug)
-  (setq lsp-bridge-python-command  "/Users/apple115/.emacs.d/site-lisp/lsp-bridge/.venv/bin/python3.13")
+  (setq lsp-bridge-python-command  "/Users/apple115/.emacs.d/site-lisp/.venv/bin/python")
   (setq acm-enable-copilot nil)
   (setq acm-enable-citre t)
   (setq acm-candidate-match-function 'orderless-flex)
