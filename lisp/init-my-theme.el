@@ -117,11 +117,23 @@
 
    ;;vertice
    `(vertico-current ((t (:background ,(cdr (assoc 'bg-soft my-gruvbox-colors)) :extend t))))
+
+   ;;dired
+    `(dired-header ((t (:background nil :inherit default))))
+    `(dired-perm-write ((t (:background nil :foreground ,(cdr (assoc 'error my-gruvbox-colors))))))
+    `(dired-directory ((t (:background nil :foreground ,(cdr (assoc 'def my-gruvbox-colors)) :weight bold))))
+    `(dired-symlink ((t (:background nil :foreground ,(cdr (assoc 'const my-gruvbox-colors))))))
+    `(dired-flagged ((t (:foreground ,(cdr (assoc 'error my-gruvbox-colors)) :weight bold))))
+    `(dired-ignored ((t (:foreground ,(cdr (assoc 'dim my-gruvbox-colors))))))
+    `(dired-set-id ((t (:background nil
+                        :foreground ,(cdr (assoc 'warning my-gruvbox-colors))
+                        :underline t))))
+	`(dired-special ((t (:background nil :foreground ,(cdr (assoc 'const my-gruvbox-colors))))))
   ))
 
 ;; 禁用字体变体
-(setq font-lock-maximum-decoration nil
-      font-lock-use-default-fonts nil)
+;; (setq font-lock-maximum-decoration nil
+;;       font-lock-use-default-fonts nil)
 
 ;; 自动启用主题
 (my-gruvbox-minimal-setup)

@@ -97,7 +97,7 @@
   :ensure t
   :demand t
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar vterm ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel cider citre))
+  (setq evil-collection-mode-list '(ibuffer calendar vterm ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel cider citre nov pdf embark grep wgrep wdired))
   (evil-collection-init))
 
 

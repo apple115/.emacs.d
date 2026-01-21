@@ -17,6 +17,7 @@
     "=" '(+format-code-and-flycheck :wk "flycheck and format")
     "/" '(split-window-horizontally :wk"split window horizontally")
     "-" '(split-window-vertically :wk"split window vertically")
+    "[" '(dired-sidebar-toggle-sidebar :wk"open dired-siderbar")
     "." '(find-file :wk "find file")
     "s ." '(sudo-edit-find-file :wk "Sudo find file")
     "," '(dired-jump :wk "open-dired")
