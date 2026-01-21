@@ -173,6 +173,29 @@
 ;; 5. 交互命令
 ;; ==========================================
 
+(defun i18n-quick--search-nested-path (keys)
+  "逐层搜索嵌套路径，避免同名 key 冲突。
+例如：keys = ('common' 'button' 'save')
+步骤：
+1. 搜索 \"common\":
+2. 从该位置向下搜索 \"button\":
+3. 从该位置向下搜索 \"save\":
+返回：找到时 point 停留在 key 的冒号位置，否则返回 nil。"
+  (catch 'found
+    (dolist (key keys)
+      ;; 搜索当前层级的 key
+      (unless (re-search-forward (format "\"%s\"\\s-*:" (regexp-quote key)) nil t)
+        (throw 'found nil))
+      ;; 移动到 key 对应的 value 起始位置（对象或数组）
+      (goto-char (match-end 0))
+      (skip-chars-forward " \t\n")
+      (when (looking-at "{")
+        ;; 进入嵌套对象，继续下一层搜索
+        (forward-char 1)
+        (skip-chars-forward " \t\n")))
+    ;; 所有层级都匹配成功
+    t))
+
 (defun i18n-quick-jump-or-create ()
   "跳转或创建翻译。如果 Key 不存在，不询问直接创建空值并跳转。"
   (interactive)
@@ -197,11 +220,10 @@
           (progn
             (find-file file)
             (goto-char (point-min))
-            ;; 搜索对应的 Key 字符 (末位 Key)
-            (if (re-search-forward (format "\"%s\"\\s-*:" (regexp-quote (car (last keys)))) nil t)
+            ;; 逐层搜索完整的路径，避免同名 key 冲突
+            (if (i18n-quick--search-nested-path keys)
                 (progn
-                  (goto-char (match-beginning 0))
-                  (when (looking-at "[\"']") (forward-char 1)) ; 严格精准落点
+                  (when (looking-at "[\"']") (forward-char 1)) ; 跳过引号，精准定位到值
                   (pulse-momentary-highlight-one-line (point))
                   (recenter))
               (message "找到文件但未匹配到具体的 Key 文本")))
@@ -236,6 +258,12 @@
              (new-child (i18n-quick--update-alist old-val rest value)))
         (cons (cons k new-child)
               (cl-remove k alist :key #'car :test #'string=))))))
+
+(defun i18n-quick-clear-cache ()
+  "手动清除 i18n-quick 的 JSON 数据缓存。"
+  (interactive)
+  (clrhash i18n-quick--file-cache)
+  (message "i18n-quick 缓存已清空"))
 
 ;; ==========================================
 ;; 6. Mode 定义
