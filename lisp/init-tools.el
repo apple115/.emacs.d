@@ -140,7 +140,6 @@
 (use-package vterm
   :ensure t
   :config
- ;; (setq vterm-shell "/opt/homebrew/bin/fish")
   (setq vterm-shell
         (cond
          ;;macos (homebrew)
@@ -149,18 +148,18 @@
               "/opt/hombrew/bin/fish"
             "/bin/zsh"))
 
-          ;;linux wsl
-          ((eq system-type 'gnu/linux)
-           (if (file-exists-p "/usr/bin/fish")
-               "/usr/bin/fish"
-             "/bin/bash"))
+         ;;linux wsl
+         ((eq system-type 'gnu/linux)
+          (if (file-exists-p "/usr/bin/fish")
+              "/usr/bin/fish"
+            "/bin/bash"))
 
-           ;;Windows
-           ((eq system-type 'windows-nt)
-            "powershell.exe")
+         ;;Windows
+         ((eq system-type 'windows-nt)
+          "powershell.exe")
 
-           (t "/bin/sh")))
-    (use-package vterm-toggle
+         (t "/bin/sh")))
+  (use-package vterm-toggle
     :ensure t
     :bind (:map vterm-mode-map
                 ([(control return)] . vterm-toggle-insert-cd))
@@ -242,16 +241,27 @@
 (use-package rime
   :ensure t
   :init
-   (setq default-input-method "rime")
+  (setq default-input-method "rime")
   :config
-	(setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
-	(setq rime-posframe-properties
-      (list :background-color "#333333"
-            :foreground-color "#dcdccc"
-            :internal-border-width 10))
-     (setq rime-show-candidate 'posframe)
+  (setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
+  (setq rime-posframe-properties
+        (list :background-color "#333333"
+              :foreground-color "#dcdccc"
+              :internal-border-width 10))
+  (setq rime-show-candidate 'posframe)
+  )
+
+
+(use-package i18n-quick
+  :vc (:url "https://github.com/apple115/i18n-quick.el" :rev "master")
+  :ensure t
+  :custom
+  (i18n-quick-languages
+   '(("zh-CN" . "src/locale/zh-CN/")
+     ("en-US" . "src/locale/en-US/")))
+  (i18n-quick-style 'nested)
+  (i18n-quick-max-width 50)
 )
-;;; Code:
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

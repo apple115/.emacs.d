@@ -122,7 +122,7 @@
                 evil-nerd-commenter evil-surround evil-textobj-tree-sitter
                 exec-path-from-shell fish-mode flycheck format-all general
                 go-dlv go-fill-struct go-gen-test go-impl go-tag gotest gptel
-                graphviz-dot-mode haskell-mode highlight-parentheses
+                graphviz-dot-mode haskell-mode highlight-parentheses i18n-quick
                 ibuffer-project jinx ligature link-hint magit marginalia
                 markdown-mode mini-modeline monet nerd-icons-corfu
                 nerd-icons-dired nerd-icons-ibuffer nov ob-go ob-restclient
@@ -132,7 +132,8 @@
                 smart-mode-line sudo-edit tabspaces tramp-hlo treesit-auto
                 vertico virtualenvwrapper vlf vterm-toggle web-mode wgrep))
  '(package-vc-selected-packages
-   '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
+   '((i18n-quick :url "https://github.com/apple115/i18n-quick.el")
+     (claude-code :url "https://github.com/stevemolitor/claude-code.el")
      (monet :url "https://github.com/stevemolitor/monet")))
  '(safe-local-variable-values '((i18n-quick-file-path . src/locale/zh-CN/))))
 (custom-set-faces
