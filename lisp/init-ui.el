@@ -238,12 +238,16 @@
 (defun my-header-line-render ()
   (let* ((buffer-name (propertize (format-mode-line " %b ") 'face '(:weight bold)))
          (git-info (propertize (my-header-line-vc) 'face '(:foreground "#ecbe7b")))
+         (im-info (if current-input-method
+                            (propertize (concat " " current-input-method-title) 'face '(:foreground "#8ec07c"))
+                            ""))
          (evil-tag (propertize (concat " " (upcase (symbol-name evil-state)) " ")
                                'face (my-header-line-evil-face))))
     (concat
      evil-tag      ; Evil 模式块
      buffer-name   ; 文件名
      git-info      ; Git 分支
+     im-info
      ;; 将行列号推到最右侧
      (propertize " " 'display `(space :align-to (- right 8)))
      (format-mode-line "%l:%c"))))
