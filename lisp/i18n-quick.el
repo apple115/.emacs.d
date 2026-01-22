@@ -83,11 +83,20 @@
 ;;   (remhash file i18n-quick--file-cache))
 
 (defun i18n-quick--save (file alist)
-  "使用 json-insert 高性能直接写入文件，减少内存中转。"
+  "保存 alist 到 JSON 文件，自动格式化。"
   (with-temp-file file
-    (json-insert alist
-                 :pretty t
-                 ))
+    (let ((json-string (json-serialize alist
+                                       :null-object :null
+                                       :false-object :false)))
+      (insert json-string)
+      ;; 使用 jq 格式化（如果可用）
+      (when (executable-find "jq")
+        (call-process-region (point-min) (point-max)
+                             "jq" t t nil ".")))
+    ;; 删除末尾换行
+    (goto-char (point-max))
+    (when (and (looking-back "\n" 1) (> (point-max) 1))
+      (delete-char -1)))
   (remhash file i18n-quick--file-cache))
 
 (defun i18n-quick-get-translation (key)
@@ -181,20 +190,21 @@
 2. 从该位置向下搜索 \"button\":
 3. 从该位置向下搜索 \"save\":
 返回：找到时 point 停留在 key 的冒号位置，否则返回 nil。"
-  (catch 'found
-    (dolist (key keys)
-      ;; 搜索当前层级的 key
-      (unless (re-search-forward (format "\"%s\"\\s-*:" (regexp-quote key)) nil t)
-        (throw 'found nil))
-      ;; 移动到 key 对应的 value 起始位置（对象或数组）
-      (goto-char (match-end 0))
-      (skip-chars-forward " \t\n")
-      (when (looking-at "{")
-        ;; 进入嵌套对象，继续下一层搜索
-        (forward-char 1)
-        (skip-chars-forward " \t\n")))
-    ;; 所有层级都匹配成功
-    t))
+  (unless (null keys)  ; 空 keys 返回 nil
+    (catch 'found
+      (dolist (key keys)
+        ;; 搜索当前层级的 key
+        (unless (re-search-forward (format "\"%s\"\\s-*:" (regexp-quote key)) nil t)
+          (throw 'found nil))
+        ;; 移动到 key 对应的 value 起始位置（对象或数组）
+        (goto-char (match-end 0))
+        (skip-chars-forward " \t\n")
+        (when (looking-at "{")
+          ;; 进入嵌套对象，继续下一层搜索
+          (forward-char 1)
+          (skip-chars-forward " \t\n")))
+      ;; 所有层级都匹配成功
+      t)))
 
 (defun i18n-quick-jump-or-create ()
   "跳转或创建翻译。如果 Key 不存在，不询问直接创建空值并跳转。"
@@ -242,22 +252,24 @@
     (message "已切换到: %s" choice)))
 
 (defun i18n-quick--update-alist (alist keys value)
-  "递归构建标准的点对 alist，确保 json-serialize 不报错。"
+  "递归构建标准的点对 alist，确保 json-serialize 不报错。
+KEYS 是字符串列表（如 '(\"menus\" \"platform\")），
+会在内部转换为 symbols（因为 json-serialize 要求 alist 的 key 必须是 symbols）。"
   (let* ((alist (if (and (listp alist) (cl-every #'consp alist))
                     alist
                   nil))
-         (k (car keys))
+         (k (intern (car keys)))  ; 将 string 转为 symbol
          (rest (cdr keys)))
     (if (null rest)
-        ;; 最后一层：插入 ("key" . "")
+        ;; 最后一层：插入 ('symbol . "")
         (cons (cons k value)
-              (cl-remove k alist :key #'car :test #'string=))
+              (assq-delete-all k alist))
       ;; 中间层：递归向下构建对象
-      (let* ((old-cell (assoc k alist #'string=))
-             (old-val (cdr old-cell))
+      (let* ((old-cell (assq k alist))  ; 使用 assq（符号比较）
+             (old-val (and old-cell (cdr old-cell)))
              (new-child (i18n-quick--update-alist old-val rest value)))
         (cons (cons k new-child)
-              (cl-remove k alist :key #'car :test #'string=))))))
+              (assq-delete-all k alist))))))
 
 (defun i18n-quick-clear-cache ()
   "手动清除 i18n-quick 的 JSON 数据缓存。"

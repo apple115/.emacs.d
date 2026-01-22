@@ -222,19 +222,91 @@
 (ert-deftest i18n-quick-update-alist-simple ()
   "测试简单的 alist 更新"
   (let ((result (i18n-quick--update-alist nil '("key") "value")))
-    (should (equal result '(("key" . "value"))))))
+    (should (equal result '((key . "value"))))))  ; keys 是 symbols
 
 (ert-deftest i18n-quick-update-alist-nested ()
   "测试嵌套 alist 的创建"
   (let ((result (i18n-quick--update-alist nil '("common" "button" "save") "保存")))
-    (should (equal result '(("common" . (("button" . (("save" . "保存"))))))))))
+    (should (equal result '((common . ((button . ((save . "保存"))))))))))  ; symbols
 
 (ert-deftest i18n-quick-update-alist-merge ()
   "测试与现有 alist 的合并"
-  (let ((existing '(("common" . (("cancel" . "取消"))))))
+  (let ((existing '((common . ((cancel . "取消"))))))  ; symbols
     (let ((result (i18n-quick--update-alist existing '("common" "save") "保存")))
-      (should (equal (cdr (assoc "common" result))
-                     '(("save" . "保存") ("cancel" . "取消")))))))
+      (should (equal (cdr (assq 'common result))  ; 使用 assq
+                     '((save . "保存") (cancel . "取消")))))))
+
+;; ============================================
+;; 测试用例：JSON 序列化（模拟真实场景）
+;; ============================================
+
+(ert-deftest i18n-quick-json-serialize-simple ()
+  "测试简单结构的 JSON 序列化"
+  (let ((data '((key . "value"))))
+    (should (stringp (json-serialize data
+                                     :null-object :null
+                                     :false-object :false)))))
+
+(ert-deftest i18n-quick-json-serialize-nested ()
+  "测试嵌套结构的 JSON 序列化"
+  (let ((data '((menus . ((platform . ((agents . nil))))))))
+    (should (stringp (json-serialize data
+                                     :null-object :null
+                                     :false-object :false)))))
+
+(ert-deftest i18n-quick-json-serialize-deep-nested ()
+  "测试深层嵌套（5层）的 JSON 序列化，模拟 menus.platform.agents.detail.titles"
+  (let* ((keys '("menus" "platform" "agents" "detail" "titles"))
+         (result (i18n-quick--update-alist nil keys "")))
+    ;; 验证 alist 结构正确（keys 是 symbols）
+    (should (equal result '((menus . ((platform . ((agents . ((detail . ((titles . ""))))))))))))
+    ;; 验证能序列化为 JSON
+    (should (stringp (json-serialize result
+                                     :null-object :null
+                                     :false-object :false)))))
+
+(ert-deftest i18n-quick-json-serialize-with-nil-value ()
+  "测试包含 nil 值的 JSON 序列化"
+  (let ((data '((key1 . "value1")
+                (key2 . :null)  ; 明确的 null 值
+                (key3 . "value3"))))  ; symbols
+    (should (stringp (json-serialize data
+                                     :null-object :null
+                                     :false-object :false)))))
+
+(ert-deftest i18n-quick-json-serialize-empty-to-nested ()
+  "测试从空对象创建深层嵌套的完整流程"
+  ;; 模拟真实场景：从空的 menus.json 创建新的 key
+  (let* ((existing nil)  ; 空文件
+         (keys '("menus" "platform" "agents" "detail" "titles"))
+         (result (i18n-quick--update-alist existing keys "")))
+    ;; 验证结构
+    (should (consp result))
+    (should (assq 'menus result))  ; 使用 assq 查找 symbol
+    ;; 验证能序列化
+    (let ((json-str (json-serialize result
+                                    :null-object :null
+                                    :false-object :false)))
+      (should (stringp json-str))
+      (should (string-match "menus" json-str))
+      (should (string-match "platform" json-str))
+      (should (string-match "agents" json-str))
+      (should (string-match "detail" json-str))
+      (should (string-match "titles" json-str)))))
+
+(ert-deftest i18n-quick-json-serialize-partial-existing ()
+  "测试部分存在时的合并和序列化"
+  ;; 模拟：menus.platform 已存在，添加 agents.detail.titles
+  (let* ((existing '((menus . ((platform . ((existing . "已存在")))))))  ; symbols
+         (keys '("menus" "platform" "agents" "detail" "titles"))
+         (result (i18n-quick--update-alist existing keys "")))
+    ;; 验证旧数据保留（使用 assq 查找 symbols）
+    (let ((platform (cdr (assq 'menus result))))
+      (should (assq 'existing (cdr (assq 'platform platform))))
+      (should (assq 'agents (cdr (assq 'platform platform)))))
+    ;; 验证能序列化
+    (should (stringp (json-serialize result
+                                     :null-object :null
+                                     :false-object :false)))))
 
 (provide 'i18n-quick-test)
-
