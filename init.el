@@ -128,9 +128,9 @@
                 nerd-icons-dired nerd-icons-ibuffer nov ob-go ob-restclient
                 orderless org-auto-tangle org-download org-roam ox-gfm ox-reveal
                 pdf-tools pinyinlib plantuml-mode popper python-mode quickrun
-                rainbow-delimiters rust-mode scss-mode shackle smart-mode-line
-                sudo-edit tabspaces tramp-hlo treesit-auto vertico
-                virtualenvwrapper vlf vterm-toggle web-mode wgrep))
+                rainbow-delimiters rime rust-mode scss-mode shackle
+                smart-mode-line sudo-edit tabspaces tramp-hlo treesit-auto
+                vertico virtualenvwrapper vlf vterm-toggle web-mode wgrep))
  '(package-vc-selected-packages
    '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
      (monet :url "https://github.com/stevemolitor/monet")))
