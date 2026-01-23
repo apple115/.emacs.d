@@ -18,20 +18,31 @@
   "s e" '(consult-flymake :wk "search diagnostic")
   "s l" '(consult-line :wk "search line in buffer")
   "s d" '(consult-dir :wk "search dir")
+  "s r" '(consult-recent-file :wk "search recent file")
  )
  :config
-(setq consult-locate-command "mdfind -name ARG OPTS")
-;; (setq read-file-name-function #'consult-find-file-with-preview)
-;; (defun consult-find-file-with-preview (prompt &optional dir default mustmatch initial pred)
-;;   (let ((default-directory (or dir default-directory))
-;;         (minibuffer-completing-file-name t))
-;;     (consult--read #'read-file-name-internal :state (consult--file-preview)
-;;                    :prompt prompt
-;;                    :initial initial
-;;                    :require-match mustmatch
-;;                    :predicate pred))
-;;   )
+(defmacro sanityinc/no-consult-preview (&rest cmds)
+      `(with-eval-after-load 'consult
+         (consult-customize ,@cmds :preview-key "M-p")))
+
+    (sanityinc/no-consult-preview
+     consult-ripgrep
+     consult-git-grep consult-grep
+     consult-bookmark consult-recent-file consult-xref
+     consult-source-recent-file consult-source-project-recent-file consult-source-bookmark)
+
+    (defun sanityinc/consult-ripgrep-at-point (&optional dir initial)
+      (interactive (list current-prefix-arg
+                         (if (use-region-p)
+                             (buffer-substring-no-properties
+                              (region-beginning) (region-end))
+                           (if-let* ((s (symbol-at-point)))
+                               (symbol-name s)))))
+      (consult-ripgrep dir initial))
+    (sanityinc/no-consult-preview sanityinc/consult-ripgrep-at-point)
+    (setq consult-locate-command "mdfind -name ARG OPTS")
 )
+
 
 (use-package embark-consult)
 
