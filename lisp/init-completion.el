@@ -34,49 +34,6 @@
   )
 )
 
-;;(use-package corfu
-;;  :ensure t
-;;  :custom
-;;  (corfu-auto nil)                  ;; 禁用自动补全，改为手动触发
-;;  (corfu-preview-current nil)       ;; 不预览当前候选
-;;  (corfu-popupinfo-delay '(0.4 . 0.2))
-;;  (corfu-quit-no-match 'separator)  ;; 没有匹配时的行为
-;;  :bind (:map corfu-map
-;;         ;; 补全菜单内的导航（和 Vim 一样）
-;;         ("C-n" . corfu-next)        ;; 下一个候选
-;;         ("C-p" . corfu-previous)    ;; 上一个候选
-;;         ("RET" . corfu-insert)      ;; 回车确认
-;;         ("<escape>" . corfu-quit))  ;; ESC 退出
-;;  :hook ((after-init . global-corfu-mode)
-;;         (global-corfu-mode . corfu-popupinfo-mode))
-;;  :config
-;;  ;; Vim 风格的补全：C-n 触发补全并选择下一项，C-p 选择上一项
-;;  (with-eval-after-load 'evil
-;;    ;; 定义智能补全函数
-;;    (defun my/corfu-complete-or-next ()
-;;      "触发补全或选择下一项（类似 Vim 的 C-n）"
-;;      (interactive)
-;;      (if (and (corfu-mode) completion-in-region-mode)
-;;          (corfu-next)
-;;        (completion-at-point)))
-;;
-;;    (defun my/corfu-complete-or-previous ()
-;;      "触发补全或选择上一项（类似 Vim 的 C-p）"
-;;      (interactive)
-;;      (if (and (corfu-mode) completion-in-region-mode)
-;;          (corfu-previous)
-;;        (completion-at-point)))
-;;
-;;    ;; 在 insert 模式绑定 C-n/C-p
-;;    (define-key evil-insert-state-map (kbd "C-n") #'my/corfu-complete-or-next)
-;;    (define-key evil-insert-state-map (kbd "C-p") #'my/corfu-complete-or-previous))
-;;
-;;  (use-package nerd-icons-corfu
-;;    :ensure t
-;;    :config
-;;    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)))
-;;
-;;; Code:
 (use-package vertico
   :ensure t
   :hook (after-init . vertico-mode)
@@ -92,8 +49,6 @@
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
-
-
 )
 
 ; Support Pinyin
@@ -183,13 +138,6 @@
 ;;  ;; 可以通过 M-x cape-elisp-symbol 手动触发
 ;;  )
 
-; Consult users will also want the embark-consult package.
-(use-package embark-consult
-  :after consult
-  :ensure t
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
-
 ;;(use-package eglot
 ;;  :ensure nil  ;; Emacs 内置
 ;;  ;; :hook (prog-mode . eglot-ensure)  ;; 如需自动启动，取消注释
@@ -222,11 +170,11 @@
 ;;  (add-to-list 'eglot-server-programs '(tsx-ts-mode . ("typescript-language-server" "--stdio")))
 ;;  (add-to-list 'eglot-server-programs '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
 
-(use-package eglot-booster
-  :vc (eglot-booster :url "https://github.com/jdtsmith/eglot-booster")
-  :after eglot
-  :config
-  (eglot-booster-mode))
+;; (use-package eglot-booster
+;;   :vc (eglot-booster :url "https://github.com/jdtsmith/eglot-booster")
+;;   :after eglot
+;;   :config
+;;   (eglot-booster-mode))
 
 ;; (use-package ht
 ;;   :ensure t
