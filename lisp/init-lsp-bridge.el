@@ -14,20 +14,18 @@
 
 (use-package lsp-bridge
   :load-path "site-lisp/lsp-bridge"
-  ;;:after (markdown-mode yasnippet)
-  ;;:init (yas-global-mode 1)
   :config
-  ;;(setq lsp-bridge-log-level 'debug)
   (setq lsp-bridge-python-command  "/Users/apple115/.emacs.d/site-lisp/.venv/bin/python3.13")
   ;;remote edit
-  (setq lsp-bridge-remote-python-command "~/.")
-  (setq lsp-bridge-remote-python-file "")
+  ;; (setq lsp-bridge-remote-python-command "~/.")
+  ;; (setq lsp-bridge-remote-python-file "")
 
   (setq acm-enable-copilot nil)
-  (setq acm-enable-citre t)
-  (setq acm-candidate-match-function 'orderless-flex)
+  (setq acm-enable-yas nil)
+  (setq acm-enable-citre nil)
+  ;; (setq acm-candidate-match-function 'orderless-flex)
   (setq lsp-bridge-enable-completion-in-string t)
-  (setq lsp-bridge-enable-search-words  t)
+  (setq lsp-bridge-enable-search-words t)
   (setq lsp-bridge-find-def-fallback-function 'citre-jump)
   (setq lsp-bridge-find-ref-fallback-function 'citre-jump-to-reference)
   (setq lsp-bridge-multi-lang-server-extension-list
@@ -70,32 +68,28 @@
 
            (t extension-name))))
 
-  (setq lsp-bridge-enable-hover-diagnostic t)
+  (setq lsp-bridge-enable-hover-diagnostic nil)
+  (setq lsp-bridge-enable-diagnostics nil)
   ;; (setq lsp-bridge-enable-auto-format-code t);;自动格式化
 
-  (setq lsp-bridge-complete-manually nil)  ; 手动触发补全
-  ;; (evil-make-overriding-map acm-mode-map 'insert)
-  ;; (define-key acm-mode-map (kbd "C-n") #'acm-select-next)
-  ;; (define-key acm-mode-map (kbd "C-p") #'acm-select-prev)
+  (define-key acm-mode-map   (kbd "<tab>") 'yas-expand)
+  (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
+  (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
 
-  ;; (defun my-smart-tab ()
-  ;;   (interactive)
-  ;;   (let ((char-before (char-before)))
-  ;;     (if (or (bolp)                           ; 如果在行首
-  ;;             (eq char-before ?\s)             ; 如果前一个是空格
-  ;;             (eq char-before ?\t)             ; 如果前一个是制表符
-  ;;             (eq char-before ?\n))            ; 如果前一个是换行
-  ;;         (insert "\t")                        ; 缩进
-  ;;       (lsp-bridge-popup-complete-menu))))    ; 否则补全
-
-  ;; (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "<tab>") #'my-smart-tab)
-  ;; (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-i") #'my-smart-tab)
+  (my-leader-def
+    :keymaps 'lsp-bridge-mode-map
+    "l"  '(:ignore t :which-key "LSP")
+    "ld" 'lsp-bridge-diagnostic-list
+    "la" 'lsp-bridge-code-action
+    "lr" 'lsp-bridge-rename
+    "lf" 'lsp-bridge-code-format)
 
   (evil-collection-define-key 'normal 'lsp-bridge-mode-map
     "K"   'lsp-bridge-popup-documentation
     "gd"  'lsp-bridge-find-def
     "gr" 'lsp-bridge-find-references
     )
+
 
   ;; 设置lsp-bridge-ref-mode 使其符合evil 用户的操作
   (with-eval-after-load 'lsp-bridge-ref

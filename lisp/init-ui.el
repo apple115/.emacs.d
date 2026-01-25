@@ -330,14 +330,6 @@
               #'(lambda (&rest _) (force-mode-line-update))))
   )
 
-;; (use-package ultra-scroll
-;;   :vc (:url "https://github.com/jdtsmith/ultra-scroll")
-;;   :hook (after-init . ultra-scroll-mode)
-;;   :init
-;;   (setq scroll-conservatively 101 ; important!
-;;         scroll-margin 0)
-;;   )
-
 (use-package hl-line
   :ensure nil
   :hook(after-init . global-hl-line-mode)

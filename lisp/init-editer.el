@@ -3,25 +3,23 @@
 ;;; editor
 
 ;;; Code:
-(use-package sort-tab
-  :load-path "./site-lisp/my-fork-sort-tab/"
-  :custom
-  (sort-tab-separaor "")
-  (sort-tab-name-max-length 20)
-  :config
-  ;; (add-hook 'tab-bar-tab-post-open-functions (lambda (tab) (sort-tab-turn-on)) t)
-  (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
-  (setq sort-tab-show-index-number t)
-)
+;; (use-package sort-tab
+;;   :load-path "./site-lisp/my-fork-sort-tab/"
+;;   :custom
+;;   (sort-tab-separaor "")
+;;   (sort-tab-name-max-length 20)
+;;   :config
+;;   ;; (add-hook 'tab-bar-tab-post-open-functions (lambda (tab) (sort-tab-turn-on)) t)
+;;   (setq sort-tab-hide-function '(lambda (buf) (with-current-buffer buf (derived-mode-p 'dired-mode))))
+;;   (setq sort-tab-show-index-number t)
+;; )
 
 (use-package dired
   :after evil
   :config
-  ;; (setq dired-listing-switches
-  ;;       "-l --almost-all --human-readable --group-directories-first --no-group")
-  ;; this command is useful when you want to close the window of `dirvish-side'
-  ;; automatically when opening a file
-  ;; (put 'dired-find-alternate-file 'disabled nil)
+    (when (executable-find "gls")
+    (setq insert-directory-program "gls"
+            dired-use-ls-dired t))
   (evil-define-key 'normal dired-mode-map
     (kbd "q") 'quit-window
     (kbd "o") 'dired-quick-access

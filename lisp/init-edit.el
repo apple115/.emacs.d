@@ -2,16 +2,15 @@
 ;;; Commentary:
 
 ;;; Code:
-(use-package savehist
-  :init
-  (savehist-mode))
 
 ;; 可以是 async-shell-command 自动填充上一个命令
-;; 中文
-(advice-add #'read-shell-command
-            :filter-args #'(lambda(args) (list (car args) (car shell-command-history))))
+;; (advice-add #'read-shell-command
+;;             :filter-args #'(lambda(args) (list (car args) (car shell-command-history))))
 
-(global-so-long-mode 1)
+(when (fboundp 'so-long-enable)
+  (so-long-enable)
+  (setq so-long-threshold 1000) ; 超过1000个字符才触发，减少误判开销
+  (setq so-long-max-lines 500)) ; 只检查前500行
 
 (setq evil-want-keybinding nil)
 
@@ -66,7 +65,7 @@
 
 ;; 消除 ESC 延迟 (关键！)
 (setq evil-esc-delay 0)
-  )
+ )
 
 (use-package evil-indent-plus
   :ensure t
@@ -148,16 +147,15 @@
   :ensure nil
   :hook (after-init . save-place-mode))
 
-(use-package so-long
-  :ensure nil
-  :config (global-so-long-mode 1))
-
 (use-package elec-pair
   :ensure nil
   :hook (prog-mode . electric-pair-local-mode)
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
 )
 
+(use-package savehist
+  :init
+  (savehist-mode))
 
 ;; vim keymap setting
 (setq mark-ring-max 6)
@@ -188,6 +186,16 @@
 ;;   (sis-global-respect-mode t)
 ;;   ;; (setq sis-inline-with-other t)
 ;; )
+
+(use-package ediff
+  :ensure nil  ; 内置功能不需要安装
+  :config
+  ;; 1. 左右分屏对比
+  (setq ediff-split-window-function 'split-window-horizontally)
+  ;; 2. 不要在外面弹独立的小窗口(Panel)
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  ;; 3. (可选) 退出 ediff 时自动恢复之前的窗口布局
+  (setq ediff-keep-variants nil))
 
 (provide 'init-edit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
