@@ -95,7 +95,7 @@
   (require 'init-prog)
   (require 'init-rust)
   (require 'init-lsp-bridge)
-  (require 'init-my-theme)
+  ;; (require 'init-my-theme)
   (require 'init-read)
   ;; (require 'init-org-ui)
   ;;(require 'init-eaf)
@@ -111,25 +111,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ace-window add-node-modules-path agent-shell auto-yasnippet buffer-terminator
-                citre claude-code colorful-mode consult-dir consult-notes
-                consult-todo dape denote devdocs dired-sidebar diredfl docker
-                dumb-jump dwim-shell-command eglot-booster eldoc-box
-                embark-consult emmet-mode engine-mode evil-collection
-                evil-indent-plus evil-matchit evil-nerd-commenter evil-surround
-                evil-textobj-tree-sitter exec-path-from-shell fish-mode flycheck
-                format-all general go-dlv go-fill-struct go-gen-test go-impl
-                go-tag gotest gptel graphviz-dot-mode haskell-mode
-                ibuffer-project jinx ligature link-hint magit marginalia
-                markdown-mode monet nerd-icons-dired nerd-icons-ibuffer nov
-                ob-go ob-restclient orderless org-auto-tangle org-download
-                org-roam ox-gfm ox-reveal pdf-tools pinyinlib plantuml-mode
-                popper python-mode quickrun rainbow-delimiters rime rust-mode
-                scss-mode shackle sudo-edit tabspaces tramp-hlo treesit-auto
-                vertico virtualenvwrapper vlf vterm-toggle web-mode wgrep))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
-   '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
+   '((i18n-quick :url "https://github.com/apple115/i18n-quick.el")
+     (claude-code :url "https://github.com/stevemolitor/claude-code.el")
      (monet :url "https://github.com/stevemolitor/monet")))
  '(safe-local-variable-values '((i18n-quick-file-path . src/locale/zh-CN/))))
 (custom-set-faces

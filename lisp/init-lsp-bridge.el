@@ -20,15 +20,16 @@
   ;;(setq lsp-bridge-log-level 'debug)
   (setq lsp-bridge-python-command (expand-file-name "~/.emacs.d/site-lisp/.venv/bin/python"))
   ;;remote edit
-  (setq lsp-bridge-remote-python-command "~/.")
-  (setq lsp-bridge-remote-python-file "")
+  ;; (setq lsp-bridge-remote-python-command "~/.")
+  ;; (setq lsp-bridge-remote-python-file "")
 
+  (setq acm-enable-icon nil)
   (setq acm-enable-copilot nil)
-  (setq acm-enable-citre t)
+  (setq acm-enable-citre nil)
   (setq acm-backend-lsp-candidate-min-length  1)
   (setq acm-enable-yas nil)
   ;; (setq acm-candidate-match-function 'orderless-flex)
-  (setq lsp-bridge-enable-completion-in-string t)
+  ;; (setq lsp-bridge-enable-completion-in-string t)
   (setq lsp-bridge-enable-search-words  t)
   (setq lsp-bridge-find-def-fallback-function 'citre-jump)
   (setq lsp-bridge-find-ref-fallback-function 'citre-jump-to-reference)
@@ -92,10 +93,11 @@
 
            (t extension-name))))
 
-  (setq lsp-bridge-enable-hover-diagnostic t)
+  ;; (setq lsp-bridge-enable-hover-diagnostic t)
   ;; (setq lsp-bridge-enable-auto-format-code t);;自动格式化
 
   (setq lsp-bridge-complete-manually nil)  ; 手动触发补全
+  ;; (setq lsp-bridge-enable-completion-in-minibuffer t)
   ;; (evil-make-overriding-map acm-mode-map 'insert)
   ;; (define-key acm-mode-map (kbd "C-n") #'acm-select-next)
   ;; (define-key acm-mode-map (kbd "C-p") #'acm-select-prev)

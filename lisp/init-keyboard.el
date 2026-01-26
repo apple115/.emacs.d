@@ -54,6 +54,9 @@
     "s g" '(engine/search-google :wk "search google")
     "s t" '(citre-query-jump :wk "find tags")
 
+    "a o" '(sanityinc/consult-ripgrep-at-point :wk "search at point")
+    "a d" '(+devdocs-search :wk "search docs at point")
+
     "b" '(:ignore t :wk "buffer")
     "b b" '(consult-buffer :wk "buffer-switch")
     "b ," '(switch-to-prev-buffer :wk "prev-buffer")

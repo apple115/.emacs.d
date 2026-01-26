@@ -224,36 +224,36 @@
 (setq-default auto-fill-function nil)
 (setq-default visual-line-mode nil)
 
-(defun my-header-line-vc ()
-  (if (and (boundp 'vc-mode) vc-mode)
-      (concat " #" (substring vc-mode 5)) ;; 直接截取分支名
-    ""))
-;; --- 2. 状态块颜色逻辑 (保持 Evil 用户的直观感) ---
-(defun my-header-line-evil-face ()
-  (cond ((evil-normal-state-p) '(:background "#d5c4a1" :foreground "#3c3836" ))
-        ((evil-insert-state-p) '(:background "#b8bb26" :foreground "#fbf1c7" ))
-        ((evil-visual-state-p) '(:background "#d3869b" :foreground "#fbf1c7" ))
-        (t '(:background "#ebdbb2" :foreground "#3c3836"))))
+;; (defun my-header-line-vc ()
+;;   (if (and (boundp 'vc-mode) vc-mode)
+;;       (concat " #" (substring vc-mode 5)) ;; 直接截取分支名
+;;     ""))
+;; ;; --- 2. 状态块颜色逻辑 (保持 Evil 用户的直观感) ---
+;; (defun my-header-line-evil-face ()
+;;   (cond ((evil-normal-state-p) '(:background "#d5c4a1" :foreground "#3c3836" ))
+;;         ((evil-insert-state-p) '(:background "#b8bb26" :foreground "#fbf1c7" ))
+;;         ((evil-visual-state-p) '(:background "#d3869b" :foreground "#fbf1c7" ))
+;;         (t '(:background "#ebdbb2" :foreground "#3c3836"))))
 
-(defun my-header-line-render ()
-  (let* ((buffer-name (propertize (format-mode-line " %b ") 'face '(:weight bold)))
-         (git-info (propertize (my-header-line-vc) 'face '(:foreground "#ecbe7b")))
-         (im-info (if current-input-method
-                            (propertize (concat " " current-input-method-title) 'face '(:foreground "#8ec07c"))
-                            ""))
-         (evil-tag (propertize (concat " " (upcase (symbol-name evil-state)) " ")
-                               'face (my-header-line-evil-face))))
-    (concat
-     evil-tag      ; Evil 模式块
-     buffer-name   ; 文件名
-     git-info      ; Git 分支
-     im-info
-     ;; 将行列号推到最右侧
-     (propertize " " 'display `(space :align-to (- right 8)))
-     (format-mode-line "%l:%c"))))
+;; (defun my-header-line-render ()
+;;   (let* ((buffer-name (propertize (format-mode-line " %b ") 'face '(:weight bold)))
+;;          (git-info (propertize (my-header-line-vc) 'face '(:foreground "#ecbe7b")))
+;;          (im-info (if current-input-method
+;;                             (propertize (concat " " current-input-method-title) 'face '(:foreground "#8ec07c"))
+;;                             ""))
+;;          (evil-tag (propertize (concat " " (upcase (symbol-name evil-state)) " ")
+;;                                'face (my-header-line-evil-face))))
+;;     (concat
+;;      evil-tag      ; Evil 模式块
+;;      buffer-name   ; 文件名
+;;      git-info      ; Git 分支
+;;      im-info
+;;      ;; 将行列号推到最右侧
+;;      (propertize " " 'display `(space :align-to (- right 8)))
+;;      (format-mode-line "%l:%c"))))
 
 ;; --- 4. 设置与隐藏 ---
-(setq-default header-line-format '((:eval (my-header-line-render))))
+;; (setq-default header-line-format '((:eval (my-header-line-render))))
 (setq-default mode-line-format nil)
 
 ;; 只有在这些动作发生时才更新，而不是每次移动光标都更新
