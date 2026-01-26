@@ -14,8 +14,6 @@
 
 (use-package lsp-bridge
   :load-path "site-lisp/lsp-bridge"
-  ;;:after (markdown-mode yasnippet)
-  ;;:init (yas-global-mode 1)
   :config
   ;;(setq lsp-bridge-log-level 'debug)
   (setq lsp-bridge-python-command (expand-file-name "~/.emacs.d/site-lisp/.venv/bin/python"))
@@ -25,12 +23,11 @@
 
   (setq acm-enable-icon nil)
   (setq acm-enable-copilot nil)
-  (setq acm-enable-citre nil)
-  (setq acm-backend-lsp-candidate-min-length  1)
   (setq acm-enable-yas nil)
+  (setq acm-enable-citre nil)
   ;; (setq acm-candidate-match-function 'orderless-flex)
-  ;; (setq lsp-bridge-enable-completion-in-string t)
-  (setq lsp-bridge-enable-search-words  t)
+  (setq lsp-bridge-enable-completion-in-string t)
+  (setq lsp-bridge-enable-search-words t)
   (setq lsp-bridge-find-def-fallback-function 'citre-jump)
   (setq lsp-bridge-find-ref-fallback-function 'citre-jump-to-reference)
   (setq lsp-bridge-get-project-path-by-filepath
@@ -102,18 +99,13 @@
   ;; (define-key acm-mode-map (kbd "C-n") #'acm-select-next)
   ;; (define-key acm-mode-map (kbd "C-p") #'acm-select-prev)
 
-  ;; (defun my-smart-tab ()
-  ;;   (interactive)
-  ;;   (let ((char-before (char-before)))
-  ;;     (if (or (bolp)                           ; 如果在行首
-  ;;             (eq char-before ?\s)             ; 如果前一个是空格
-  ;;             (eq char-before ?\t)             ; 如果前一个是制表符
-  ;;             (eq char-before ?\n))            ; 如果前一个是换行
-  ;;         (insert "\t")                        ; 缩进
-  ;;       (lsp-bridge-popup-complete-menu))))    ; 否则补全
-
-  ;; (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "<tab>") #'my-smart-tab)
-  ;; (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-i") #'my-smart-tab)
+  (my-leader-def
+    :keymaps 'lsp-bridge-mode-map
+    "l"  '(:ignore t :which-key "LSP")
+    "ld" 'lsp-bridge-diagnostic-list
+    "la" 'lsp-bridge-code-action
+    "lr" 'lsp-bridge-rename
+    "lf" 'lsp-bridge-code-format)
 
   (define-key acm-mode-map   (kbd "<tab>") 'yas-expand)
 
@@ -125,6 +117,7 @@
     "gd"  'lsp-bridge-find-def
     "gr" 'lsp-bridge-find-references
     )
+
 
   ;; 设置lsp-bridge-ref-mode 使其符合evil 用户的操作
   (with-eval-after-load 'lsp-bridge-ref

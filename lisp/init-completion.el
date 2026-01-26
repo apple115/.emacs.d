@@ -6,40 +6,40 @@
   :ensure t
   :general
   (:keymaps 'override
-   :states '(normal visual)
-   :prefix  "SPC"
-    "n y" '(yas-new-snippet :wk "new snippet")
-  )
+            :states '(normal visual)
+            :prefix  "SPC"
+            "n y" '(yas-new-snippet :wk "new snippet")
+            )
   :config
   (yas-global-mode 1)
-)
+  )
 
 (use-package auto-yasnippet
   :ensure t
   :after yasnippet
   :general
   (:keymaps 'yas-minor-mode-map
-   :states '(normal visual)
-   :prefix  "SPC"
-    "y" '(:ignore t :wk "auto-yasnippet")
-    "y w"   '(aya-create)
-    "y TAB" '(aya-expand)
-    "y SPC" '(aya-expand-from-history)
-    "y d"   '(aya-delete-from-history)
-    "y c"   '(aya-clear-history)
-    "y n"   '(aya-next-in-history)
-    "y p"   '(aya-previous-in-history)
-    "y s"   '(aya-persist-snippet)
-    "y o"   '(aya-open-line)
+            :states '(normal visual)
+            :prefix  "SPC"
+            "y" '(:ignore t :wk "auto-yasnippet")
+            "y w"   '(aya-create)
+            "y TAB" '(aya-expand)
+            "y SPC" '(aya-expand-from-history)
+            "y d"   '(aya-delete-from-history)
+            "y c"   '(aya-clear-history)
+            "y n"   '(aya-next-in-history)
+            "y p"   '(aya-previous-in-history)
+            "y s"   '(aya-persist-snippet)
+            "y o"   '(aya-open-line)
+            )
   )
-)
 
 (use-package vertico
   :ensure t
   :hook (after-init . vertico-mode)
   :config
   (vertico-mode t)
-)
+  )
 
 (use-package embark
   :ensure t
@@ -48,9 +48,9 @@
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
-)
+  )
 
-; Support Pinyin
+                                        ; Support Pinyin
 (use-package pinyinlib
   :ensure t
   :after orderless
@@ -61,22 +61,22 @@
   (add-to-list 'orderless-matching-styles 'completion--regex-pinyin))
 
 (use-package citre
- :ensure t
- :init
- (require 'citre-config)
-)
+  :ensure t
+  :init
+  (require 'citre-config)
+  )
 
 (use-package orderless
   :ensure t
   :config
- (setq completion-styles '(orderless flex)
+  (setq completion-styles '(orderless flex)
         completion-category-overrides '((eglot (styles . (orderless flex))))))
 
 (use-package marginalia
- :ensure t
- :init
- (marginalia-mode)
-)
+  :ensure t
+  :init
+  (marginalia-mode)
+  )
 
 (use-package eldoc
   :ensure nil
@@ -93,7 +93,7 @@
   ;; 可选：在 eglot 模式下自动启用 hover 模式（自动显示文档）
   ;; 如果觉得自动显示太干扰，可以注释掉这行，改为手动按 K 查看
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode)
-)
+  )
 
 ;;(use-package cape
 ;;  :ensure t
@@ -136,6 +136,13 @@
 ;;  ;; 任何地方都可以补全 Elisp 符号（用于配置和文档）
 ;;  ;; 可以通过 M-x cape-elisp-symbol 手动触发
 ;;  )
+
+                                        ; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :after consult
+  :ensure t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 ;;(use-package eglot
 ;;  :ensure nil  ;; Emacs 内置

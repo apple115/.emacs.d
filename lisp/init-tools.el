@@ -23,16 +23,12 @@
         which-key-separator " → " ))
 
 
-(use-package treesit-auto
-  :ensure t
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
-
 (use-package treesit
   :ensure nil
+  :mode (
+         ("\\.tsx\\'" . tsx-ts-mode)
+         ("\\.json\\'" . json-ts-mode)
+         )
   :config
   (setq treesit-language-source-alist
         '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
@@ -64,7 +60,25 @@
           (vue . ("https://github.com/merico-dev/tree-sitter-vue"))
           (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
           (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
-          (zig . ("https://github.com/GrayJack/tree-sitter-zig")))))
+          (zig . ("https://github.com/GrayJack/tree-sitter-zig"))))
+
+  (setq major-mode-remap-alist
+        '(
+          (python-mode . python-ts-mode)
+          (js-mode . js-ts-mode)
+          (js2-mode . js-ts-mode)
+          (typescript-mode . typescript-ts-mode)
+          (css-mode . css-ts-mode)
+          (c-mode . c-ts-mode)
+          (c++-mode . c++-ts-mode)
+          (rust-mode . rust-ts-mode)
+          (yaml-mode . yaml-ts-mode)
+          (bash-mode . bash-ts-mode)
+          (go-mode . go-ts-mode)
+          (markdown-mode . markdown-ts-mode)
+          )
+      )
+)
 
 (setq make-backup-files nil)                                  ; 不自动备份
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
@@ -145,8 +159,8 @@
          ;;macos (homebrew)
          ((eq system-type 'darwin)
           (if (file-exists-p "/opt/homebrew/bin/fish")
-              "/opt/hombrew/bin/fish"
-            "/bin/zsh"))
+              "fish"
+            "zsh"))
 
          ;;linux wsl
          ((eq system-type 'gnu/linux)
@@ -265,7 +279,7 @@
      ("en-US" . "src/locale/en-US/")))
   (i18n-quick-style 'nested)
   (i18n-quick-max-width 50)
-)
+  )
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
