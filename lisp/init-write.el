@@ -26,7 +26,7 @@
   (setq org-edit-src-content-indentation 0);代码块初始缩进范围
   (add-hook 'org-mode-hook (lambda () (org-display-inline-images t)))
 
-  (setq org-directory "~/Documents/org/")
+  (setq org-directory my-org-directory)
 
   ;; 设置标题行之间总是有空格；列表之间根据情况自动加空格
   (setq org-blank-before-new-entry '((heading . t)
@@ -278,23 +278,23 @@
                                        '((dot . t))))
   )
 
-;; (use-package org-roam
-;;   :ensure t
-;;   :custom
-;;   (org-roam-directory (file-truename (expand-file-name "roam" my-org-directory)))
-;;   :bind (("C-c n l" . org-roam-buffer-toggle)
-;;          ("C-c n f" . org-roam-node-find)
-;;          ("C-c n g" . org-roam-graph)
-;;          ("C-c n i" . org-roam-node-insert)
-;;          ("C-c n c" . org-roam-capture)
-;;          ;; Dailies
-;;          ("C-c n j" . org-roam-dailies-capture-today))
-;;   :config
-;;   ;; If you're using a vertical completion framework, you might want a more informative completion interface
-;;   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-;;   (org-roam-db-autosync-mode)
-;;   ;; If using org-roam-protocol
-;;   (require 'org-roam-protocol))
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename (expand-file-name "roam" my-org-directory)))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
 
 (use-package org-download
   :ensure t

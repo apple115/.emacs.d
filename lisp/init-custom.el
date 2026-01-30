@@ -3,7 +3,7 @@
 ;;; my personal custom settings
 ;;; Code:
 
-(defcustom my-org-directory (expand-file-name "~/Documents/org")
+(defcustom my-org-directory (expand-file-name "~/Documents/LocalNotes/org")
   "Set org directory."
   :group 'my
   :type 'string)
