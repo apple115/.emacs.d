@@ -95,7 +95,7 @@
   (require 'init-prog)
   (require 'init-rust)
   (require 'init-lsp-bridge)
-  (require 'init-my-theme)
+  ;; (require 'init-my-theme)
   (require 'init-read)
   ;; (require 'init-org-ui)
   ;;(require 'init-eaf)
@@ -111,7 +111,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(safe-local-variable-directories '("/Users/apple115/CodeSpace/game-web-admin/")))
+ '(package-selected-packages nil)
+ '(package-vc-selected-packages
+   '((i18n-quick :url "https://github.com/apple115/i18n-quick.el")
+     (claude-code :url "https://github.com/stevemolitor/claude-code.el")
+     (monet :url "https://github.com/stevemolitor/monet")))
+ '(safe-local-variable-values '((i18n-quick-file-path . src/locale/zh-CN/))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

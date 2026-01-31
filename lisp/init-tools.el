@@ -221,7 +221,9 @@
         (("C-c C-o" . dumb-jump-go-other-window)
          ("C-c C-j" . dumb-jump-go)
          ("C-c C-i" . dumb-jump-go-prompt)))
-  )
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+)
 
 (use-package buffer-terminator
   :ensure t
@@ -250,20 +252,22 @@
   :commands (dired-sidebar-toggle-sidebar)
   :config
   (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil)
-  )
+)
 
 (use-package rime
   :ensure t
-  :init
-  (setq default-input-method "rime")
   :config
-  (setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
-  (setq rime-posframe-properties
-        (list :background-color "#333333"
-              :foreground-color "#dcdccc"
-              :internal-border-width 10))
-  (setq rime-show-candidate 'posframe)
-  )
+   ;; 默认值
+  (setq rime-translate-keybindings
+  '("C-f" "C-b" "C-n" "C-p" "C-g" "C-`" "<left>" "<right>" "<up>" "<down>" "<prior>" "<next>" "<delete>"))
+   (setq default-input-method "rime")
+	(setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
+	(setq rime-posframe-properties
+      (list :background-color "#333333"
+            :foreground-color "#dcdccc"
+            :internal-border-width 10))
+     (setq rime-show-candidate 'posframe)
+)
 
 
 (use-package i18n-quick

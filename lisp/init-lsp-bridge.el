@@ -15,11 +15,13 @@
 (use-package lsp-bridge
   :load-path "site-lisp/lsp-bridge"
   :config
-  (setq lsp-bridge-python-command  "/Users/apple115/.emacs.d/site-lisp/.venv/bin/python3.13")
+  ;;(setq lsp-bridge-log-level 'debug)
+  (setq lsp-bridge-python-command (expand-file-name "~/.emacs.d/site-lisp/.venv/bin/python"))
   ;;remote edit
   ;; (setq lsp-bridge-remote-python-command "~/.")
   ;; (setq lsp-bridge-remote-python-file "")
 
+  (setq acm-enable-icon nil)
   (setq acm-enable-copilot nil)
   (setq acm-enable-yas nil)
   (setq acm-enable-citre nil)
@@ -28,6 +30,26 @@
   (setq lsp-bridge-enable-search-words t)
   (setq lsp-bridge-find-def-fallback-function 'citre-jump)
   (setq lsp-bridge-find-ref-fallback-function 'citre-jump-to-reference)
+  (setq lsp-bridge-get-project-path-by-filepath
+    (lambda (filepath)
+      (let ((root nil))
+        ;; 按优先级检测项目根目录
+        (or
+         ;; Go 项目
+         (setq root (locate-dominating-file filepath "go.mod"))
+         ;; Node.js/Vue/React 项目
+         (setq root (locate-dominating-file filepath "package.json"))
+         ;; Python 项目
+         (setq root (locate-dominating-file filepath "setup.py"))
+         (setq root (locate-dominating-file filepath "pyproject.toml"))
+         ;; Rust 项目
+         (setq root (locate-dominating-file filepath "Cargo.toml"))
+         ;; Git 仓库
+         (setq root (locate-dominating-file filepath ".git"))
+         ;; .dir-locals.el
+         (setq root (locate-dominating-file filepath ".dir-locals.el")))
+        (when root
+          (expand-file-name root)))))
   (setq lsp-bridge-multi-lang-server-extension-list
         '(
           ;; (("jsx"). "typescript_tailwindcss")
@@ -68,13 +90,14 @@
 
            (t extension-name))))
 
-  (setq lsp-bridge-enable-hover-diagnostic nil)
-  (setq lsp-bridge-enable-diagnostics nil)
+  ;; (setq lsp-bridge-enable-hover-diagnostic t)
   ;; (setq lsp-bridge-enable-auto-format-code t);;自动格式化
 
-  (define-key acm-mode-map   (kbd "<tab>") 'yas-expand)
-  (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
-  (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
+  (setq lsp-bridge-complete-manually nil)  ; 手动触发补全
+  ;; (setq lsp-bridge-enable-completion-in-minibuffer t)
+  ;; (evil-make-overriding-map acm-mode-map 'insert)
+  ;; (define-key acm-mode-map (kbd "C-n") #'acm-select-next)
+  ;; (define-key acm-mode-map (kbd "C-p") #'acm-select-prev)
 
   (my-leader-def
     :keymaps 'lsp-bridge-mode-map
@@ -83,6 +106,11 @@
     "la" 'lsp-bridge-code-action
     "lr" 'lsp-bridge-rename
     "lf" 'lsp-bridge-code-format)
+
+  (define-key acm-mode-map   (kbd "<tab>") 'yas-expand)
+
+  (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-n") #'acm-select-next)
+  (evil-collection-define-key 'insert 'lsp-bridge-mode-map (kbd "C-p") #'acm-select-prev)
 
   (evil-collection-define-key 'normal 'lsp-bridge-mode-map
     "K"   'lsp-bridge-popup-documentation
