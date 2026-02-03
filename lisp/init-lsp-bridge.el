@@ -99,7 +99,7 @@
   ;; (define-key acm-mode-map (kbd "C-n") #'acm-select-next)
   ;; (define-key acm-mode-map (kbd "C-p") #'acm-select-prev)
 
-  (my-leader-def
+  (+leader-keys
     :keymaps 'lsp-bridge-mode-map
     "l"  '(:ignore t :which-key "LSP")
     "ld" 'lsp-bridge-diagnostic-list

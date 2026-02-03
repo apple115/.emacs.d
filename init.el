@@ -43,10 +43,7 @@
 ;; 禁止自动缩放窗口先
 (setq frame-inhibit-implied-resize t)
 
-;; 禁止菜单栏、工具栏、滚动条模式，禁止启动屏幕和文件对话框
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; 禁止启动屏幕和文件对话框（UI 元素已在 frame-alist 中设置）
 (setq inhibit-splash-screen t)
 (setq use-file-dialog nil)
 

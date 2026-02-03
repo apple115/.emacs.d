@@ -99,15 +99,6 @@ If NEWNAME is a directory, move file to it."
     (kill-this-buffer)
     (delete-file file)))
 
-(defun delete-this-file()
-  "Delete current file and kill the buffer."
-  (interactive)
-  (unless (buffer-file-name)
-    (error "No file is currently being edited"))
-    (when (yes-or-no-p (format "Really delete '%s'? " (file-name-nondirectory buffer-file-name)))
-    (delete-file(buffer-file-name))
-    (kill-this-buffer)))
-
 (defun +copy-current-filename (file)
   "Copy the full path to the current FILE."
   (interactive

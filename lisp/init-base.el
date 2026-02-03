@@ -31,12 +31,7 @@
   :ensure t
   :demand t
   :config
-  (general-evil-setup)
-  (general-create-definer my-leader-def
-    :states '(normal insert visual emacs)
-    :keymaps 'override
-    :prefix "SPC"
-    :non-normal-prefix "M-SPC"))
+  (general-evil-setup))
 
 
 (use-package transient
