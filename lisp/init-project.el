@@ -45,8 +45,15 @@
   ;;         (when-let ((root (locate-dominating-file dir f)))
   ;;             (throw 'ret (cons 'local root))))))))
   ;; (setq project-find-functions '(my/project-try-local project-try-vc))
+
+  ;; 禁用远程文件的项目识别，或者增加 TRAMP 缓存
+  (setq remote-file-name-inhibit-cache nil)
+  (setq vc-ignore-dir-regexp
+        (format "%s\\|%s"
+                vc-ignore-dir-regexp
+                tramp-file-name-regexp))
   (setq project-vc-ignores'("nix/store/"  "node_modules/"  "go/pkg/"  ".direnv/" "vendor/"))
-)
+  )
 
 ;; 添加启动
 (use-package tabspaces

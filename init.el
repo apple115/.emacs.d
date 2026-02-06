@@ -84,7 +84,7 @@
   (require 'init-english)
   (require 'init-sql)
   (require 'init-project)
-  ;; (require 'init-chinese)
+  (require 'init-chinese)
   (require 'init-ai)
   (require 'init-emacs)
   (require 'init-git)
@@ -108,9 +108,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files '("/Users/apple115/Documents/LocalNotes/org/tasks.org") nil nil "Customized with use-package org-agenda")
  '(package-selected-packages nil)
  '(package-vc-selected-packages
-   '((i18n-quick :url "https://github.com/apple115/i18n-quick.el")
+   '((tramp-rpc :url "https://github.com/ArthurHeymans/emacs-tramp-rpc")
+     (i18n-quick :url "https://github.com/apple115/i18n-quick.el")
      (claude-code :url "https://github.com/stevemolitor/claude-code.el")
      (monet :url "https://github.com/stevemolitor/monet")))
  '(safe-local-variable-values '((i18n-quick-file-path . src/locale/zh-CN/))))

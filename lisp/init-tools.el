@@ -77,8 +77,8 @@
           (go-mode . go-ts-mode)
           (markdown-mode . markdown-ts-mode)
           )
-      )
-)
+        )
+  )
 
 (setq make-backup-files nil)                                  ; 不自动备份
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
@@ -223,7 +223,7 @@
          ("C-c C-i" . dumb-jump-go-prompt)))
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
-)
+  )
 
 (use-package buffer-terminator
   :ensure t
@@ -252,22 +252,22 @@
   :commands (dired-sidebar-toggle-sidebar)
   :config
   (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil)
-)
+  )
 
 (use-package rime
   :ensure t
   :config
-   ;; 默认值
+  ;; 默认值
   (setq rime-translate-keybindings
-  '("C-f" "C-b" "C-n" "C-p" "C-g" "C-`" "<left>" "<right>" "<up>" "<down>" "<prior>" "<next>" "<delete>"))
-   (setq default-input-method "rime")
-	(setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
-	(setq rime-posframe-properties
-      (list :background-color "#333333"
-            :foreground-color "#dcdccc"
-            :internal-border-width 10))
-     (setq rime-show-candidate 'posframe)
-)
+        '("C-f" "C-b" "C-n" "C-p" "C-g" "C-`" "<left>" "<right>" "<up>" "<down>" "<prior>" "<next>" "<delete>"))
+  (setq default-input-method "rime")
+  (setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
+  (setq rime-posframe-properties
+        (list :background-color "#333333"
+              :foreground-color "#dcdccc"
+              :internal-border-width 10))
+  (setq rime-show-candidate 'posframe)
+  )
 
 
 (use-package i18n-quick
@@ -280,6 +280,15 @@
   (i18n-quick-style 'nested)
   (i18n-quick-max-width 50)
   )
+
+(use-package tramp-rpc
+  :load-path "site-lisp/emacs-tramp-rpc/lisp"
+ :config
+  (use-package msgpack
+    :ensure t)
+  (setq diff-hl-disable-on-remote t)
+)
+
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
