@@ -173,6 +173,10 @@
           "powershell.exe")
 
          (t "/bin/sh")))
+  (setq vterm-tramp-shells
+        '(("ssh" "/bin/bash --login")  ; 明确指定 bash 并带上 --login 参数
+          ("docker" "/bin/sh")        ; Docker 容器通常比较精简
+          (t login-shell)))           ; 其他方法默认使用登录 shell
   (use-package vterm-toggle
     :ensure t
     :bind (:map vterm-mode-map
@@ -283,11 +287,11 @@
 
 (use-package tramp-rpc
   :load-path "site-lisp/emacs-tramp-rpc/lisp"
- :config
+  :config
   (use-package msgpack
     :ensure t)
   (setq diff-hl-disable-on-remote t)
-)
+  )
 
 
 (provide 'init-tools)

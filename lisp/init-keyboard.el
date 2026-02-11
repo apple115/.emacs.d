@@ -23,6 +23,7 @@
   "," '(dired-jump :wk "open-dired")
   ";" '(popper-toggle :wk "open-pop")
   "'" '(popper-cycle :wk "cycle-pop")
+  "i" '(org-capture-inbox :wk "capture-inbox")
 
   "1" 'sort-tab-select-visible-tab
   "2" 'sort-tab-select-visible-tab

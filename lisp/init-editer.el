@@ -53,6 +53,11 @@
     (kbd "+") 'dired-create-directory
 ))
 
+(use-package dired-rsync
+  :ensure t
+  :bind (:map dired-mode-map
+              ("C-c C-r" . dired-rsync)))
+
 (use-package nerd-icons-dired
     :ensure t
     :hook(dired-mode . nerd-icons-dired-mode))

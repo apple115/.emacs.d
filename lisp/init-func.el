@@ -246,6 +246,38 @@ and convert it to Org using the pandoc utility."
   (interactive)
   (toggle-http-proxy))
 
+(defun org-capture-inbox ()
+     (interactive)
+     (call-interactively 'org-store-link)
+     (org-capture nil "i"))
+
+
+(defun my/open-vterm-database (buffer-name  commond)
+  "通用函数 打开一个专用的vterm 运行database"
+  (let ((vterm-buffer (get-buffer buffer-name)))
+    (if vterm-buffer
+        (switch-to-buffer vterm-buffer)
+      (progn
+        (setq vterm-buffer (vterm buffer-name))
+        (with-current-buffer vterm-buffer
+          (vterm-send-string (concat commond "\n")))))))
+
+(defun vterm-mysql ()
+  "快速进入 MySQL (mycli)"
+  (interactive)
+  ;; 请在此处修改你的登录凭据，或者从环境变量中读取
+  (my/open-vterm-database "*vterm-mysql*" "mycli -u root -p'你的密码' -h localhost"))
+
+(defun vterm-pgcli ()
+  "快速进入 PostgreSQL (pgcli)"
+  (interactive)
+  (my/open-vterm-database "*vterm-pg*" "pgcli postgres://user:password@localhost:5432/dbname"))
+
+(defun vterm-iredis ()
+  "快速进入 Redis (iredis)"
+  (interactive)
+  (my/open-vterm-database "*vterm-redis*" "iredis -h 127.0.0.1 -p 6379"))
+
 ;; Enable proxy
 (enable-http-proxy)
 (enable-socks-proxy)
