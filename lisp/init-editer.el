@@ -17,9 +17,9 @@
 (use-package dired
   :after evil
   :config
-    (when (executable-find "gls")
+  (when (executable-find "gls")
     (setq insert-directory-program "gls"
-            dired-use-ls-dired t))
+          dired-use-ls-dired t))
   (evil-define-key 'normal dired-mode-map
     (kbd "q") 'quit-window
     (kbd "o") 'dired-quick-access
@@ -51,7 +51,7 @@
     (kbd "!") 'dired-do-shell-command
     (kbd "&") 'dired-do-async-shell-command
     (kbd "+") 'dired-create-directory
-))
+    ))
 
 (use-package dired-rsync
   :ensure t
@@ -59,8 +59,8 @@
               ("C-c C-r" . dired-rsync)))
 
 (use-package nerd-icons-dired
-    :ensure t
-    :hook(dired-mode . nerd-icons-dired-mode))
+  :ensure t
+  :hook(dired-mode . nerd-icons-dired-mode))
 
 (use-package diredfl
   :ensure t
@@ -111,48 +111,48 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
 
 
 (defun my-paste-to-dired ()
-"使用wl-paste 命令复制在当前文件夹中."
-(interactive)
-(let ((past-file-name (read-file-name "Enter file name:") ))
-  (async-shell-command (format "wl-paste > %s" past-file-name) )
-))
+  "使用wl-paste 命令复制在当前文件夹中."
+  (interactive)
+  (let ((past-file-name (read-file-name "Enter file name:") ))
+    (async-shell-command (format "wl-paste > %s" past-file-name) )
+    ))
 
 (use-package auto-save
   :load-path "./site-lisp/auto-save"
   :config
-    (auto-save-enable)
-    (setq auto-save-silent t)
-    (setq auto-save-delete-trailing-whitespace t)
-)
+  (auto-save-enable)
+  (setq auto-save-silent t)
+  (setq auto-save-delete-trailing-whitespace t)
+  )
 
 (use-package ibuffer
   :ensure nil
   :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold)))
   :config
-    (use-package nerd-icons-ibuffer
+  (use-package nerd-icons-ibuffer
     :ensure
     :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
-    (use-package ibuffer-project
+  (use-package ibuffer-project
     :ensure t
     :config
     (add-hook
-    'ibuffer-hook
-    (lambda ()
-    (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
-    (unless (eq ibuffer-sorting-mode 'project-file-relative)
-        (ibuffer-do-sort-by-project-file-relative))))
+     'ibuffer-hook
+     (lambda ()
+       (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
+       (unless (eq ibuffer-sorting-mode 'project-file-relative)
+         (ibuffer-do-sort-by-project-file-relative))))
     )
-)
+  )
 
 (use-package nerd-icons
   :ensure t)
 
 ;;view large file
 (use-package vlf
- :ensure t
- :config
- (require 'vlf-setup))
+  :ensure t
+  :config
+  (require 'vlf-setup))
 
 (provide 'init-editer)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
