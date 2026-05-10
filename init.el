@@ -91,6 +91,7 @@
   (require 'init-go)
   (require 'init-prog)
   (require 'init-rust)
+  (require 'init-my-blog)
   (require 'init-lsp-bridge)
   ;; (require 'init-my-theme)
   (require 'init-read)
