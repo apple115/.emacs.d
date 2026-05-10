@@ -55,6 +55,22 @@ regarding the asynchronous search and the arguments."
     (vterm vterm-name)
     (switch-to-buffer vterm-name))))
 
+(defun +new-ghostelN ()
+  "Create a new ghostel terminal with numbered name: term1, term2, ..."
+  (interactive)
+  (require 'ghostel)
+  (ghostel--load-module t)
+  (let ((counter 1)
+        (prefix "term"))
+    (while (get-buffer (concat prefix (number-to-string counter)))
+      (setq counter (1+ counter)))
+    (let* ((name (concat prefix (number-to-string counter)))
+           (buffer (get-buffer-create name)))
+      (unless (with-current-buffer buffer (derived-mode-p 'ghostel-mode))
+        (ghostel--prepare-buffer buffer name))
+      (switch-to-buffer buffer)
+      (ghostel--init-buffer buffer name))))
+
 ;; Eat 终端函数 (已禁用)
 ;; (defun +new-eat ()
 ;;   "Create a new eat terminal session with numbered name."
@@ -278,9 +294,27 @@ and convert it to Org using the pandoc utility."
   (interactive)
   (my/open-vterm-database "*vterm-redis*" "iredis -h 127.0.0.1 -p 6379"))
 
+
+(defun quick-open-fragment ()
+  "快速进入 hexo 的 fragment"
+  (interactive)
+  (find-file "~/blog/source/fragment/index.md"))
+
 ;; Enable proxy
 (enable-http-proxy)
 (enable-socks-proxy)
+
+
+
+(winner-mode +1)
+(defun toggle-delete-other-windows ()
+  "Delete other windows in frame if any, or restore previous window config."
+  (interactive)
+  (if (and winner-mode
+           (equal (selected-window) (next-window)))
+      (winner-undo)
+    (delete-other-windows)))
+(global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
 
 (provide 'init-func)
 

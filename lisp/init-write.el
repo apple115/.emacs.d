@@ -136,6 +136,7 @@
                    (progn my/open-vterm-database buf-name cmd)
                  ))))
 
+  )
   ;; 自动展开
   ;; (use-package org-contrib
   ;;   :ensure t)

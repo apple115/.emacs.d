@@ -57,6 +57,7 @@
          "\\*fanyi\\*"
          "\\*eshell*\\*"
          "\\*Warnings*\\*"
+          "\\*Compile-Log*\\*"
          ;; "\\*Org Agenda(t)\\*"
           go-test-mode
           help-mode

@@ -177,6 +177,9 @@
         '(("ssh" "/bin/bash --login")  ; 明确指定 bash 并带上 --login 参数
           ("docker" "/bin/sh")        ; Docker 容器通常比较精简
           (t login-shell)))           ; 其他方法默认使用登录 shell
+  ;; 设置emacs mode 在 vterm中
+  ;; (evil-set-initial-state 'vterm-mode 'emacs)
+
   (use-package vterm-toggle
     :ensure t
     :bind (:map vterm-mode-map
@@ -212,6 +215,23 @@
 ;;   (eat-eshell-mode)
 ;;   (eat-eshell-visual-command-mode)
 ;; )
+
+;; ghostel - Ghostty VT engine terminal
+(use-package ghostel
+  :load-path "site-lisp/ghostel/lisp"
+  :config
+  (setq ghostel-shell (cond
+                       ((eq system-type 'darwin)
+                        (if (file-exists-p "/opt/homebrew/bin/fish") "fish" "zsh"))
+                       ((eq system-type 'gnu/linux)
+                        (if (file-exists-p "/usr/bin/fish") "/usr/bin/fish" "/bin/bash"))
+                       (t "/bin/sh")))
+  (setq ghostel-tramp-shell-integration t)
+  (setq ghostel-tramp-shells
+        '(("ssh" login-shell)
+          ("scp" login-shell)
+          ("rpc" login-shell)
+          ("docker" "/bin/sh"))))
 
 
 
@@ -285,13 +305,49 @@
   (i18n-quick-max-width 50)
   )
 
+;; tramp-rpc 需要升级 Tramp 版本，暂时禁用
 (use-package tramp-rpc
   :load-path "site-lisp/emacs-tramp-rpc/lisp"
   :config
   (use-package msgpack
     :ensure t)
+  (setq tramp-rpc-deploy-git-build-policy 'release)
   (setq diff-hl-disable-on-remote t)
   )
+
+(use-package appine
+  ;; 核心：仅在 macOS (darwin) 系统下启用，其他系统直接跳过此配置
+  :if (eq system-type 'darwin)
+  ;; 使用内置的包管理器从 GitHub 拉取源码
+  :vc (:url "https://github.com/chaoswork/appine" :rev "master")
+  :custom
+  ;; 开启 org-mode 链接支持
+  (appine-use-for-org-links t)
+
+  :bind (("C-x a a" . appine)
+         ("C-x a u" . appine-open-url)
+         ("C-x a o" . appine-open-file))
+  :config
+  ;; 只有在加载后，且确实在 Org-mode 中时才激活链接跳转逻辑
+  (with-eval-after-load 'org
+    (when (fboundp 'appine-setup-org-links)
+      (appine-setup-org-links))))
+
+(use-package sis
+  :ensure t
+  :hook
+  ((markdown-mode . sis-inline-mode)
+   (markdown-mode . sis-context-mode)
+   (markdown-ts-mode . sis-inline-mode)
+   (markdown-ts-mode . sis-context-mode)
+   (org-mode . sis-inline-mode)
+   (org-mode . sis-context-mode)
+   (org-ts-mode . sis-inline-mode)
+   (org-ts-mode . sis-context-mode))
+  :config
+  (sis-ism-lazyman-config
+   "com.apple.keylayout.ABC"
+   "com.apple.inputmethod.SCIM.Shuangpin"))
 
 
 (provide 'init-tools)
