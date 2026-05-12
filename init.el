@@ -101,7 +101,7 @@
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
   )
-   ;; (server-start)
+ (server-start)
 
 (provide 'init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

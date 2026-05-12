@@ -17,12 +17,13 @@
   :load-path "site-lisp/lsp-bridge"
   :config
   ;;(setq lsp-bridge-log-level 'debug)
-  (setq lsp-bridge-python-command  "~/.emacs.d/site-lisp/lsp-bridge/.venv/Scripts/python.exe")
+  (setq lsp-bridge-python-command  "~/.emacs.d/site-lisp/.venv/Scripts/python.exe")
   ;; (setq acm-enable-copilot t)
   (setq acm-enable-citre t)
   (setq acm-candidate-match-function 'orderless-flex)
   (setq acm-enable-icon 'nil)
   ;; (setq lsp-bridge-enable-auto-format-code t);;自动格式化
+  (setq lsp-bridge-complete-manually t)
   (setq lsp-bridge-enable-completion-in-string t)
   (setq lsp-bridge-enable-search-words  t)
   (setq lsp-bridge-multi-lang-server-extension-list
@@ -84,7 +85,7 @@
 
            (t extension-name))))
 
-  (setq lsp-bridge-enable-hover-diagnostic t)
+  (setq lsp-bridge-enable-hover-diagnostic nil)
   (evil-make-overriding-map acm-mode-map 'insert)
   (define-key acm-mode-map (kbd "C-n") #'acm-select-next)
   (define-key acm-mode-map (kbd "C-p") #'acm-select-prev)

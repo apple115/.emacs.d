@@ -199,13 +199,14 @@
 (set-default-coding-systems 'utf-8)
 (set-language-environment 'utf-8)
 (set-clipboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-(setq file-name-coding-system 'gbk)
+(set-file-name-coding-system 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (modify-coding-system-alist 'process "*" 'utf-8)
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+  
+(when (eq system-type 'windows-nt)  (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
 
 (use-package rainbow-delimiters
   :ensure t
