@@ -35,29 +35,25 @@ regarding the asynchronous search and the arguments."
                (builder (consult--fd-make-builder paths)))
   (find-file-other-window  (consult--find prompt builder initial))))
 
-;; vterm 函数（已禁用，使用 eat）
-;; (defun my-vterm-apple115-switch () ...)
-;; (defun +new-vtermN () ...)
-
-;; vterm 函数
-(defun my-vterm-apple115-switch ()
-  "Create a new vterm buffer with the fixed name `apple115`."
+;; ghostel 函数
+(defun my-ghostel-apple115-switch ()
+  "Create a new ghostel buffer with the fixed name `apple115`."
   (interactive)
   (let ((buffer (get-buffer "terminal")))
     (if (not buffer)
-        (vterm "terminal"))
+        (ghostel "terminal"))
     (switch-to-buffer "terminal")))
 
-(defun +new-vtermN ()
-  "Create a new vterm buffer with a name in the form of `termN`', where N is a number."
+(defun +new-ghostelN ()
+  "Create a new ghostel buffer with a name in the form of `termN`', where N is a number."
   (interactive)
   (let ((counter 1)
-        (vterm-prefix "term"))
-    (while (get-buffer (concat vterm-prefix (number-to-string counter)))
+        (ghostel-prefix "term"))
+    (while (get-buffer (concat ghostel-prefix (number-to-string counter)))
       (setq counter (1+ counter)))
-    (let ((vterm-name (concat vterm-prefix (number-to-string counter))))
-    (vterm vterm-name)
-    (switch-to-buffer vterm-name))))
+    (let ((ghostel-name (concat ghostel-prefix (number-to-string counter))))
+    (ghostel ghostel-name)
+    (switch-to-buffer ghostel-name))))
 
 ;; eshell 函数（自动使用 eat，因为启用了 eat-eshell-mode）
 ;;(defun +new-eshell ()

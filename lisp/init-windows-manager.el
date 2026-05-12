@@ -16,7 +16,7 @@
           ;; ("\\*Async Shell.*\\*" :regexp t :ignore t)
           ("*format-all-errors*"         :select nil                        :size 0.3  :align t     :popup t)
           (compilation-mode              :select nil                        :size 0.3  :align t     :popup t)
-          ("*vterm*"                     :select t                          :size 0.3  :align t     :popup t)
+          ("*ghostel*"                   :select t                          :size 0.3  :align t     :popup t)
           ("^\\*eat\\*$"                 :regexp t :select t                 :size 0.3  :align t     :popup t)
 ;;          ("\\*corfu.*\\*"       :regexp t :ignore t)
           ("*eshell*"                    :select t                          :size 0.3  :align t     :popup t)
@@ -48,10 +48,10 @@
           "\\*quickrun\\*"
           "Aweshell"
          "\\*compilation\\*"
-         "\\*vterm compilation\\*"
+         "\\*ghostel-compile\\*"
          "^\\*eat\\*$"  ;; Eat
          "help-mode"
-         "\\*vterm\\*"
+         "\\*ghostel\\*"
          "\\*lsp-bridge-doc\\*"
          "\\*fanyi\\*"
          "\\*eshell*\\*"

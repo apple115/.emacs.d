@@ -137,40 +137,14 @@
 )
 
 (add-to-list 'load-path (expand-file-name "bin" user-emacs-directory))
-(use-package vterm
-  :load-path "site-lisp/emacs-libvterm"
+(use-package ghostel
+  :load-path "site-lisp/ghostel/lisp"
   :config
   (when (eq system-type 'windows-nt)
-    ;; 设置 conpty_proxy.exe 路径（Windows 也支持正斜杠）
-    (setq vterm-conpty-proxy-path "C:/Users/25670/.emacs.d/bin/conpty_proxy.exe")
-    ;; 尝试使用 PowerShell 7，如果不存在则使用 Windows PowerShell
-    (let ((pwsh (executable-find "pwsh.exe"))
-          (pshell (executable-find "powershell.exe")))
-      (setq vterm-shell (or pwsh pshell "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"))))
-  (use-package vterm-toggle
-    :ensure t
-    :bind (:map vterm-mode-map
-                ([(control return)] . vterm-toggle-insert-cd))
-    :config
-    (setq vterm-toggle-cd-auto-create-buffer nil)
-    (defvar vterm-compile-buffer nil)
-    (defun vterm-compile ()
-        "Compile the program including the current buffer in `vterm'."
-        (interactive)
-        (setq compile-command (compilation-read-command compile-command))
-        (let ((vterm-toggle-use-dedicated-buffer t)
-            (vterm-toggle--vterm-dedicated-buffer (if (vterm-toggle--get-window)
-                                                        (vterm-toggle-hide)
-                                                    vterm-compile-buffer)))
-        (with-current-buffer (vterm-toggle-cd)
-            (setq vterm-compile-buffer (current-buffer))
-            (rename-buffer "*vterm compilation*")
-            (compilation-shell-minor-mode 1)
-            (vterm-send-M-w)
-           (vterm-send-string compile-command t)
-            (vterm-send-return))))
-  )
-)
+    (setq ghostel-shell (or (executable-find "pwsh.exe")
+                            (executable-find "powershell.exe")
+                            "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"))))
+
 
 ;; Eat - Emulate A Terminal (已禁用)
 ;; (use-package eat
