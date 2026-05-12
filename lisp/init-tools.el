@@ -162,8 +162,6 @@
 ;;   (eat-eshell-visual-command-mode)
 ;; )
 
-
-
 (use-package dwim-shell-command
   :ensure t)
 
@@ -199,6 +197,13 @@
 ;;    :config
 ;;    (tramp-hlo-setup)
 ;;)
+
+(use-package dired-sidebar
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :config
+  (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil)
+  )
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
