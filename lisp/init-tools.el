@@ -145,6 +145,11 @@
                             (executable-find "powershell.exe")
                             "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"))))
 
+(use-package evil-ghostel
+  :load-path "site-lisp/ghostel/extensions/evil-ghostel"
+  :after (ghostel evil)
+  :hook (ghostel-mode . evil-ghostel-mode))
+
 
 ;; Eat - Emulate A Terminal (已禁用)
 ;; (use-package eat
