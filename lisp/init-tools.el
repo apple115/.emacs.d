@@ -136,12 +136,18 @@
 (add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
 )
 
-;; vterm
+(add-to-list 'load-path (expand-file-name "bin" user-emacs-directory))
 (use-package vterm
-  :ensure t
+  :load-path "site-lisp/emacs-libvterm"
   :config
-  (setq vterm-shell "/opt/homebrew/bin/fish")
-    (use-package vterm-toggle
+  (when (eq system-type 'windows-nt)
+    ;; 设置 conpty_proxy.exe 路径（Windows 也支持正斜杠）
+    (setq vterm-conpty-proxy-path "C:/Users/25670/.emacs.d/bin/conpty_proxy.exe")
+    ;; 尝试使用 PowerShell 7，如果不存在则使用 Windows PowerShell
+    (let ((pwsh (executable-find "pwsh.exe"))
+          (pshell (executable-find "powershell.exe")))
+      (setq vterm-shell (or pwsh pshell "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"))))
+  (use-package vterm-toggle
     :ensure t
     :bind (:map vterm-mode-map
                 ([(control return)] . vterm-toggle-insert-cd))
@@ -163,7 +169,7 @@
             (vterm-send-M-w)
            (vterm-send-string compile-command t)
             (vterm-send-return))))
-    )
+  )
 )
 
 ;; Eat - Emulate A Terminal (已禁用)
@@ -189,7 +195,9 @@
         (("C-c C-o" . dumb-jump-go-other-window)
          ("C-c C-j" . dumb-jump-go)
          ("C-c C-i" . dumb-jump-go-prompt)))
- )
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+)
 
 (use-package buffer-terminator
   :ensure t
@@ -207,11 +215,11 @@
   :config
   (buffer-terminator-mode 1))
 
-(use-package tramp-hlo
-    :ensure t
-    :config
-    (tramp-hlo-setup)
-)
+;;(use-package tramp-hlo
+;;    :ensure t
+;;    :config
+;;    (tramp-hlo-setup)
+;;)
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

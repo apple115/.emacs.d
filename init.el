@@ -67,11 +67,11 @@
   (require 'init-base)
   (require 'init-custom)
   (require 'init-edit)
-  ;; 以下模块可以异步加载，利用 :after 管理依赖关系
   (require 'init-tools)
   (require 'init-keyboard)
   (require 'init-ui)
   (require 'init-completion)
+  (require 'init-lsp-bridge)  ;; 已切换到 corfu + eglot
   (require 'init-langs)
   (require 'init-write)
   (require 'init-editer)
@@ -101,7 +101,7 @@
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
   )
-   ;; (server-start)
+ (server-start)
 
 (provide 'init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -130,9 +130,7 @@
                 shackle smart-mode-line sudo-edit tabspaces tramp-hlo
                 treesit-auto vertico virtualenvwrapper vlf vterm-toggle web-mode))
  '(package-vc-selected-packages
-   '((claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")))
- '(warning-suppress-log-types '((treesit) (treesit)))
- '(warning-suppress-types '((treesit) (treesit))))
+   '((lsp-proxy :url "https://github.com/jadestrong/lsp-proxy"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

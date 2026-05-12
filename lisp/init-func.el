@@ -35,6 +35,10 @@ regarding the asynchronous search and the arguments."
                (builder (consult--fd-make-builder paths)))
   (find-file-other-window  (consult--find prompt builder initial))))
 
+;; vterm 函数（已禁用，使用 eat）
+;; (defun my-vterm-apple115-switch () ...)
+;; (defun +new-vtermN () ...)
+
 ;; vterm 函数
 (defun my-vterm-apple115-switch ()
   "Create a new vterm buffer with the fixed name `apple115`."
@@ -55,14 +59,37 @@ regarding the asynchronous search and the arguments."
     (vterm vterm-name)
     (switch-to-buffer vterm-name))))
 
-;; Eat 终端函数 (已禁用)
-;; (defun +new-eat ()
-;;   "Create a new eat terminal session with numbered name."
-;;   (interactive)
-;;   (let ((counter 1))
-;;     (while (get-buffer (format "*eat<%d>*" counter))
-;;       (setq counter (1+ counter)))
-;;     (eat nil counter)))
+;; eshell 函数（自动使用 eat，因为启用了 eat-eshell-mode）
+;;(defun +new-eshell ()
+;;  "Create a new eshell buffer with numbered name."
+;;  (interactive)
+;;  (let ((counter 1)
+;;        (eshell-buffer-name "*eshell*"))
+;;    ;; 查找可用的缓冲区名称
+;;    (while (get-buffer (if (= counter 1)
+;;                           eshell-buffer-name
+;;                         (format "*eshell<%d>*" counter)))
+;;      (setq counter (1+ counter)))
+;;    (let ((buffer-name (if (= counter 1)
+;;                            eshell-buffer-name
+;;                          (format "*eshell<%d>*" counter))))
+;;      ;; 创建新的 eshell 缓冲区
+;;      (if (= counter 1)
+;;          (eshell)
+;;        (progn
+;;          (eshell)
+;;          (rename-buffer buffer-name)))
+;;      (switch-to-buffer buffer-name))))
+;;
+;;(defun +eshell-toggle ()
+;;  "Toggle eshell window."
+;;  (interactive)
+;;  (let ((buffer (get-buffer "*eshell*")))
+;;    (if buffer
+;;        (if (get-buffer-window buffer)
+;;            (delete-window (get-buffer-window buffer))
+;;          (display-buffer buffer))
+;;      (eshell))))
 
 
 (defun get-word-translate-to-bar()

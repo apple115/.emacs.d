@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; lsp-bridge is a language server client for Emacs, which provides
 ;;; Code:
+
 (use-package markdown-mode
   :ensure t
   :mode
@@ -14,29 +15,45 @@
 
 (use-package lsp-bridge
   :load-path "site-lisp/lsp-bridge"
-  ;;:after (markdown-mode yasnippet)
-  ;;:init (yas-global-mode 1)
   :config
   ;;(setq lsp-bridge-log-level 'debug)
-  (setq lsp-bridge-python-command  "/Users/apple115/.emacs.d/site-lisp/lsp-bridge/.venv/bin/python3.13")
-  (setq acm-enable-copilot nil)
+  (setq lsp-bridge-python-command  "~/.emacs.d/site-lisp/.venv/Scripts/python.exe")
+  ;; (setq acm-enable-copilot t)
   (setq acm-enable-citre t)
   (setq acm-candidate-match-function 'orderless-flex)
-  (setq lsp-bridge-complete-manually t)  ; 手动触发补全
+  (setq acm-enable-icon 'nil)
   ;; (setq lsp-bridge-enable-auto-format-code t);;自动格式化
+  (setq lsp-bridge-complete-manually t)
   (setq lsp-bridge-enable-completion-in-string t)
   (setq lsp-bridge-enable-search-words  t)
-  (setq lsp-bridge-find-def-fallback-function 'citre-jump)
-  (setq lsp-bridge-find-ref-fallback-function 'citre-jump-to-reference)
   (setq lsp-bridge-multi-lang-server-extension-list
         '(
-          ;; (("jsx"). "typescript_tailwindcss")
-          ;; (("html"). "html_emmet")
-          (("tsx"). "tsx_tailwindcss")
-          (("vue"). "volar3_vtsls")
-          ;; (("vue"). "volar_emmet")
-          ))
+          ;; (("jsx") . "typescript_tailwindcss")
+          ;; (("html") . "html_emmet")
+          (("vue") . "volar_vtsls")
+          (("tsx") . "tsx_tailwindcss")))
   ;; (setq lsp-bridge-enable-org-babel t) ;;error 与denote冲突
+  ;; 检测项目根目录：支持多种项目类型
+  (setq lsp-bridge-get-project-path-by-filepath
+    (lambda (filepath)
+      (let ((root nil))
+        ;; 按优先级检测项目根目录
+        (or
+         ;; Go 项目
+         (setq root (locate-dominating-file filepath "go.mod"))
+         ;; Node.js/Vue/React 项目
+         (setq root (locate-dominating-file filepath "package.json"))
+         ;; Python 项目
+         (setq root (locate-dominating-file filepath "setup.py"))
+         (setq root (locate-dominating-file filepath "pyproject.toml"))
+         ;; Rust 项目
+         (setq root (locate-dominating-file filepath "Cargo.toml"))
+         ;; Git 仓库
+         (setq root (locate-dominating-file filepath ".git"))
+         ;; .dir-locals.el
+         (setq root (locate-dominating-file filepath ".dir-locals.el")))
+        (when root
+          (expand-file-name root)))))
   (setq lsp-bridge-get-language-id
         (lambda (project-path file-path server-name extension-name)
           (cond
@@ -68,7 +85,7 @@
 
            (t extension-name))))
 
-  (setq lsp-bridge-enable-hover-diagnostic t)
+  (setq lsp-bridge-enable-hover-diagnostic nil)
   (evil-make-overriding-map acm-mode-map 'insert)
   (define-key acm-mode-map (kbd "C-n") #'acm-select-next)
   (define-key acm-mode-map (kbd "C-p") #'acm-select-prev)
@@ -92,7 +109,7 @@
     "gr" 'lsp-bridge-find-references
     )
   (global-lsp-bridge-mode)
-  )
+)
 
 (provide 'init-lsp-bridge)
 

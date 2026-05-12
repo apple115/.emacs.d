@@ -94,14 +94,14 @@
 )
 
 ; Support Pinyin
-(use-package pinyinlib
-  :ensure t
-  :after orderless
-  :autoload pinyinlib-build-regexp-string
-  :init
-  (defun completion--regex-pinyin (str)
-    (orderless-regexp (pinyinlib-build-regexp-string str)))
-  (add-to-list 'orderless-matching-styles 'completion--regex-pinyin))
+;; (use-package pinyinlib
+;;   :ensure t
+;;   :after orderless
+;;   :autoload pinyinlib-build-regexp-strin
+;;   :init
+;;   (defun completion--regex-pinyin (str)
+;;     (orderless-regexp (pinyinlib-build-regexp-string str)))
+;;   (add-to-list 'orderless-matching-styles 'completion--regex-pinyin))
 
 (use-package citre
  :ensure t
@@ -127,16 +127,16 @@
   (eldoc-echo-area-use-multiline-p nil)  ;; 不在 echo area 使用多行
   (eldoc-idle-delay 0.5))                ;; 延迟 0.5 秒显示
 
-(use-package eldoc-box
-  :ensure t
-  :commands (eldoc-box-help-at-point eldoc-box-quit-frame)
-  :custom
-  (eldoc-box-clear-with-C-g t)  ;; 按 C-g 可以关闭文档框
-  :config
-  ;; 可选：在 eglot 模式下自动启用 hover 模式（自动显示文档）
-  ;; 如果觉得自动显示太干扰，可以注释掉这行，改为手动按 K 查看
-  ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode)
-)
+;; (use-package eldoc-box
+;;   :ensure t
+;;   :commands (eldoc-box-help-at-point eldoc-box-quit-frame)
+;;   :custom
+;;   (eldoc-box-clear-with-C-g t)  ;; 按 C-g 可以关闭文档框
+;;   :config
+;;   ;; 可选：在 eglot 模式下自动启用 hover 模式（自动显示文档）
+;;   ;; 如果觉得自动显示太干扰，可以注释掉这行，改为手动按 K 查看
+;;   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode)
+;; )
 
 ;;(use-package cape
 ;;  :ensure t
@@ -219,26 +219,30 @@
 ;;  (add-to-list 'eglot-server-programs '(tsx-ts-mode . ("typescript-language-server" "--stdio")))
 ;;  (add-to-list 'eglot-server-programs '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
 
-(use-package eglot-booster
-  :vc (eglot-booster :url "https://github.com/jdtsmith/eglot-booster")
-  :after eglot
-  :config
-  (eglot-booster-mode))
+;;添加一下bin 下面的emacs-lsp-booster
+;; 将 bin 目录添加到 exec-path，以便 eglot-booster 能找到 emacs-lsp-booster.exe
+;; (add-to-list 'exec-path (expand-file-name "bin" user-emacs-directory))
+
+;; (use-package eglot-booster
+;;   :vc (eglot-booster :url "https://github.com/jdtsmith/eglot-booster")
+;;   :after eglot
+;;   :config
+;;   (eglot-booster-mode))
 
 ;; (use-package ht
 ;;   :ensure t
 ;; )
 
 ;; (use-package lsp-proxy
-;;   :load-path "./site-lisp/lsp-proxy"
-;;   :config
-;;   (setq lsp-proxy-user-languages-config (expand-file-name (concat user-emacs-directory "languages.toml")))
-;;     (with-eval-after-load 'evil-collection
-;;     (evil-collection-define-key 'normal 'lsp-proxy-mode-map
-;;       (kbd "K")  'lsp-proxy-describe-thing-at-point
-;;       ;; (kbd "gd") 'lsp-proxy-find-definition
-;;       (kbd "gD") 'lsp-proxy-find-declaration
-;;       (kbd "gi") 'lsp-proxy-find-implementations
+;;  :load-path "site-lisp/lsp-proxy"
+;;  :config
+;;    (with-eval-after-load 'evil-collection
+;;    (evil-collection-define-key 'normal 'lsp-proxy-mode-map
+;;      (kbd "K")  'lsp-proxy-describe-thing-at-point
+;;      (kbd "gd") 'lsp-proxy-find-definition
+;;      (kbd "gr") 'lsp-proxy-find-references
+;;      (kbd "gD") 'lsp-proxy-find-declaration
+;;      (kbd "gi") 'lsp-proxy-find-implementations
 ;;      )))
 
 (provide 'init-completion)
