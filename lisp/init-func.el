@@ -130,15 +130,6 @@ If NEWNAME is a directory, move file to it."
     (kill-this-buffer)
     (delete-file file)))
 
-(defun delete-this-file()
-  "Delete current file and kill the buffer."
-  (interactive)
-  (unless (buffer-file-name)
-    (error "No file is currently being edited"))
-    (when (yes-or-no-p (format "Really delete '%s'? " (file-name-nondirectory buffer-file-name)))
-    (delete-file(buffer-file-name))
-    (kill-this-buffer)))
-
 (defun +copy-current-filename (file)
   "Copy the full path to the current FILE."
   (interactive
@@ -160,6 +151,36 @@ If NEWNAME is a directory, move file to it."
   (interactive)
   (let ((default-directory "~/blog/"))
    (hexo-new)))
+
+;;https://mbork.pl/2021-05-02_Org-mode_to_Markdown_via_the_clipboard 来源
+(defun org-copy-region-as-markdown ()
+  "Copy the region (in Org) to the system clipboard as Markdown."
+  (interactive)
+  (if (use-region-p)
+      (let* ((region
+	      (buffer-substring-no-properties
+		      (region-beginning)
+		      (region-end)))
+	     (markdown
+	      (org-export-string-as region 'md t '(:with-toc nil))))
+	(gui-set-selection 'CLIPBOARD markdown))))
+
+;;http://yummymelon.com/devnull/import-markdown-to-org-with-the-clipboard-in-emacs.html
+(defun cc/yank-markdown-as-org ()
+  "Yank Markdown text as Org.
+
+This command will convert Markdown text in the top of the `kill-ring'
+and convert it to Org using the pandoc utility."
+  (interactive)
+  (save-excursion
+    (with-temp-buffer
+      (yank)
+      (shell-command-on-region
+       (point-min) (point-max)
+       "pandoc -f markdown -t org --wrap=preserve" t t)
+      (kill-region (point-min) (point-max)))
+    (yank)))
+
 
 
 ;; (use-package tailwindcss-color-mode
@@ -256,9 +277,59 @@ If NEWNAME is a directory, move file to it."
   (interactive)
   (toggle-http-proxy))
 
+(defun org-capture-inbox ()
+     (interactive)
+     (call-interactively 'org-store-link)
+     (org-capture nil "i"))
+
+
+(defun my/open-vterm-database (buffer-name  commond)
+  "通用函数 打开一个专用的vterm 运行database"
+  (let ((vterm-buffer (get-buffer buffer-name)))
+    (if vterm-buffer
+        (switch-to-buffer vterm-buffer)
+      (progn
+        (setq vterm-buffer (vterm buffer-name))
+        (with-current-buffer vterm-buffer
+          (vterm-send-string (concat commond "\n")))))))
+
+(defun vterm-mysql ()
+  "快速进入 MySQL (mycli)"
+  (interactive)
+  ;; 请在此处修改你的登录凭据，或者从环境变量中读取
+  (my/open-vterm-database "*vterm-mysql*" "mycli -u root -p'你的密码' -h localhost"))
+
+(defun vterm-pgcli ()
+  "快速进入 PostgreSQL (pgcli)"
+  (interactive)
+  (my/open-vterm-database "*vterm-pg*" "pgcli postgres://user:password@localhost:5432/dbname"))
+
+(defun vterm-iredis ()
+  "快速进入 Redis (iredis)"
+  (interactive)
+  (my/open-vterm-database "*vterm-redis*" "iredis -h 127.0.0.1 -p 6379"))
+
+
+(defun quick-open-fragment ()
+  "快速进入 hexo 的 fragment"
+  (interactive)
+  (find-file "~/blog/source/fragment/index.md"))
+
 ;; Enable proxy
 (enable-http-proxy)
 (enable-socks-proxy)
+
+
+
+(winner-mode +1)
+(defun toggle-delete-other-windows ()
+  "Delete other windows in frame if any, or restore previous window config."
+  (interactive)
+  (if (and winner-mode
+           (equal (selected-window) (next-window)))
+      (winner-undo)
+    (delete-other-windows)))
+(global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
 
 (provide 'init-func)
 

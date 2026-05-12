@@ -6,83 +6,40 @@
   :ensure t
   :general
   (:keymaps 'override
-   :states '(normal visual)
-   :prefix  "SPC"
-    "n y" '(yas-new-snippet :wk "new snippet")
-  )
+            :states '(normal visual)
+            :prefix  "SPC"
+            "n y" '(yas-new-snippet :wk "new snippet")
+            )
   :config
   (yas-global-mode 1)
-)
+  )
 
 (use-package auto-yasnippet
   :ensure t
   :after yasnippet
   :general
   (:keymaps 'yas-minor-mode-map
-   :states '(normal visual)
-   :prefix  "SPC"
-    "y" '(:ignore t :wk "auto-yasnippet")
-    "y w"   '(aya-create)
-    "y TAB" '(aya-expand)
-    "y SPC" '(aya-expand-from-history)
-    "y d"   '(aya-delete-from-history)
-    "y c"   '(aya-clear-history)
-    "y n"   '(aya-next-in-history)
-    "y p"   '(aya-previous-in-history)
-    "y s"   '(aya-persist-snippet)
-    "y o"   '(aya-open-line)
+            :states '(normal visual)
+            :prefix  "SPC"
+            "y" '(:ignore t :wk "auto-yasnippet")
+            "y w"   '(aya-create)
+            "y TAB" '(aya-expand)
+            "y SPC" '(aya-expand-from-history)
+            "y d"   '(aya-delete-from-history)
+            "y c"   '(aya-clear-history)
+            "y n"   '(aya-next-in-history)
+            "y p"   '(aya-previous-in-history)
+            "y s"   '(aya-persist-snippet)
+            "y o"   '(aya-open-line)
+            )
   )
-)
 
-;;(use-package corfu
-;;  :ensure t
-;;  :custom
-;;  (corfu-auto nil)                  ;; 禁用自动补全，改为手动触发
-;;  (corfu-preview-current nil)       ;; 不预览当前候选
-;;  (corfu-popupinfo-delay '(0.4 . 0.2))
-;;  (corfu-quit-no-match 'separator)  ;; 没有匹配时的行为
-;;  :bind (:map corfu-map
-;;         ;; 补全菜单内的导航（和 Vim 一样）
-;;         ("C-n" . corfu-next)        ;; 下一个候选
-;;         ("C-p" . corfu-previous)    ;; 上一个候选
-;;         ("RET" . corfu-insert)      ;; 回车确认
-;;         ("<escape>" . corfu-quit))  ;; ESC 退出
-;;  :hook ((after-init . global-corfu-mode)
-;;         (global-corfu-mode . corfu-popupinfo-mode))
-;;  :config
-;;  ;; Vim 风格的补全：C-n 触发补全并选择下一项，C-p 选择上一项
-;;  (with-eval-after-load 'evil
-;;    ;; 定义智能补全函数
-;;    (defun my/corfu-complete-or-next ()
-;;      "触发补全或选择下一项（类似 Vim 的 C-n）"
-;;      (interactive)
-;;      (if (and (corfu-mode) completion-in-region-mode)
-;;          (corfu-next)
-;;        (completion-at-point)))
-;;
-;;    (defun my/corfu-complete-or-previous ()
-;;      "触发补全或选择上一项（类似 Vim 的 C-p）"
-;;      (interactive)
-;;      (if (and (corfu-mode) completion-in-region-mode)
-;;          (corfu-previous)
-;;        (completion-at-point)))
-;;
-;;    ;; 在 insert 模式绑定 C-n/C-p
-;;    (define-key evil-insert-state-map (kbd "C-n") #'my/corfu-complete-or-next)
-;;    (define-key evil-insert-state-map (kbd "C-p") #'my/corfu-complete-or-previous))
-;;
-;;  (use-package nerd-icons-corfu
-;;    :ensure t
-;;    :config
-;;    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)))
-;;
-;;; Code:
 (use-package vertico
   :ensure t
   :hook (after-init . vertico-mode)
   :config
   (vertico-mode t)
-)
+  )
 
 (use-package embark
   :ensure t
@@ -91,7 +48,7 @@
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
-)
+  )
 
 ; Support Pinyin
 ;; (use-package pinyinlib
@@ -102,24 +59,33 @@
 ;;   (defun completion--regex-pinyin (str)
 ;;     (orderless-regexp (pinyinlib-build-regexp-string str)))
 ;;   (add-to-list 'orderless-matching-styles 'completion--regex-pinyin))
+                                        ; Support Pinyin
+(use-package pinyinlib
+  :ensure t
+  :after orderless
+  :autoload pinyinlib-build-regexp-string
+  :init
+  (defun completion--regex-pinyin (str)
+    (orderless-regexp (pinyinlib-build-regexp-string str)))
+  (add-to-list 'orderless-matching-styles 'completion--regex-pinyin))
 
 (use-package citre
- :ensure t
- :init
- (require 'citre-config)
-)
+  :ensure t
+  :init
+  (require 'citre-config)
+  )
 
 (use-package orderless
   :ensure t
   :config
- (setq completion-styles '(orderless flex)
+  (setq completion-styles '(orderless flex)
         completion-category-overrides '((eglot (styles . (orderless flex))))))
 
 (use-package marginalia
- :ensure t
- :init
- (marginalia-mode)
-)
+  :ensure t
+  :init
+  (marginalia-mode)
+  )
 
 (use-package eldoc
   :ensure nil
@@ -180,7 +146,7 @@
 ;;  ;; 可以通过 M-x cape-elisp-symbol 手动触发
 ;;  )
 
-; Consult users will also want the embark-consult package.
+                                        ; Consult users will also want the embark-consult package.
 (use-package embark-consult
   :after consult
   :ensure t

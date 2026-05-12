@@ -25,23 +25,38 @@
         (sort (split-string (shell-command-to-string command) "\0" t)
             #'string<))))
 
-    (cl-defmethod project-files ((project (head local)) &optional dirs)
-    "Override `project-files' to use `fd' in local projects."
-    (mapcan #'my/project-files-in-directory
-            (or dirs (list (project-root project)))))
-;; (defun my/project-try-local (dir)
-;; "Determine if DIR is a non-Git project."
-;; (catch 'ret
-;;     (let ((pr-flags '((".project")
-;;                     ("go.mod" "Cargo.toml" "project.clj" "pom.xml" "package.json") ;; higher priority
-;;                     ("Makefile" "README.org" "README.md"))))
-;;     (dolist (current-level pr-flags)
-;;         (dolist (f current-level)
-;;         (when-let ((root (locate-dominating-file dir f)))
-;;             (throw 'ret (cons 'local root))))))))
-;; (setq project-find-functions '(my/project-try-local project-try-vc))
-;; (setq project-vc-ignores'("nix/store/"  "node_modules/"  "go/pkg/"  ".direnv/" "vendor/"))
-)
+  ;; (cl-defmethod project-files ((project (head local)) &optional dirs)
+  ;;   "Override `project-files' to use `fd' in local projects."
+  ;;   (mapcan #'my/project-files-in-directory
+  ;;           (or dirs (list (project-root project)))))
+
+  ;;   (cl-defmethod project-root ((project (head local)))
+  ;;   "Extract the root directory from a 'local' project object."
+  ;;   (cdr project))
+
+;; 确保这一段存在
+;;如果一个项目的类型是 local，请这样找到它的根目录
+(cl-defmethod project-root ((project (head local)))
+  (cdr project))
+
+;; 修正你的查找逻辑，防止报错
+(defun my/project-try-local (dir)
+  (let ((markers '(".project" "go.mod" "Cargo.toml" "project.clj" "pom.xml" "package.json")))
+    (seq-some (lambda (marker)
+                (when-let ((root (locate-dominating-file dir marker)))
+                  (cons 'local root)))
+              markers)))
+
+(setq project-find-functions '(my/project-try-local project-try-vc))
+
+  ;; 禁用远程文件的项目识别，或者增加 TRAMP 缓存
+  (setq remote-file-name-inhibit-cache nil)
+  (setq vc-ignore-dir-regexp
+        (format "%s\\|%s"
+                vc-ignore-dir-regexp
+                tramp-file-name-regexp))
+  (setq project-vc-ignores'("nix/store/"  "node_modules/"  "go/pkg/"  ".direnv/" "vendor/"))
+  )
 
 ;; 添加启动
 (use-package tabspaces
@@ -96,6 +111,7 @@
 
     "Set workspace buffer list for consult-buffer.")
   (add-to-list 'consult-buffer-sources 'consult--source-workspace))
+
 
 
 (provide 'init-project)

@@ -7,7 +7,7 @@
 (use-package which-key
   :ensure nil
   :init
-    (which-key-mode 1)
+  (which-key-mode 1)
   :config
   (setq which-key-side-window-location 'bottom
         which-key-sort-order 'which-key-key-order-alpha
@@ -23,48 +23,62 @@
         which-key-separator " → " ))
 
 
-(use-package treesit-auto
-  :ensure t
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
-
 (use-package treesit
   :ensure nil
+  :mode (
+         ("\\.tsx\\'" . tsx-ts-mode)
+         ("\\.json\\'" . json-ts-mode)
+         )
   :config
   (setq treesit-language-source-alist
-      '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
-        (c . ("https://github.com/tree-sitter/tree-sitter-c"))
-        (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
-        (css . ("https://github.com/tree-sitter/tree-sitter-css"))
-        (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
-        (csharp     . ("https://github.com/tree-sitter/tree-sitter-c-sharp.git"))
-        (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
-        (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
-        (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.19.0"))
-        (gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
-        (html . ("https://github.com/tree-sitter/tree-sitter-html"))
-        (java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
-        (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
-        (json . ("https://github.com/tree-sitter/tree-sitter-json"))
-        (lua . ("https://github.com/Azganoth/tree-sitter-lua"))
-        (make . ("https://github.com/alemuller/tree-sitter-make"))
-        (markdown . ("https://github.com/MDeiml/tree-sitter-markdown" nil "tree-sitter-markdown/src"))
-        (ocaml . ("https://github.com/tree-sitter/tree-sitter-ocaml" nil "ocaml/src"))
-        (org . ("https://github.com/milisims/tree-sitter-org"))
-        (python . ("https://github.com/tree-sitter/tree-sitter-python"))
-        (php . ("https://github.com/tree-sitter/tree-sitter-php"))
-        (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "typescript/src"))
-        (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
-        (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
-        (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
-        (sql . ("https://github.com/m-novikov/tree-sitter-sql"))
-        (vue . ("https://github.com/merico-dev/tree-sitter-vue"))
-        (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
-        (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
-        (zig . ("https://github.com/GrayJack/tree-sitter-zig")))))
+        '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+          (c . ("https://github.com/tree-sitter/tree-sitter-c"))
+          (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+          (css . ("https://github.com/tree-sitter/tree-sitter-css"))
+          (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
+          (csharp     . ("https://github.com/tree-sitter/tree-sitter-c-sharp.git"))
+          (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
+          (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
+          (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.19.0"))
+          (gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
+          (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+          (java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
+          (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
+          (json . ("https://github.com/tree-sitter/tree-sitter-json"))
+          (lua . ("https://github.com/Azganoth/tree-sitter-lua"))
+          (make . ("https://github.com/alemuller/tree-sitter-make"))
+          (markdown . ("https://github.com/MDeiml/tree-sitter-markdown" nil "tree-sitter-markdown/src"))
+          (ocaml . ("https://github.com/tree-sitter/tree-sitter-ocaml" nil "ocaml/src"))
+          (org . ("https://github.com/milisims/tree-sitter-org"))
+          (python . ("https://github.com/tree-sitter/tree-sitter-python"))
+          (php . ("https://github.com/tree-sitter/tree-sitter-php"))
+          (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "typescript/src"))
+          (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
+          (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
+          (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
+          (sql . ("https://github.com/m-novikov/tree-sitter-sql"))
+          (vue . ("https://github.com/merico-dev/tree-sitter-vue"))
+          (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
+          (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
+          (zig . ("https://github.com/GrayJack/tree-sitter-zig"))))
+
+  (setq major-mode-remap-alist
+        '(
+          (python-mode . python-ts-mode)
+          (js-mode . js-ts-mode)
+          (js2-mode . js-ts-mode)
+          (typescript-mode . typescript-ts-mode)
+          (css-mode . css-ts-mode)
+          (c-mode . c-ts-mode)
+          (c++-mode . c++-ts-mode)
+          (rust-mode . rust-ts-mode)
+          (yaml-mode . yaml-ts-mode)
+          (bash-mode . bash-ts-mode)
+          (go-mode . go-ts-mode)
+          (markdown-mode . markdown-ts-mode)
+          )
+        )
+  )
 
 (setq make-backup-files nil)                                  ; 不自动备份
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
@@ -74,10 +88,10 @@
   :custom
   (flycheck-indication-mode 'nil)
   :config
-    ;; (setq-default
-    ;;     flycheck-disabled-checkers
-    ;;     (append (default-value 'flycheck-disabled-checkers)
-    ;;             '(emacs-lisp emacs-lisp-checkdoc emacs-lisp-package)))
+  ;; (setq-default
+  ;;     flycheck-disabled-checkers
+  ;;     (append (default-value 'flycheck-disabled-checkers)
+  ;;             '(emacs-lisp emacs-lisp-checkdoc emacs-lisp-package)))
   (setq truncate-lines nil) ; 如果单行信息很长会自动换行
   (flycheck-add-mode 'javascript-eslint 'js-mode)
   (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
@@ -87,7 +101,7 @@
   (flycheck-add-mode 'go-staticcheck 'go-ts-mode)
   (evil-define-key 'normal prog-mode-map (kbd "]d") 'flycheck-previous-error)
   (evil-define-key 'normal prog-mode-map (kbd "[d") 'flycheck-next-error)
-)
+  )
 
 
 (use-package format-all
@@ -95,7 +109,7 @@
   :config
   (setq-default format-all-formatters
                 '(("C"     (astyle "--mode=c"))
-                 ("Shell" (shfmt "-i" "4" "-ci"))
+                  ("Shell" (shfmt "-i" "4" "-ci"))
                   ("JavaScript" (prettier "-w"))
                   ("TypeScript" (prettier "-w"))
                   ("YAML" (prettier "-w"))
@@ -118,23 +132,23 @@
                   ("Ruby" (rufo))
                   ("C++" (clang-format "-style=Google"))
                   ("clojure" (zprint))
-)))
+                  )))
 
 (use-package link-hint
   :ensure t
   :defer t
   :config
   ;; (setq browse-url-browser-function 'browse-url-firefox)
-)
+  )
 
 (use-package colorful-mode
- :ensure t
- ;; :hook (prog-mode text-mode)
- :config
-;; In this example add emacs color names only for yaml-mode and derived.
-(add-to-list 'colorful-extra-color-keyword-functions '(yaml-mode . colorful-add-color-names))
-(add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
-)
+  :ensure t
+  ;; :hook (prog-mode text-mode)
+  :config
+  ;; In this example add emacs color names only for yaml-mode and derived.
+  (add-to-list 'colorful-extra-color-keyword-functions '(yaml-mode . colorful-add-color-names))
+  (add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
+  )
 
 (add-to-list 'load-path (expand-file-name "bin" user-emacs-directory))
 (use-package ghostel
@@ -174,7 +188,7 @@
          ("C-c C-i" . dumb-jump-go-prompt)))
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
-)
+  )
 
 (use-package buffer-terminator
   :ensure t
@@ -204,6 +218,90 @@
   :config
   (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil)
   )
+;; (use-package tramp-hlo
+;;     :ensure t
+;;     :config
+;;     (tramp-hlo-setup)
+;; )
+
+(use-package dired-sidebar
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :config
+  (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil)
+  )
+
+(use-package rime
+  :ensure t
+  :config
+  ;; 默认值
+  (setq rime-translate-keybindings
+        '("C-f" "C-b" "C-n" "C-p" "C-g" "C-`" "<left>" "<right>" "<up>" "<down>" "<prior>" "<next>" "<delete>"))
+  (setq default-input-method "rime")
+  (setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
+  (setq rime-posframe-properties
+        (list :background-color "#333333"
+              :foreground-color "#dcdccc"
+              :internal-border-width 10))
+  (setq rime-show-candidate 'posframe)
+  )
+
+
+(use-package i18n-quick
+  :vc (:url "https://github.com/apple115/i18n-quick.el" :rev "master")
+  :ensure t
+  :custom
+  (i18n-quick-languages
+   '(("zh-CN" . "src/locale/zh-CN/")
+     ("en-US" . "src/locale/en-US/")))
+  (i18n-quick-style 'nested)
+  (i18n-quick-max-width 50)
+  )
+
+;; tramp-rpc 需要升级 Tramp 版本，暂时禁用
+(use-package tramp-rpc
+  :load-path "site-lisp/emacs-tramp-rpc/lisp"
+  :config
+  (use-package msgpack
+    :ensure t)
+  (setq tramp-rpc-deploy-git-build-policy 'release)
+  (setq diff-hl-disable-on-remote t)
+  )
+
+(use-package appine
+  ;; 核心：仅在 macOS (darwin) 系统下启用，其他系统直接跳过此配置
+  :if (eq system-type 'darwin)
+  ;; 使用内置的包管理器从 GitHub 拉取源码
+  :vc (:url "https://github.com/chaoswork/appine" :rev "master")
+  :custom
+  ;; 开启 org-mode 链接支持
+  (appine-use-for-org-links t)
+
+  :bind (("C-x a a" . appine)
+         ("C-x a u" . appine-open-url)
+         ("C-x a o" . appine-open-file))
+  :config
+  ;; 只有在加载后，且确实在 Org-mode 中时才激活链接跳转逻辑
+  (with-eval-after-load 'org
+    (when (fboundp 'appine-setup-org-links)
+      (appine-setup-org-links))))
+
+(use-package sis
+  :ensure t
+  :hook
+  ((markdown-mode . sis-inline-mode)
+   (markdown-mode . sis-context-mode)
+   (markdown-ts-mode . sis-inline-mode)
+   (markdown-ts-mode . sis-context-mode)
+   (org-mode . sis-inline-mode)
+   (org-mode . sis-context-mode)
+   (org-ts-mode . sis-inline-mode)
+   (org-ts-mode . sis-context-mode))
+  :config
+  (sis-ism-lazyman-config
+   "com.apple.keylayout.ABC"
+   "com.apple.inputmethod.SCIM.Shuangpin"))
+
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -24,7 +24,7 @@
 
 (defun my-apply-font()
   (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 12 :weight 'medium))
-  (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 12 :weight 'medium))
+  (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :weight 'medium))
 )
 
 ;; (defun my-apply-font()
@@ -35,6 +35,11 @@
  ;; |大家|
  ;; |aabb|大家
 
+;;像素滚动
+(pixel-scroll-mode)
+;; 告诉 Emacs：如果键盘信号发得太快，渲染跟不上了，就跳过中间过程，只画最后停下的地方
+(setq fast-but-imprecise-scrolling t)
+
 (my-apply-font)
 
 (add-hook 'after-make-frame-functions
@@ -43,6 +48,7 @@
             (my-apply-font)))
 
 ;;测试一下这个
+
 
 ;; 禁用一些GUI特性
 (setq use-dialog-box nil)               ; 鼠标操作不使用对话框
@@ -77,6 +83,8 @@
 
 ;; 设置缓冲区的文字无
 (setq-default bidi-display-reordering nil)
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
 ;; 禁止使用双向括号算法
 (setq bidi-inhibit-bpa t
       long-line-threshold 1000
@@ -234,17 +242,21 @@
 (defun my-header-line-render ()
   (let* ((buffer-name (propertize (format-mode-line " %b ") 'face '(:weight bold)))
          (git-info (propertize (my-header-line-vc) 'face '(:foreground "#ecbe7b")))
+         (im-info (if current-input-method
+                            (propertize (concat " " current-input-method-title) 'face '(:foreground "#8ec07c"))
+                            ""))
          (evil-tag (propertize (concat " " (upcase (symbol-name evil-state)) " ")
                                'face (my-header-line-evil-face))))
     (concat
      evil-tag      ; Evil 模式块
      buffer-name   ; 文件名
      git-info      ; Git 分支
+     im-info
      ;; 将行列号推到最右侧
      (propertize " " 'display `(space :align-to (- right 8)))
      (format-mode-line "%l:%c"))))
 
-;; --- 4. 设置与隐藏 ---
+;;--- 4. 设置与隐藏 ---
 (setq-default header-line-format '((:eval (my-header-line-render))))
 (setq-default mode-line-format nil)
 
@@ -255,54 +267,6 @@
                 after-save-hook      ;; 保存后更新
                 window-configuration-change-hook)) ;; 切换窗口后更新
   (add-hook hook #'force-mode-line-update))
-
-;; (use-package smart-mode-line
-;;   :ensure t
-;;   :init
-;;   (setq sml/no-package-menus t)  ;; 减少干扰
-;;   (setq sml/shorten-directory t) ;; 自动缩短路径 (非常适合 mini-modeline)
-;;   (setq sml/shorten-modes t)     ;; 自动缩短模式名称 (例如 Emacs-Lisp -> EL)
-;;   :config
-;;   (sml/setup)
-;; )
-
-;; (use-package mini-modeline
-;;   :ensure t
-;;   :after smart-mode-line
-;;   :init
-;;   (setq-default mode-line-format nil)
-;;   :config
-;;   (mini-modeline-mode 1)
-;;   ;; 定制：只显示最核心的信息，避免干扰底部的命令输入
-;;   (setq mini-modeline-right-buttons nil) ;; 去掉不必要的按钮
-;;   (setq mini-modeline-display-gui-line t) ;; 在底部画一根超细的线区分编辑区
-;; )
-
-;; (setq-default mode-line-format
-;;       '((:eval
-;;          (propertize " "
-;;                      'display '(space :height (1)) ;; 只有 1 像素高
-;;                      'face '(:background "#cccccc"))))) ;; 线的颜色，可以根据主题调浅
-
-;; (use-package doom-modeline
-;;   :ensure t
-;;   :hook (after-init . doom-modeline-mode)
-;;   :hook (doom-modeline-mode . size-indication-mode) ; filesize in modeline
-;;   :hook (doom-modeline-mode . column-number-mode)   ; cursor column in modeline
-;;   :init
-;;   (setq doom-modeline-bar-width 3
-;;         doom-modeline-github nil
-;;         doom-modeline-mu4e nil
-;;         doom-modeline-persp-name nil
-;;         doom-modeline-minor-modes nil
-;;         doom-modeline-major-mode-icon nil
-;;         doom-modeline-buffer-file-name-style 'relative-from-project
-;;         ;; Only show file encoding if it's non-UTF-8 and different line endings
-;;         ;; than the current OSes preference
-;;         doom-modeline-buffer-encoding 'nondefault
-;;         doom-modeline-default-eol-type (if (featurep :system 'windows) 1 0))
-;;   :config
-;;   )
 
 (use-package ligature
   :ensure t
@@ -370,14 +334,6 @@
               #'(lambda (&rest _) (force-mode-line-update))))
   )
 
-;; (use-package ultra-scroll
-;;   :vc (:url "https://github.com/jdtsmith/ultra-scroll")
-;;   :hook (after-init . ultra-scroll-mode)
-;;   :init
-;;   (setq scroll-conservatively 101 ; important!
-;;         scroll-margin 0)
-;;   )
-
 (use-package hl-line
   :ensure nil
   :hook(after-init . global-hl-line-mode)
@@ -419,6 +375,12 @@
   (with-eval-after-load 'evil
     (add-hook 'evil-visual-state-entry-hook #'my-disable-hl-line-in-visual)
     (add-hook 'evil-visual-state-exit-hook  #'my-restore-hl-line-after-visual)))
+
+;;该设置使 Emacs 在覆盖之前将现有剪贴板内容保存到杀戮环中
+(setq save-interprogram-paste-before-kill t)
+
+;;画面中的所有窗口按比例调整大小
+(setq window-combination-resize t)
 
 (provide 'init-ui)
 

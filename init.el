@@ -43,10 +43,7 @@
 ;; 禁止自动缩放窗口先
 (setq frame-inhibit-implied-resize t)
 
-;; 禁止菜单栏、工具栏、滚动条模式，禁止启动屏幕和文件对话框
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; 禁止启动屏幕和文件对话框（UI 元素已在 frame-alist 中设置）
 (setq inhibit-splash-screen t)
 (setq use-file-dialog nil)
 
@@ -88,15 +85,17 @@
   (require 'init-english)
   (require 'init-sql)
   (require 'init-project)
-  ;; (require 'init-chinese)
+  (require 'init-chinese)
   (require 'init-ai)
   (require 'init-emacs)
   (require 'init-git)
   (require 'init-go)
   (require 'init-prog)
   (require 'init-rust)
-  (require 'init-lsp-bridge)  ;; 已切换到 corfu + eglot
-  (require 'init-my-theme)
+  (require 'init-my-blog)
+  (require 'init-lsp-bridge)
+  ;; (require 'init-my-theme)
+  (require 'init-read)
   ;; (require 'init-org-ui)
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
@@ -111,26 +110,35 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files '("/Users/apple115/Documents/LocalNotes/org/tasks.org") nil nil "Customized with use-package org-agenda")
  '(package-selected-packages
-   '(ace-window add-node-modules-path agent-shell auto-yasnippet buffer-terminator
-                cape citre colorful-mode compile-angel consult-dir consult-notes
-                consult-todo corfu dape denote devdocs diff-hl diredfl docker
-                doom-modeline doom-themes dumb-jump dwim-shell-command
-                eglot-booster eldoc-box embark-consult emmet-mode engine-mode
-                evil-collection evil-indent-plus evil-matchit
-                evil-nerd-commenter evil-surround evil-textobj-tree-sitter
-                exec-path-from-shell fish-mode flycheck format-all general
-                go-dlv go-fill-struct go-gen-test go-impl go-tag gotest
-                graphviz-dot-mode haskell-mode highlight-parentheses
-                ibuffer-project jinx ligature link-hint magit marginalia
-                markdown-mode mini-modeline nerd-icons-corfu nerd-icons-dired
-                nerd-icons-ibuffer ob-go ob-restclient orderless org-auto-tangle
-                org-roam ox-gfm ox-reveal pinyinlib plantuml-mode popper
-                python-mode quickrun rainbow-delimiters rust-mode scss-mode
-                shackle smart-mode-line sudo-edit tabspaces tramp-hlo
-                treesit-auto vertico virtualenvwrapper vlf web-mode))
+   '(ace-window add-node-modules-path agent-shell appine auto-yasnippet beframe
+                buffer-terminator cal-china-x cape citre claude-code-ide
+                clojure-ts-mode colorful-mode compile-angel consult-dir
+                consult-notes consult-todo corfu dape denote devdocs diff-hl
+                dired-rsync dired-sidebar diredfl docker doom-modeline
+                doom-themes dumb-jump dwim-shell-command eglot-booster eldoc-box
+                embark-consult emmet-mode engine-mode evil-collection
+                evil-indent-plus evil-matchit evil-nerd-commenter evil-surround
+                evil-textobj-tree-sitter exec-path-from-shell fish-mode flycheck
+                format-all general go-dlv go-fill-struct go-gen-test go-impl
+                go-tag gotest gptel graphviz-dot-mode haskell-mode
+                highlight-parentheses i18n-quick ibuffer-project jinx ligature
+                link-hint magit marginalia markdown-mode mini-modeline msgpack
+                nerd-icons-corfu nerd-icons-dired nerd-icons-ibuffer nov ob-go
+                ob-restclient orderless org-auto-tangle org-download org-roam
+                ox-gfm ox-reveal pdf-tools pinyinlib plantuml-mode popper
+                python-mode quickrun rainbow-delimiters rime rust-mode scss-mode
+                shackle sis smart-mode-line sudo-edit tabspaces tramp tramp-hlo
+                tramp-rpc treesit-auto ultra-scroll vertico virtualenvwrapper
+                vlf vterm-toggle web-mode wgrep))
  '(package-vc-selected-packages
-   '((lsp-proxy :url "https://github.com/jadestrong/lsp-proxy"))))
+   '((appine :url "https://github.com/chaoswork/appine")
+     (tramp-rpc :url "https://github.com/ArthurHeymans/emacs-tramp-rpc")
+     (i18n-quick :url "https://github.com/apple115/i18n-quick.el")
+     (claude-code :url "https://github.com/stevemolitor/claude-code.el")
+     (monet :url "https://github.com/stevemolitor/monet")))
+ '(safe-local-variable-values '((i18n-quick-file-path . src/locale/zh-CN/))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -141,6 +149,14 @@
  '(completions-first-difference ((t (:foreground "#3c3836" :weight normal))))
  '(consult-highlight-line ((t (:background "#f7efd0" :extend t))))
  '(consult-preview-match ((t (:foreground "#458588" :background nil))))
+ '(dired-directory ((t (:background nil :foreground "#af3a03" :weight bold))))
+ '(dired-flagged ((t (:foreground "#cc241d" :weight bold))))
+ '(dired-header ((t (:background nil :inherit default))))
+ '(dired-ignored ((t (:foreground "#928374"))))
+ '(dired-perm-write ((t (:background nil :foreground "#cc241d"))))
+ '(dired-set-id ((t (:background nil :foreground "#d79921" :underline t))))
+ '(dired-special ((t (:background nil :foreground "#8f3f71"))))
+ '(dired-symlink ((t (:background nil :foreground "#8f3f71"))))
  '(error ((t (:foreground "#cc241d"))))
  '(font-lock-builtin-face ((t (:foreground "#3c3836"))))
  '(font-lock-comment-delimiter-face ((t (:foreground "#458588"))))

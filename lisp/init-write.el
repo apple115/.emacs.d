@@ -26,7 +26,7 @@
   (setq org-edit-src-content-indentation 0);代码块初始缩进范围
   (add-hook 'org-mode-hook (lambda () (org-display-inline-images t)))
 
-  (setq org-directory "~/Documents/org/")
+  (setq org-directory my-org-directory)
 
   ;; 设置标题行之间总是有空格；列表之间根据情况自动加空格
   (setq org-blank-before-new-entry '((heading . t)
@@ -101,202 +101,244 @@
 
   ;;添加org-babel支持
   (add-to-list 'org-src-lang-modes '("go" . go-ts))
+
+  (org-link-set-parameters
+   "db"
+   :follow (lambda (path)
+             (let* ((db-type (org-entry-get nil "DB_TYPE") t)
+                    (db-host (org-entry-get nil "DB_HOST") t)
+                    (db-post (org-entry-get nil "DB_PORT") t)
+                    (db-user (org-entry-get nil "DB_USER") t)
+                    (db-pass (org-entry-get nil "DB_PASS") t)
+                    (db-index (org-entry-get nil "DB_INDEX") t)
+                    (db-name (org-entry-get nil "DB_NAME") t) ;;自定义命名
+                    (proto (org-entry-get nil "PROTO_FILE" t))
+                    (buf-name (format "*vterm-%s",db_name))
+                    (cmd (cond
+                          ;;MYSQL 逻辑
+                          ((string= db_type "mysql")
+                           (format "mycli -u %s %s -h %s"
+                                   db-user (if db-pass(concat "-p" db-pass) dbhost))
+                           )
+                          ;;Postgres 逻辑
+                          ((string= db-type "pg")
+                           (format "pgcli -U %s -h %s" db-user dbhost))
+
+                          ((string= db-type "redis")
+                           (format "iredis -h %s -p %s %s %s"
+                                   (or db-host "127.0.0.1")
+                                   (or db-port "6379")
+                                   (if db-pass (concat "-a " db-pass) "")
+                                   (if db-index (concat "-n " db-index) "")))
+                          (t (error "不支持数据库类型:%s" db-type))))
+                    )
+               (if db-host
+                   (progn my/open-vterm-database buf-name cmd)
+                 ))))
+
   )
+  ;; 自动展开
+  ;; (use-package org-contrib
+  ;;   :ensure t)
 
-;; 自动展开
-;; (use-package org-contrib
-;;   :ensure t)
+  ;; 自动tangle
+  (use-package org-auto-tangle
+    :ensure t
+    :hook (org-mode . org-auto-tangle-mode)
+    )
 
-;; 自动tangle
-(use-package org-auto-tangle
-  :ensure t
-  :hook (org-mode . org-auto-tangle-mode)
-  )
+  ;; agenda
+  ;; (add-hook 'org-agenda-mode-hook
+  ;;           (lambda ()
+  ;;             (evil-set-initial-state 'org-agenda-mode 'normal)))
 
-;; agenda
-;; (add-hook 'org-agenda-mode-hook
-;;           (lambda ()
-;;             (evil-set-initial-state 'org-agenda-mode 'normal)))
+  ;; ;; capture
+  ;; (add-hook 'org-capture-mode-hook
+  ;;           (lambda ()
+  ;;             (evil-set-initial-state 'org-capture-mode 'normal)))
 
-;; ;; capture
-;; (add-hook 'org-capture-mode-hook
-;;           (lambda ()
-;;             (evil-set-initial-state 'org-capture-mode 'normal)))
+  (with-eval-after-load 'evil-collection-mode
+    (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "/") #'org-agenda-filter)
+    (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "tab") #'org-agenda-goto)
+    (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "q") #'org-agenda-quit)
+    (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "j") #'org-agenda-next-line)
+    (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "k") #'org-agenda-previous-line)
+    (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "gr") #'org-agenda-redo-all)
+    )
 
-(with-eval-after-load 'evil-collection-mode
-        (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "/") #'org-agenda-filter)
-        (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "tab") #'org-agenda-goto)
-        (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "q") #'org-agenda-quit)
-        (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "j") #'org-agenda-next-line)
-        (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "k") #'org-agenda-previous-line)
-        (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "gr") #'org-agenda-redo-all)
-)
+  (use-package denote
+    :ensure t
+    :hook (dired-mode . denote-dired-mode-in-directories)
+    :config
+    (setq denote-directory (expand-file-name "denote" my-org-directory))
+    (setq denote-infer-keywords t)
+    (setq denote-sort-keywords t)
+    ;; org is default, set others such as text, markdown-yaml, markdown-toml
+    (setq denote-file-type nil)
+    (setq denote-prompts '(title keywords))
 
-(use-package denote
-  :ensure t
-  :hook (dired-mode . denote-dired-mode-in-directories)
-  :config
-  (setq denote-directory (expand-file-name "denote" my-org-directory))
-  (setq denote-infer-keywords t)
-  (setq denote-sort-keywords t)
-  ;; org is default, set others such as text, markdown-yaml, markdown-toml
-  (setq denote-file-type nil)
-  (setq denote-prompts '(title keywords))
+    ;; We allow multi-word keywords by default.  The author's personal
+    ;; preference is for single-word keywords for a more rigid workflow.
+    (setq denote-allow-multi-word-keywords nil)
+    (setq denote-date-format nil)
 
-  ;; We allow multi-word keywords by default.  The author's personal
-  ;; preference is for single-word keywords for a more rigid workflow.
-  (setq denote-allow-multi-word-keywords nil)
-  (setq denote-date-format nil)
+    ;; If you use Markdown or plain text files (Org renders links as buttons
+    ;; right away)
+    ;; (add-hook 'find-file-hook #'denote-link-buttonize-buffer)
+    (setq denote-dired-rename-expert nil)
 
-  ;; If you use Markdown or plain text files (Org renders links as buttons
-  ;; right away)
-  ;; (add-hook 'find-file-hook #'denote-link-buttonize-buffer)
-  (setq denote-dired-rename-expert nil)
+    ;; OR if only want it in `denote-dired-directories':
+    (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
+    )
 
-  ;; OR if only want it in `denote-dired-directories':
-  (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
-  )
+  (use-package plantuml-mode
+    :ensure t
+    :mode ("\\.plantuml\\'" . plantuml-mode)
+    :after org
+    :config
+    (setq org-plantuml-exec-mode 'plantuml)
+    (setq org-plantuml-executable-path "plantuml")
+    (setq plantuml-executable-path "plantuml")
+    (setq plantuml-default-exec-mode 'executable)
+    ;; set default babel header arguments
+    (setq org-babel-default-header-args:plantuml
+          '((:exports . "results")
+            (:results . "file")
+            ))
+    ;; enable plantuml babel support
+    (org-babel-do-load-languages 'org-babel-load-languages
+                                 (append org-babel-load-languages
+                                         '((plantuml . t))))
+    )
 
-(use-package plantuml-mode
-  :ensure t
-  :mode ("\\.plantuml\\'" . plantuml-mode)
-  :after org
-  :config
-  (setq org-plantuml-exec-mode 'plantuml)
-  (setq org-plantuml-executable-path "plantuml")
-  (setq plantuml-executable-path "plantuml")
-  (setq plantuml-default-exec-mode 'executable)
-  ;; set default babel header arguments
-  (setq org-babel-default-header-args:plantuml
-        '((:exports . "results")
-          (:results . "file")
-          ))
-  ;; enable plantuml babel support
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               (append org-babel-load-languages
-                                       '((plantuml . t))))
-  )
+  (use-package org-excalidraw
+    :load-path "./site-lisp/org-excalidraw"
+    :config
+    (setq org-excalidraw-directory "~/Nutstore Files/Nutstore/org/picture")
+    )
 
-(use-package org-excalidraw
-  :load-path "./site-lisp/org-excalidraw"
-  :config
-  (setq org-excalidraw-directory "~/Nutstore Files/Nutstore/org/picture")
-  )
+  (use-package ox
+    :ensure nil
+    :custom
+    (org-export-with-toc t)
+    (org-export-with-tags 'not-in-toc)
+    (org-export-with-drawers nil)
+    (org-export-with-priority t)
+    (org-export-with-footnotes t)
+    (org-export-with-smart-quotes t)
+    (org-export-with-section-numbers t)
+    (org-export-with-sub-superscripts '{})
+    ;; `org-export-use-babel' set to nil will cause all source block header arguments to be ignored This means that code blocks with the argument :exports none or :exports results will end up in the export.
+    ;; See:
+    ;; https://stackoverflow.com/questions/29952543/how-do-i-prevent-org-mode-from-executing-all-of-the-babel-source-blocks
+    (org-export-use-babel t)
+    (org-export-headline-levels 9)
+    (org-export-coding-system 'utf-8)
+    (org-export-with-broken-links 'mark)
+    (org-export-default-language "zh-CN") ; 默认是en
+    ;; (org-ascii-text-width 72)
+    )
+  ;; export extra
 
-(use-package ox
-  :ensure nil
-  :custom
-  (org-export-with-toc t)
-  (org-export-with-tags 'not-in-toc)
-  (org-export-with-drawers nil)
-  (org-export-with-priority t)
-  (org-export-with-footnotes t)
-  (org-export-with-smart-quotes t)
-  (org-export-with-section-numbers t)
-  (org-export-with-sub-superscripts '{})
-  ;; `org-export-use-babel' set to nil will cause all source block header arguments to be ignored This means that code blocks with the argument :exports none or :exports results will end up in the export.
-  ;; See:
-  ;; https://stackoverflow.com/questions/29952543/how-do-i-prevent-org-mode-from-executing-all-of-the-babel-source-blocks
-  (org-export-use-babel t)
-  (org-export-headline-levels 9)
-  (org-export-coding-system 'utf-8)
-  (org-export-with-broken-links 'mark)
-  (org-export-default-language "zh-CN") ; 默认是en
-  ;; (org-ascii-text-width 72)
-  )
-;; export extra
+  (use-package ox-gfm
+    :ensure t
+    :after ox)
 
-(use-package ox-gfm
-  :ensure t
-  :after ox)
-
-(require 'ob-python)
-(require 'ob-C)
-(use-package ob-go
-  :ensure t
-  )
+  (require 'ob-python)
+  (require 'ob-C)
+  (use-package ob-go
+    :ensure t
+    )
 
 
-;; (use-package org-appear
-;;   :ensure t
-;;   :hook (org-mode . org-appear-mode)
-;;   :config
-;;   (setq org-appear-autolinks t)
-;;   (setq org-appear-autosubmarkers t)
-;;   (setq org-appear-autoentities t)
-;;   (setq org-appear-autokeywords t)
-;;   (setq org-appear-inside-latex t)
-;;   )
+  ;; (use-package org-appear
+  ;;   :ensure t
+  ;;   :hook (org-mode . org-appear-mode)
+  ;;   :config
+  ;;   (setq org-appear-autolinks t)
+  ;;   (setq org-appear-autosubmarkers t)
+  ;;   (setq org-appear-autoentities t)
+  ;;   (setq org-appear-autokeywords t)
+  ;;   (setq org-appear-inside-latex t)
+  ;;   )
 
-(use-package ox-reveal
-  :ensure t
-  :config
-  (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
-  (reveal-mode 1)
-  )
+  (use-package ox-reveal
+    :ensure t
+    :config
+    (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+    (reveal-mode 1)
+    )
 
-(use-package hexo
-  :load-path "./site-lisp/hexo.el"
-  :config
-  (defun hexo-my-blog ()
-    (interactive)
-    (hexo "~/blog/"))
-  ;; (evil-collection-define-key 'normal 'hexo-mode-map (kbd "RET") #'hexo-command-open-file)
-  ;; (evil-collection-define-key 'normal 'hexo-mode-map (kbd "q") #'quit-window)
-  ;; (evil-collection-define-key 'normal 'hexo-mode-map (kbd "D") #'hexo-command-delete-file)
-)
+  (use-package hexo
+    :load-path "./site-lisp/hexo.el"
+    :config
+    (defun hexo-my-blog ()
+      (interactive)
+      (hexo "~/blog/"))
+    ;; (evil-collection-define-key 'normal 'hexo-mode-map (kbd "RET") #'hexo-command-open-file)
+    ;; (evil-collection-define-key 'normal 'hexo-mode-map (kbd "q") #'quit-window)
+    ;; (evil-collection-define-key 'normal 'hexo-mode-map (kbd "D") #'hexo-command-delete-file)
+    )
 
-(use-package jinx
-  :ensure t
-  :config
-  ;; (global-jinx-mode 1)
-)
+  (use-package jinx
+    :ensure t
+    :config
+    ;; (global-jinx-mode 1)
+    )
 
-(with-eval-after-load 'jinx-mode
-(let ((st jinx--base-syntax-table))
-(modify-syntax-entry '(#x4E00 . #x9FFF) "_" st)   ; CJK Unified Ideographs
-(modify-syntax-entry '(#x3400 . #x4DBF) "_" st)   ; CJK Unified Ideographs Extension A
-(modify-syntax-entry '(#x20000 . #x2A6DF) "_" st) ; CJK Unified Ideographs Extension B
-(modify-syntax-entry '(#x2A700 . #x2B73F) "_" st) ; CJK Unified Ideographs Extension C
-(modify-syntax-entry '(#x2B740 . #x2B81F) "_" st) ; CJK Unified Ideographs Extension D
-(modify-syntax-entry '(#x2B820 . #x2CEAF) "_" st) ; CJK Unified Ideographs Extension E
-(modify-syntax-entry '(#x2CEB0 . #x2EBEF) "_" st) ; CJK Unified Ideographs Extension F
-(modify-syntax-entry '(#x30000 . #x3134F) "_" st) ; CJK Unified Ideographs Extension G
-(modify-syntax-entry '(#x31350 . #x323AF) "_" st) ; CJK Unified Ideographs Extension H
-(modify-syntax-entry '(#x2EBF0 . #x2EE5F) "_" st) ; CJK Unified Ideographs Extension I
-))
+  (with-eval-after-load 'jinx-mode
+    (let ((st jinx--base-syntax-table))
+      (modify-syntax-entry '(#x4E00 . #x9FFF) "_" st)   ; CJK Unified Ideographs
+      (modify-syntax-entry '(#x3400 . #x4DBF) "_" st)   ; CJK Unified Ideographs Extension A
+      (modify-syntax-entry '(#x20000 . #x2A6DF) "_" st) ; CJK Unified Ideographs Extension B
+      (modify-syntax-entry '(#x2A700 . #x2B73F) "_" st) ; CJK Unified Ideographs Extension C
+      (modify-syntax-entry '(#x2B740 . #x2B81F) "_" st) ; CJK Unified Ideographs Extension D
+      (modify-syntax-entry '(#x2B820 . #x2CEAF) "_" st) ; CJK Unified Ideographs Extension E
+      (modify-syntax-entry '(#x2CEB0 . #x2EBEF) "_" st) ; CJK Unified Ideographs Extension F
+      (modify-syntax-entry '(#x30000 . #x3134F) "_" st) ; CJK Unified Ideographs Extension G
+      (modify-syntax-entry '(#x31350 . #x323AF) "_" st) ; CJK Unified Ideographs Extension H
+      (modify-syntax-entry '(#x2EBF0 . #x2EE5F) "_" st) ; CJK Unified Ideographs Extension I
+      ))
 
-(use-package graphviz-dot-mode
-  :ensure t
-  :after org
-  :config
-  (setq graphviz-dot-indent-width 4)
-  (add-to-list 'org-src-lang-modes (quote ("dot" . graphviz-dot)))
-  ;; enable graphviz babel support
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               (append org-babel-load-languages
-                                       '((dot . t))))
-  )
+  (use-package graphviz-dot-mode
+    :ensure t
+    :after org
+    :config
+    (setq graphviz-dot-indent-width 4)
+    (add-to-list 'org-src-lang-modes (quote ("dot" . graphviz-dot)))
+    ;; enable graphviz babel support
+    (org-babel-do-load-languages 'org-babel-load-languages
+                                 (append org-babel-load-languages
+                                         '((dot . t))))
+    )
 
-;;(use-package org-roam
-;;  :ensure t
-;;  :custom
-;;  (org-roam-directory (file-truename (expand-file-name "roam" my-org-directory)))
-;;  :bind (("C-c n l" . org-roam-buffer-toggle)
-;;         ("C-c n f" . org-roam-node-find)
-;;         ("C-c n g" . org-roam-graph)
-;;         ("C-c n i" . org-roam-node-insert)
-;;         ("C-c n c" . org-roam-capture)
-;;         ;; Dailies
-;;         ("C-c n j" . org-roam-dailies-capture-today))
-;;  :config
-;;  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-;;  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-;;  (org-roam-db-autosync-mode)
-;;  ;; If using org-roam-protocol
-;;  (require 'org-roam-protocol))
+  (use-package org-roam
+    :ensure t
+    :custom
+    (org-roam-directory (file-truename (expand-file-name "roam" my-org-directory)))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n g" . org-roam-graph)
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n c" . org-roam-capture)
+           ;; Dailies
+           ("C-c n j" . org-roam-dailies-capture-today))
+    :config
+    ;; If you're using a vertical completion framework, you might want a more informative completion interface
+    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+    (org-roam-db-autosync-mode)
+    ;; If using org-roam-protocol
+    (require 'org-roam-protocol))
 
-(provide 'init-write)
+  (use-package org-download
+    :ensure t
+    :config
+    (add-hook 'dired-mode-hook 'org-download-enable)
+    )
+
+  ;; Drag-and-drop to `dired`
+
+  (provide 'init-write)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-write.el ends here

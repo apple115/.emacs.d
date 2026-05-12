@@ -2,16 +2,15 @@
 ;;; Commentary:
 
 ;;; Code:
-(use-package savehist
-  :init
-  (savehist-mode))
 
 ;; 可以是 async-shell-command 自动填充上一个命令
-;; 中文
-(advice-add #'read-shell-command
-            :filter-args #'(lambda(args) (list (car args) (car shell-command-history))))
+;; (advice-add #'read-shell-command
+;;             :filter-args #'(lambda(args) (list (car args) (car shell-command-history))))
 
-(global-so-long-mode 1)
+(when (fboundp 'so-long-enable)
+  (so-long-enable)
+  (setq so-long-threshold 1000) ; 超过1000个字符才触发，减少误判开销
+  (setq so-long-max-lines 500)) ; 只检查前500行
 
 (setq evil-want-keybinding nil)
 
@@ -51,7 +50,22 @@
   (define-key evil-insert-state-map (kbd "C-b") 'backward-char)
   ;;C-u C-k
   (define-key evil-insert-state-map (kbd "C-u") 'evil-delete-back-to-indentation)
-  (define-key evil-insert-state-map (kbd "C-k") 'delete-line))
+  (define-key evil-insert-state-map (kbd "C-k") 'delete-line)
+
+(defun my-switch-to-english-async ()
+"异步切换到英文输入法，不阻塞 UI。"
+(interactive)
+;; 使用 start-process 开启异步子进程，不等待返回结果
+(start-process "set-im" nil "macism" "com.apple.keylayout.ABC"))
+
+;; 在 Evil 退出插入模式时触发
+(when(eq system-type 'darwin)
+    (add-hook 'evil-insert-state-exit-hook #'my-switch-to-english-async)
+)
+
+;; 消除 ESC 延迟 (关键！)
+(setq evil-esc-delay 0)
+ )
 
 (use-package evil-indent-plus
   :ensure t
@@ -82,7 +96,7 @@
   :ensure t
   :demand t
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel cider citre))
+  (setq evil-collection-mode-list '(ibuffer calendar vterm ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel cider citre nov pdf embark grep wgrep wdired))
   (evil-collection-init))
 
 
@@ -133,16 +147,15 @@
   :ensure nil
   :hook (after-init . save-place-mode))
 
-(use-package so-long
-  :ensure nil
-  :config (global-so-long-mode 1))
-
 (use-package elec-pair
   :ensure nil
   :hook (prog-mode . electric-pair-local-mode)
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
 )
 
+(use-package savehist
+  :init
+  (savehist-mode))
 
 ;; vim keymap setting
 (setq mark-ring-max 6)
@@ -161,18 +174,28 @@
 
 ;; (use-package sis
 ;;   :ensure t
-;;   :hook
-;;   (((text-mode prog-mode) . sis-context-mode)
-;;    ((text-mode prog-mode) . sis-inline-mode))
+;;   ;; :hook
+;;   ;; ((text-mode  . sis-respect-start)
+;;   ;;  (text-mode . sis-inline-mode))
 ;;   :config
 ;;   (sis-ism-lazyman-config
 ;;    "com.apple.keylayout.ABC"
 ;;    "com.apple.inputmethod.SCIM.Shuangpin"
 ;;    )
-;;   (sis-global-cursor-color-mode t)
+;;   ;; (sis-global-cursor-color-mode nil)
 ;;   (sis-global-respect-mode t)
-;;   (setq sis-inline-with-other t)
-;;   )
+;;   ;; (setq sis-inline-with-other t)
+;; )
+
+(use-package ediff
+  :ensure nil  ; 内置功能不需要安装
+  :config
+  ;; 1. 左右分屏对比
+  (setq ediff-split-window-function 'split-window-horizontally)
+  ;; 2. 不要在外面弹独立的小窗口(Panel)
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  ;; 3. (可选) 退出 ediff 时自动恢复之前的窗口布局
+  (setq ediff-keep-variants nil))
 
 (provide 'init-edit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

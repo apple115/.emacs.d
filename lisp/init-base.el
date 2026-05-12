@@ -25,7 +25,8 @@
   :demand t
   :if (memq window-system '(mac ns x))
   :config
-  (exec-path-from-shell-initialize))
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
 
 (use-package general
   :ensure t
@@ -33,13 +34,15 @@
   :config
   (general-evil-setup))
 
-;; (use-package cl-lib
-;;   :ensure t
-;;   :demand t)
 
-(use-package transient 
+(use-package transient
   :ensure t
   :demand t)
+
+(add-hook 'after-init-hook 'recentf-mode)
+(setq-default
+ recentf-max-saved-items 1000
+ recentf-exclude `("/tmp/" "/ssh:" ,(concat package-user-dir "/.*-autoloads\\.el\\'")))
 
 (provide 'init-base)
 ;;; init-base.el ends here
