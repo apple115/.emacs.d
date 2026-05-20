@@ -78,7 +78,6 @@
 ;;                    :require-match mustmatch
 ;;                    :predicate pred))
 ;;   )
-)
 
 (use-package consult-dir
   :ensure t

@@ -19,6 +19,17 @@
 ;;; Code:
 ;;;
 
+;; 平台判断
+(defconst +is-win-p (eq system-type 'windows-nt) "Running on Windows.")
+(defconst +is-mac-p (eq system-type 'darwin) "Running on macOS.")
+(defconst +is-linux-p (eq system-type 'gnu/linux) "Running on Linux.")
+(defconst +is-wsl-p
+  (and +is-linux-p
+       (file-exists-p "/proc/version")
+       (with-temp-buffer
+         (insert-file-contents-literally "/proc/version")
+         (re-search-forward "microsoft\\|WSL" nil t)))
+  "Running on Windows Subsystem for Linux.")
 
 (use-package exec-path-from-shell
   :ensure t
@@ -43,6 +54,10 @@
 (setq-default
  recentf-max-saved-items 1000
  recentf-exclude `("/tmp/" "/ssh:" ,(concat package-user-dir "/.*-autoloads\\.el\\'")))
+
+;; WSL 中设置剪贴板编码为 gbk-dos
+(when +is-wsl-p
+  (set-clipboard-coding-system 'gbk-dos))
 
 (provide 'init-base)
 ;;; init-base.el ends here

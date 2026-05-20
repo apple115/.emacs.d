@@ -113,7 +113,7 @@
                     (db-index (org-entry-get nil "DB_INDEX") t)
                     (db-name (org-entry-get nil "DB_NAME") t) ;;自定义命名
                     (proto (org-entry-get nil "PROTO_FILE" t))
-                    (buf-name (format "*vterm-%s",db_name))
+                    (buf-name (format "*ghostel-%s" db_name))
                     (cmd (cond
                           ;;MYSQL 逻辑
                           ((string= db_type "mysql")
@@ -133,7 +133,7 @@
                           (t (error "不支持数据库类型:%s" db-type))))
                     )
                (if db-host
-                   (progn my/open-vterm-database buf-name cmd)
+                   (progn my/open-ghostel-database buf-name cmd)
                  ))))
 
   )

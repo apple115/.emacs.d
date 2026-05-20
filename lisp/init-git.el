@@ -15,8 +15,10 @@
   (magit-ediff-dwim-show-on-hunks t)
   :config
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  (setq magit-git-executable "C:\\Program Files\\Git\\bin\\git.exe")
   (setq magit-refresh-status-buffer nil)
+  ;; Windows 需要指定 git 路径，macOS/Linux 用系统默认
+  (when +is-win-p
+    (setq magit-git-executable "C:\\Program Files\\Git\\bin\\git.exe"))
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   (remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff)

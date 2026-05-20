@@ -283,31 +283,33 @@ and convert it to Org using the pandoc utility."
      (org-capture nil "i"))
 
 
-(defun my/open-vterm-database (buffer-name  commond)
-  "通用函数 打开一个专用的vterm 运行database"
-  (let ((vterm-buffer (get-buffer buffer-name)))
-    (if vterm-buffer
-        (switch-to-buffer vterm-buffer)
-      (progn
-        (setq vterm-buffer (vterm buffer-name))
-        (with-current-buffer vterm-buffer
-          (vterm-send-string (concat commond "\n")))))))
+(defun my/open-ghostel-database (buffer-name command)
+  "通用函数：打开一个专用的 ghostel 运行 database"
+  (let ((buffer (get-buffer buffer-name)))
+    (if buffer
+        (switch-to-buffer buffer)
+      (require 'ghostel)
+      (ghostel--load-module t)
+      (setq buffer (get-buffer-create buffer-name))
+      (ghostel--prepare-buffer buffer buffer-name)
+      (ghostel--init-buffer buffer buffer-name)
+      (switch-to-buffer buffer)
+      (comint-send-string buffer (concat command "\n")))))
 
-(defun vterm-mysql ()
+(defun ghostel-mysql ()
   "快速进入 MySQL (mycli)"
   (interactive)
-  ;; 请在此处修改你的登录凭据，或者从环境变量中读取
-  (my/open-vterm-database "*vterm-mysql*" "mycli -u root -p'你的密码' -h localhost"))
+  (my/open-ghostel-database "*ghostel-mysql*" "mycli -u root -p'你的密码' -h localhost"))
 
-(defun vterm-pgcli ()
+(defun ghostel-pgcli ()
   "快速进入 PostgreSQL (pgcli)"
   (interactive)
-  (my/open-vterm-database "*vterm-pg*" "pgcli postgres://user:password@localhost:5432/dbname"))
+  (my/open-ghostel-database "*ghostel-pg*" "pgcli postgres://user:password@localhost:5432/dbname"))
 
-(defun vterm-iredis ()
+(defun ghostel-iredis ()
   "快速进入 Redis (iredis)"
   (interactive)
-  (my/open-vterm-database "*vterm-redis*" "iredis -h 127.0.0.1 -p 6379"))
+  (my/open-ghostel-database "*ghostel-redis*" "iredis -h 127.0.0.1 -p 6379"))
 
 
 (defun quick-open-fragment ()

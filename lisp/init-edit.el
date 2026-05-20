@@ -59,7 +59,7 @@
 (start-process "set-im" nil "macism" "com.apple.keylayout.ABC"))
 
 ;; 在 Evil 退出插入模式时触发
-(when(eq system-type 'darwin)
+(when +is-mac-p
     (add-hook 'evil-insert-state-exit-hook #'my-switch-to-english-async)
 )
 
@@ -96,7 +96,7 @@
   :ensure t
   :demand t
   :config
-  (setq evil-collection-mode-list '(ibuffer calendar vterm ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel cider citre nov pdf embark grep wgrep wdired))
+  (setq evil-collection-mode-list '(ibuffer calendar ediff magit realgud compile docker dape vertico xref corfu mini-buffer consult woman man citre gptel cider citre nov pdf embark grep wgrep wdired))
   (evil-collection-init))
 
 

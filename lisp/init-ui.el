@@ -80,6 +80,13 @@
 ;; 草稿缓冲区默认文字设置
 (setq initial-scratch-message (concat ";; Happy hacking, "
                                       (capitalize user-login-name) " - Emacs ♥ you!\n\n"))
+;; 强制更新已存在的 *scratch* 缓冲区
+(dolist (buf (buffer-list))
+  (with-current-buffer buf
+    (when (string= (buffer-name) "*scratch*")
+      (erase-buffer)
+      (insert initial-scratch-message)
+      (set-buffer-modified-p nil))))
 
 ;; 设置缓冲区的文字无
 (setq-default bidi-display-reordering nil)
@@ -214,7 +221,10 @@
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
-(when (eq system-type 'windows-nt)  (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
+(when +is-win-p
+  (set-next-selection-coding-system 'utf-16-le)
+  (set-selection-coding-system 'utf-16-le)
+  (set-clipboard-coding-system 'utf-16-le))
 
 (use-package rainbow-delimiters
   :ensure t

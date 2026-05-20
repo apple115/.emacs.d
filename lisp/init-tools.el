@@ -150,51 +150,68 @@
   (add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
   )
 
-(add-to-list 'load-path (expand-file-name "bin" user-emacs-directory))
+;; Ghostel - 跨平台终端模拟器
+;; 由于 ghostel 主文件在 lisp/ 子目录，use-package :vc 不支持 :lisp-dir
+;; 需用底层 package-vc-install 预先安装
+(unless (package-installed-p 'ghostel)
+  (package-vc-install
+   `(ghostel :url ,(if +is-win-p
+                       "https://github.com/kiennq/ghostel"
+                     "https://github.com/dakra/ghostel")
+             :rev "master"
+             :lisp-dir "lisp")))
+
 (use-package ghostel
-  :load-path "site-lisp/ghostel/lisp"
   :config
-  (when (eq system-type 'windows-nt)
-    (setq ghostel-shell (or (executable-find "pwsh.exe")
-                            (executable-find "powershell.exe")
-                            "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"))))
+  (setq ghostel-shell
+        (cond
+         ;; Windows
+         (+is-win-p
+          (or (executable-find "pwsh.exe")
+              (executable-find "powershell.exe")
+              "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"))
+         ;; macOS (Homebrew fish)
+         (+is-mac-p
+          (or (executable-find "/opt/homebrew/bin/fish")
+              (executable-find "/usr/local/bin/fish")
+              (executable-find "fish")))
+         ;; Linux
+         (t
+          (or (executable-find "/usr/bin/fish")
+              (executable-find "fish")))))
+  ;; 从 ghostel 安装路径加载 evil-ghostel
+  (with-eval-after-load 'evil
+    (use-package evil-ghostel
+      :ensure t
+      :hook(ghostel-mode . evil-ghostel-mode)))
+)
 
-(use-package evil-ghostel
-  :load-path "site-lisp/ghostel/extensions/evil-ghostel"
-  :after (ghostel evil)
-  :hook (ghostel-mode . evil-ghostel-mode))
-         ;;Windows
-         ((eq system-type 'windows-nt)
-          "powershell.exe")
-
-         (t "/bin/sh")))
-  (with-eval-after-load 'vterm
-    ;; 让 vterm 放行 C-\ 快捷键，使其能够触发 Emacs 的输入法切换
-    (define-key vterm-mode-map (kbd "C-\\") #'toggle-input-method))
-  (use-package vterm-toggle
-    :ensure t
-    :bind (:map vterm-mode-map
-                ([(control return)] . vterm-toggle-insert-cd))
-    :config
-    (setq vterm-toggle-cd-auto-create-buffer nil)
-    (defvar vterm-compile-buffer nil)
-    (defun vterm-compile ()
-      "Compile the program including the current buffer in `vterm'."
-      (interactive)
-      (setq compile-command (compilation-read-command compile-command))
-      (let ((vterm-toggle-use-dedicated-buffer t)
-            (vterm-toggle--vterm-dedicated-buffer (if (vterm-toggle--get-window)
-                                                      (vterm-toggle-hide)
-                                                    vterm-compile-buffer)))
-        (with-current-buffer (vterm-toggle-cd)
-          (setq vterm-compile-buffer (current-buffer))
-          (rename-buffer "*vterm compilation*")
-          (compilation-shell-minor-mode 1)
-          (vterm-send-M-w)
-          (vterm-send-string compile-command t)
-          (vterm-send-return))))
-    )
-  )
+;; Vterm (已禁用，使用 ghostel 替代)
+;; (with-eval-after-load 'vterm
+;;   (define-key vterm-mode-map (kbd "C-\\") #'toggle-input-method))
+;; (use-package vterm-toggle
+;;   :ensure t
+;;   :bind (:map vterm-mode-map
+;;               ([(control return)] . vterm-toggle-insert-cd))
+;;   :config
+;;   (setq vterm-toggle-cd-auto-create-buffer nil)
+;;   (defvar vterm-compile-buffer nil)
+;;   (defun vterm-compile ()
+;;     "Compile the program including the current buffer in `vterm'."
+;;     (interactive)
+;;     (setq compile-command (compilation-read-command compile-command))
+;;     (let ((vterm-toggle-use-dedicated-buffer t)
+;;           (vterm-toggle--vterm-dedicated-buffer (if (vterm-toggle--get-window)
+;;                                                     (vterm-toggle-hide)
+;;                                                   vterm-compile-buffer)))
+;;       (with-current-buffer (vterm-toggle-cd)
+;;         (setq vterm-compile-buffer (current-buffer))
+;;         (rename-buffer "*vterm compilation*")
+;;         (compilation-shell-minor-mode 1)
+;;         (vterm-send-M-w)
+;;         (vterm-send-string compile-command t)
+;;         (vterm-send-return))))
+;;   )
 
 ;; Eat - Emulate A Terminal (已禁用)
 ;; (use-package eat
@@ -275,7 +292,16 @@
               :foreground-color "#dcdccc"
               :internal-border-width 10))
   (setq rime-show-candidate 'posframe)
-  )
+)
+
+;; Rimel - 仅在 WSL 中使用（其他环境使用系统输入法或不使用 emacs-rime）
+;;(when (and (eq system-type 'gnu/linux)
+;;          (file-exists-p "/proc/version")
+;;          (with-temp-buffer
+;;             (insert-file-contents-literally "/proc/version")
+;;             (re-search-forward "microsoft\\|WSL" nil t)))
+;; (use-package rimel
+;;   :ensure t))
 
 
 (use-package i18n-quick
@@ -290,18 +316,18 @@
   )
 
 ;; tramp-rpc 需要升级 Tramp 版本，暂时禁用
-(use-package tramp-rpc
-  :load-path "site-lisp/emacs-tramp-rpc/lisp"
-  :config
-  (use-package msgpack
-    :ensure t)
-  (setq tramp-rpc-deploy-git-build-policy 'release)
-  (setq diff-hl-disable-on-remote t)
-  )
+;; (use-package tramp-rpc
+;;   :load-path "site-lisp/emacs-tramp-rpc/lisp"
+;;   :config
+;;   (use-package msgpack
+;;     :ensure t)
+;;   (setq tramp-rpc-deploy-git-build-policy 'release)
+;;   (setq diff-hl-disable-on-remote t)
+;;   )
 
 (use-package appine
   ;; 核心：仅在 macOS (darwin) 系统下启用，其他系统直接跳过此配置
-  :if (eq system-type 'darwin)
+  :if +is-mac-p
   ;; 使用内置的包管理器从 GitHub 拉取源码
   :vc (:url "https://github.com/chaoswork/appine" :rev "master")
   :custom
