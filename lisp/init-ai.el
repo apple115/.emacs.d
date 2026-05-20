@@ -42,6 +42,36 @@
   (setq claude-code-ide-vterm-render-delay 0.01)
   )
 
+;;; gptel-quick: 选中文字 → minibuffer提问 → popup显示回答
+(defvar +gptel-quick-buffer "*gptel-quick*")
+
+(defun +gptel-quick ()
+  "选中文字(可选), 在 minibuffer 输入问题, 回答显示在临时 popup."
+  (interactive)
+  (let* ((selection (when (use-region-p)
+                      (buffer-substring-no-properties (region-beginning) (region-end))))
+         (question (read-string (if selection "Ask (with selection): " "Ask: ")))
+         (prompt (if selection
+                     (format "根据以下内容回答问题:\n\n%s\n\n问题: %s" selection question)
+                   question)))
+    (with-current-buffer (get-buffer-create +gptel-quick-buffer)
+      (special-mode)
+      (erase-buffer)
+      (insert (format "# Question: %s\n\nThinking...\n" question)))
+    (display-buffer +gptel-quick-buffer
+                    '(display-buffer-pop-up-window (inhibit-same-window . t)))
+    (gptel-request prompt
+      :buffer (get-buffer +gptel-quick-buffer)
+      :stream nil
+      :callback
+      (lambda (response info)
+        (when (stringp response)
+          (with-current-buffer (get-buffer +gptel-quick-buffer)
+            (erase-buffer)
+            (insert (format "# Question: %s\n\n%s" question response))
+            (goto-char (point-min))))))))
+
+
 (provide 'init-ai)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-ai.el ends here

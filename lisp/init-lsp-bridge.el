@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; lsp-bridge is a language server client for Emacs, which provides
 ;;; Code:
+
 (use-package markdown-mode
   :ensure t
   :mode
@@ -59,6 +60,27 @@
           ;; (("vue"). "volar_emmet")
           ))
   ;; (setq lsp-bridge-enable-org-babel t) ;;error 与denote冲突
+  ;; 检测项目根目录：支持多种项目类型
+  (setq lsp-bridge-get-project-path-by-filepath
+    (lambda (filepath)
+      (let ((root nil))
+        ;; 按优先级检测项目根目录
+        (or
+         ;; Go 项目
+         (setq root (locate-dominating-file filepath "go.mod"))
+         ;; Node.js/Vue/React 项目
+         (setq root (locate-dominating-file filepath "package.json"))
+         ;; Python 项目
+         (setq root (locate-dominating-file filepath "setup.py"))
+         (setq root (locate-dominating-file filepath "pyproject.toml"))
+         ;; Rust 项目
+         (setq root (locate-dominating-file filepath "Cargo.toml"))
+         ;; Git 仓库
+         (setq root (locate-dominating-file filepath ".git"))
+         ;; .dir-locals.el
+         (setq root (locate-dominating-file filepath ".dir-locals.el")))
+        (when root
+          (expand-file-name root)))))
   (setq lsp-bridge-get-language-id
         (lambda (project-path file-path server-name extension-name)
           (cond
@@ -99,7 +121,7 @@
   ;; (define-key acm-mode-map (kbd "C-n") #'acm-select-next)
   ;; (define-key acm-mode-map (kbd "C-p") #'acm-select-prev)
 
-  (my-leader-def
+  (+leader-keys
     :keymaps 'lsp-bridge-mode-map
     "l"  '(:ignore t :which-key "LSP")
     "ld" 'lsp-bridge-diagnostic-list
@@ -165,7 +187,7 @@
       (kbd "ZQ")      'lsp-bridge-ref-quit))
 
   (global-lsp-bridge-mode)
-  )
+)
 
 (provide 'init-lsp-bridge)
 

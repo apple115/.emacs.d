@@ -43,10 +43,7 @@
 ;; 禁止自动缩放窗口先
 (setq frame-inhibit-implied-resize t)
 
-;; 禁止菜单栏、工具栏、滚动条模式，禁止启动屏幕和文件对话框
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; 禁止启动屏幕和文件对话框（UI 元素已在 frame-alist 中设置）
 (setq inhibit-splash-screen t)
 (setq use-file-dialog nil)
 
@@ -71,6 +68,7 @@
   (require 'init-keyboard)
   (require 'init-ui)
   (require 'init-completion)
+  (require 'init-lsp-bridge)  ;; 已切换到 corfu + eglot
   (require 'init-langs)
   (require 'init-write)
   (require 'init-editer)
@@ -87,13 +85,14 @@
   (require 'init-english)
   (require 'init-sql)
   (require 'init-project)
-  ;; (require 'init-chinese)
+  (require 'init-chinese)
   (require 'init-ai)
   (require 'init-emacs)
   (require 'init-git)
   (require 'init-go)
   (require 'init-prog)
   (require 'init-rust)
+  (require 'init-my-blog)
   (require 'init-lsp-bridge)
   ;; (require 'init-my-theme)
   (require 'init-read)
@@ -101,7 +100,7 @@
   ;;(require 'init-eaf)
   ;; (require 'init-projectile)
   )
-(server-start)
+ (server-start)
 
 (provide 'init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -111,9 +110,32 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil)
+ '(org-agenda-files '("/Users/apple115/Documents/LocalNotes/org/tasks.org") nil nil "Customized with use-package org-agenda")
+ '(package-selected-packages
+   '(ace-window add-node-modules-path agent-shell appine auto-yasnippet beframe
+                buffer-terminator cal-china-x cape citre claude-code-ide
+                clojure-ts-mode colorful-mode compile-angel consult-dir
+                consult-notes consult-todo corfu dape denote devdocs diff-hl
+                dired-rsync dired-sidebar diredfl docker doom-modeline
+                doom-themes dumb-jump dwim-shell-command eglot-booster eldoc-box
+                embark-consult emmet-mode engine-mode evil-collection
+                evil-indent-plus evil-matchit evil-nerd-commenter evil-surround
+                evil-textobj-tree-sitter exec-path-from-shell fish-mode flycheck
+                format-all general go-dlv go-fill-struct go-gen-test go-impl
+                go-tag gotest gptel graphviz-dot-mode haskell-mode
+                highlight-parentheses i18n-quick ibuffer-project jinx ligature
+                link-hint magit marginalia markdown-mode mini-modeline msgpack
+                nerd-icons-corfu nerd-icons-dired nerd-icons-ibuffer nov ob-go
+                ob-restclient orderless org-auto-tangle org-download org-roam
+                ox-gfm ox-reveal pdf-tools pinyinlib plantuml-mode popper
+                python-mode quickrun rainbow-delimiters rime rust-mode scss-mode
+                shackle sis smart-mode-line sudo-edit tabspaces tramp tramp-hlo
+                tramp-rpc treesit-auto ultra-scroll vertico virtualenvwrapper
+                vlf vterm-toggle web-mode wgrep))
  '(package-vc-selected-packages
-   '((i18n-quick :url "https://github.com/apple115/i18n-quick.el")
+   '((appine :url "https://github.com/chaoswork/appine")
+     (tramp-rpc :url "https://github.com/ArthurHeymans/emacs-tramp-rpc")
+     (i18n-quick :url "https://github.com/apple115/i18n-quick.el")
      (claude-code :url "https://github.com/stevemolitor/claude-code.el")
      (monet :url "https://github.com/stevemolitor/monet")))
  '(safe-local-variable-values '((i18n-quick-file-path . src/locale/zh-CN/))))
@@ -171,4 +193,20 @@
  '(show-paren-match ((t (:background "#f2e5bc"))))
  '(show-paren-mismatch ((t (:background "#cc241d" :foreground "#fbf1c7"))))
  '(vertico-current ((t (:background "#f2e5bc" :extend t))))
+ '(ghostel-color-black ((t (:foreground "#282828" :background "#282828"))))
+ '(ghostel-color-blue ((t (:foreground "#076678" :background "#076678"))))
+ '(ghostel-color-bright-black ((t (:foreground "#a89984" :background "#a89984"))))
+ '(ghostel-color-bright-blue ((t (:foreground "#458588" :background "#458588"))))
+ '(ghostel-color-bright-cyan ((t (:foreground "#689d6a" :background "#689d6a"))))
+ '(ghostel-color-bright-green ((t (:foreground "#98971a" :background "#98971a"))))
+ '(ghostel-color-bright-magenta ((t (:foreground "#8f3f71" :background "#8f3f71"))))
+ '(ghostel-color-bright-red ((t (:foreground "#cc241d" :background "#cc241d"))))
+ '(ghostel-color-bright-white ((t (:foreground "#1d2021" :background "#1d2021"))))
+ '(ghostel-color-bright-yellow ((t (:foreground "#d79921" :background "#d79921"))))
+ '(ghostel-color-cyan ((t (:foreground "#427b58" :background "#427b58"))))
+ '(ghostel-color-green ((t (:foreground "#79740e" :background "#79740e"))))
+ '(ghostel-color-magenta ((t (:foreground "#b16286" :background "#b16286"))))
+ '(ghostel-color-red ((t (:foreground "#9d0006" :background "#9d0006"))))
+ '(ghostel-color-white ((t (:foreground "#d5c4a1" :background "#d5c4a1"))))
+ '(ghostel-color-yellow ((t (:foreground "#b57614" :background "#b57614"))))
  '(warning ((t (:foreground "#d79921")))))

@@ -16,9 +16,8 @@
           ;; ("\\*Async Shell.*\\*" :regexp t :ignore t)
           ("*format-all-errors*"         :select nil                        :size 0.3  :align t     :popup t)
           (compilation-mode              :select nil                        :size 0.3  :align t     :popup t)
-          ("*vterm*"                     :select t                          :size 0.3  :align t     :popup t)
-          ;; Eat 弹窗（已禁用）
-          ;; ("^\\*eat\\*$"         :regexp t :select t                       :size 0.3  :align t     :popup t)
+          ("*ghostel*"                   :select t                          :size 0.3  :align t     :popup t)
+          ("^\\*eat\\*$"                 :regexp t :select t                 :size 0.3  :align t     :popup t)
 ;;          ("\\*corfu.*\\*"       :regexp t :ignore t)
           ("*eshell*"                    :select t                          :size 0.3  :align t     :popup t)
           (helpful-mode                  :select t                          :size 0.6  :align right :popup t)
@@ -49,14 +48,15 @@
           "\\*quickrun\\*"
           "Aweshell"
          "\\*compilation\\*"
-         "\\*vterm compilation\\*"
-         ;; "^\\*eat\\*$"  ;; Eat（已禁用）
+         "\\*ghostel-compile\\*"
+         "^\\*eat\\*$"  ;; Eat
          "help-mode"
-         "\\*vterm\\*"
+         "\\*ghostel\\*"
          "\\*lsp-bridge-doc\\*"
          "\\*fanyi\\*"
          "\\*eshell*\\*"
          "\\*Warnings*\\*"
+          "\\*Compile-Log*\\*"
          ;; "\\*Org Agenda(t)\\*"
           go-test-mode
           help-mode

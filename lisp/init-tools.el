@@ -150,24 +150,19 @@
   (add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
   )
 
-;; vterm
-(use-package vterm
-  :ensure t
+(add-to-list 'load-path (expand-file-name "bin" user-emacs-directory))
+(use-package ghostel
+  :load-path "site-lisp/ghostel/lisp"
   :config
-  (setq vterm-shell
-        (cond
-         ;;macos (homebrew)
-         ((eq system-type 'darwin)
-          (if (file-exists-p "/opt/homebrew/bin/fish")
-              "fish"
-            "zsh"))
+  (when (eq system-type 'windows-nt)
+    (setq ghostel-shell (or (executable-find "pwsh.exe")
+                            (executable-find "powershell.exe")
+                            "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"))))
 
-         ;;linux wsl
-         ((eq system-type 'gnu/linux)
-          (if (file-exists-p "/usr/bin/fish")
-              "/usr/bin/fish"
-            "/bin/bash"))
-
+(use-package evil-ghostel
+  :load-path "site-lisp/ghostel/extensions/evil-ghostel"
+  :after (ghostel evil)
+  :hook (ghostel-mode . evil-ghostel-mode))
          ;;Windows
          ((eq system-type 'windows-nt)
           "powershell.exe")
@@ -212,8 +207,6 @@
 ;;   (eat-eshell-visual-command-mode)
 ;; )
 
-
-
 (use-package dwim-shell-command
   :ensure t)
 
@@ -244,6 +237,18 @@
   :config
   (buffer-terminator-mode 1))
 
+;;(use-package tramp-hlo
+;;    :ensure t
+;;    :config
+;;    (tramp-hlo-setup)
+;;)
+
+(use-package dired-sidebar
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :config
+  (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil)
+  )
 ;; (use-package tramp-hlo
 ;;     :ensure t
 ;;     :config
@@ -283,6 +288,51 @@
   (i18n-quick-style 'nested)
   (i18n-quick-max-width 50)
   )
+
+;; tramp-rpc 需要升级 Tramp 版本，暂时禁用
+(use-package tramp-rpc
+  :load-path "site-lisp/emacs-tramp-rpc/lisp"
+  :config
+  (use-package msgpack
+    :ensure t)
+  (setq tramp-rpc-deploy-git-build-policy 'release)
+  (setq diff-hl-disable-on-remote t)
+  )
+
+(use-package appine
+  ;; 核心：仅在 macOS (darwin) 系统下启用，其他系统直接跳过此配置
+  :if (eq system-type 'darwin)
+  ;; 使用内置的包管理器从 GitHub 拉取源码
+  :vc (:url "https://github.com/chaoswork/appine" :rev "master")
+  :custom
+  ;; 开启 org-mode 链接支持
+  (appine-use-for-org-links t)
+
+  :bind (("C-x a a" . appine)
+         ("C-x a u" . appine-open-url)
+         ("C-x a o" . appine-open-file))
+  :config
+  ;; 只有在加载后，且确实在 Org-mode 中时才激活链接跳转逻辑
+  (with-eval-after-load 'org
+    (when (fboundp 'appine-setup-org-links)
+      (appine-setup-org-links))))
+
+(use-package sis
+  :ensure t
+  :hook
+  ((markdown-mode . sis-inline-mode)
+   (markdown-mode . sis-context-mode)
+   (markdown-ts-mode . sis-inline-mode)
+   (markdown-ts-mode . sis-context-mode)
+   (org-mode . sis-inline-mode)
+   (org-mode . sis-context-mode)
+   (org-ts-mode . sis-inline-mode)
+   (org-ts-mode . sis-context-mode))
+  :config
+  (sis-ism-lazyman-config
+   "com.apple.keylayout.ABC"
+   "com.apple.inputmethod.SCIM.Shuangpin"))
+
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

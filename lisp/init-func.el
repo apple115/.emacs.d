@@ -35,34 +35,65 @@ regarding the asynchronous search and the arguments."
                (builder (consult--fd-make-builder paths)))
   (find-file-other-window  (consult--find prompt builder initial))))
 
-;; vterm 函数
-(defun my-vterm-apple115-switch ()
-  "Create a new vterm buffer with the fixed name `apple115`."
+;; ghostel 函数
+(defun my-ghostel-apple115-switch ()
+  "Create a new ghostel buffer with the fixed name `apple115`."
   (interactive)
-  (let ((buffer (get-buffer "terminal")))
-    (if (not buffer)
-        (vterm "terminal"))
-    (switch-to-buffer "terminal")))
+  (require 'ghostel)
+  (ghostel--load-module t)
+  (let ((buffer (get-buffer-create "terminal")))
+    (unless (with-current-buffer buffer (derived-mode-p 'ghostel-mode))
+      (ghostel--prepare-buffer buffer "terminal")
+      (ghostel--init-buffer buffer "terminal"))
+    (switch-to-buffer buffer)))
 
-(defun +new-vtermN ()
-  "Create a new vterm buffer with a name in the form of `termN`', where N is a number."
+(defun +new-ghostelN ()
+  "Create a new ghostel terminal with numbered name: term1, term2, ..."
   (interactive)
+  (require 'ghostel)
+  (ghostel--load-module t)
   (let ((counter 1)
-        (vterm-prefix "term"))
-    (while (get-buffer (concat vterm-prefix (number-to-string counter)))
+        (prefix "term"))
+    (while (get-buffer (concat prefix (number-to-string counter)))
       (setq counter (1+ counter)))
-    (let ((vterm-name (concat vterm-prefix (number-to-string counter))))
-    (vterm vterm-name)
-    (switch-to-buffer vterm-name))))
+    (let* ((name (concat prefix (number-to-string counter)))
+           (buffer (get-buffer-create name)))
+      (unless (with-current-buffer buffer (derived-mode-p 'ghostel-mode))
+        (ghostel--prepare-buffer buffer name)
+        (ghostel--init-buffer buffer name))
+      (switch-to-buffer buffer))))
 
-;; Eat 终端函数 (已禁用)
-;; (defun +new-eat ()
-;;   "Create a new eat terminal session with numbered name."
-;;   (interactive)
-;;   (let ((counter 1))
-;;     (while (get-buffer (format "*eat<%d>*" counter))
-;;       (setq counter (1+ counter)))
-;;     (eat nil counter)))
+;; eshell 函数（自动使用 eat，因为启用了 eat-eshell-mode）
+;;(defun +new-eshell ()
+;;  "Create a new eshell buffer with numbered name."
+;;  (interactive)
+;;  (let ((counter 1)
+;;        (eshell-buffer-name "*eshell*"))
+;;    ;; 查找可用的缓冲区名称
+;;    (while (get-buffer (if (= counter 1)
+;;                           eshell-buffer-name
+;;                         (format "*eshell<%d>*" counter)))
+;;      (setq counter (1+ counter)))
+;;    (let ((buffer-name (if (= counter 1)
+;;                            eshell-buffer-name
+;;                          (format "*eshell<%d>*" counter))))
+;;      ;; 创建新的 eshell 缓冲区
+;;      (if (= counter 1)
+;;          (eshell)
+;;        (progn
+;;          (eshell)
+;;          (rename-buffer buffer-name)))
+;;      (switch-to-buffer buffer-name))))
+;;
+;;(defun +eshell-toggle ()
+;;  "Toggle eshell window."
+;;  (interactive)
+;;  (let ((buffer (get-buffer "*eshell*")))
+;;    (if buffer
+;;        (if (get-buffer-window buffer)
+;;            (delete-window (get-buffer-window buffer))
+;;          (display-buffer buffer))
+;;      (eshell))))
 
 
 (defun get-word-translate-to-bar()
@@ -98,15 +129,6 @@ If NEWNAME is a directory, move file to it."
   (when (y-or-n-p (format "Really delete '%s'? " file))
     (kill-this-buffer)
     (delete-file file)))
-
-(defun delete-this-file()
-  "Delete current file and kill the buffer."
-  (interactive)
-  (unless (buffer-file-name)
-    (error "No file is currently being edited"))
-    (when (yes-or-no-p (format "Really delete '%s'? " (file-name-nondirectory buffer-file-name)))
-    (delete-file(buffer-file-name))
-    (kill-this-buffer)))
 
 (defun +copy-current-filename (file)
   "Copy the full path to the current FILE."
@@ -255,9 +277,59 @@ and convert it to Org using the pandoc utility."
   (interactive)
   (toggle-http-proxy))
 
+(defun org-capture-inbox ()
+     (interactive)
+     (call-interactively 'org-store-link)
+     (org-capture nil "i"))
+
+
+(defun my/open-vterm-database (buffer-name  commond)
+  "通用函数 打开一个专用的vterm 运行database"
+  (let ((vterm-buffer (get-buffer buffer-name)))
+    (if vterm-buffer
+        (switch-to-buffer vterm-buffer)
+      (progn
+        (setq vterm-buffer (vterm buffer-name))
+        (with-current-buffer vterm-buffer
+          (vterm-send-string (concat commond "\n")))))))
+
+(defun vterm-mysql ()
+  "快速进入 MySQL (mycli)"
+  (interactive)
+  ;; 请在此处修改你的登录凭据，或者从环境变量中读取
+  (my/open-vterm-database "*vterm-mysql*" "mycli -u root -p'你的密码' -h localhost"))
+
+(defun vterm-pgcli ()
+  "快速进入 PostgreSQL (pgcli)"
+  (interactive)
+  (my/open-vterm-database "*vterm-pg*" "pgcli postgres://user:password@localhost:5432/dbname"))
+
+(defun vterm-iredis ()
+  "快速进入 Redis (iredis)"
+  (interactive)
+  (my/open-vterm-database "*vterm-redis*" "iredis -h 127.0.0.1 -p 6379"))
+
+
+(defun quick-open-fragment ()
+  "快速进入 hexo 的 fragment"
+  (interactive)
+  (find-file "~/blog/source/fragment/index.md"))
+
 ;; Enable proxy
 (enable-http-proxy)
 (enable-socks-proxy)
+
+
+
+(winner-mode +1)
+(defun toggle-delete-other-windows ()
+  "Delete other windows in frame if any, or restore previous window config."
+  (interactive)
+  (if (and winner-mode
+           (equal (selected-window) (next-window)))
+      (winner-undo)
+    (delete-other-windows)))
+(global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
 
 (provide 'init-func)
 

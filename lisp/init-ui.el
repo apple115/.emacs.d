@@ -24,7 +24,7 @@
 
 (defun my-apply-font()
   (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 12 :weight 'medium))
-  (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :size 12 :weight 'medium))
+  (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :weight 'medium))
 )
 
 ;; (defun my-apply-font()
@@ -83,6 +83,8 @@
 
 ;; 设置缓冲区的文字无
 (setq-default bidi-display-reordering nil)
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
 ;; 禁止使用双向括号算法
 (setq bidi-inhibit-bpa t
       long-line-threshold 1000
@@ -211,6 +213,8 @@
 (modify-coding-system-alist 'process "*" 'utf-8)
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+
+(when (eq system-type 'windows-nt)  (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -371,6 +375,12 @@
   (with-eval-after-load 'evil
     (add-hook 'evil-visual-state-entry-hook #'my-disable-hl-line-in-visual)
     (add-hook 'evil-visual-state-exit-hook  #'my-restore-hl-line-after-visual)))
+
+;;该设置使 Emacs 在覆盖之前将现有剪贴板内容保存到杀戮环中
+(setq save-interprogram-paste-before-kill t)
+
+;;画面中的所有窗口按比例调整大小
+(setq window-combination-resize t)
 
 (provide 'init-ui)
 

@@ -10,7 +10,7 @@
   :states 'nil
   :keymaps 'override
   :prefix "SPC" ;; set leader
-  :global-prefix "C-SPC") ;; access leader in insert mode
+  :global-prefix "C-,") ;; access leader in insert mode
 
 (+leader-keys
   "SPC" '(consult-buffer :wk "find file")
@@ -23,6 +23,7 @@
   "," '(dired-jump :wk "open-dired")
   ";" '(popper-toggle :wk "open-pop")
   "'" '(popper-cycle :wk "cycle-pop")
+  "i" '(org-capture-inbox :wk "capture-inbox")
 
   "1" 'sort-tab-select-visible-tab
   "2" 'sort-tab-select-visible-tab
@@ -56,6 +57,7 @@
 
   "a o" '(sanityinc/consult-ripgrep-at-point :wk "search at point")
   "a d" '(+devdocs-search :wk "search docs at point")
+  "a q" '(+gptel-quick :wk "AI quick ask")
 
   "b" '(:ignore t :wk "buffer")
   "b b" '(consult-buffer :wk "buffer-switch")
@@ -81,24 +83,24 @@
   "t k" '(tab-close :wk "close current tab")
   "t t" '(tab-switch :wk "switch tab")
 
-  "o" '(:ignore t :wk "open")
-  "o o" '(embark-act :wk "embark-act")
-  "o e" '(compile :wk "compile")
-  "o t" '(vterm-toggle :wk "open vterm")
-  "o s" '(async-shell-command :wk "open async shell command")
-  "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
-  "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
-  "o b" '(hexo-my-blog  :wk "open hexo")
-  "o f" '(dwim-shell-commands-macos-reveal-in-finder)
+    "o" '(:ignore t :wk "open")
+    "o o" '(embark-act :wk "embark-act")
+    "o e" '(compile :wk "compile")
+    "o t" '(ghostel-other :wk "open ghostel")
+    "o s" '(async-shell-command :wk "open async shell command")
+    "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
+    "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
+    "o b" '(hexo-my-blog  :wk "open hexo")
+    "o f" '(dwim-shell-commands-macos-reveal-in-finder)
 
   "d" '(:ignore t :wk "dired")
   "d d" '(pwd :wk "pwd")
 
-  "n" '(:ignore t :wk "new")
-  "n n" '(denote :wk "new note")
-  "n b" '(+hexo-new :wk "new blog")
-  "n t" '(+new-vtermN :wk "new terminal")
-  "n a t" '(my-open-termial-kitty :wk "open terminal")
+    "n" '(:ignore t :wk "new")
+    "n n" '(denote :wk "new note")
+    "n b" '(+hexo-new :wk "new blog")
+    "n t" '(+new-ghostelN :wk "new terminal")
+    "n a t" '(my-open-termial-kitty :wk "open terminal")
 
   "x" '(:ignore t :wk "fix or delete"))
 
