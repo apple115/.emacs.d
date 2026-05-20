@@ -77,8 +77,8 @@
           (go-mode . go-ts-mode)
           (markdown-mode . markdown-ts-mode)
           )
-      )
-)
+        )
+  )
 
 (setq make-backup-files nil)                                  ; 不自动备份
 (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
@@ -173,6 +173,9 @@
           "powershell.exe")
 
          (t "/bin/sh")))
+  (with-eval-after-load 'vterm
+    ;; 让 vterm 放行 C-\ 快捷键，使其能够触发 Emacs 的输入法切换
+    (define-key vterm-mode-map (kbd "C-\\") #'toggle-input-method))
   (use-package vterm-toggle
     :ensure t
     :bind (:map vterm-mode-map
@@ -223,7 +226,7 @@
          ("C-c C-i" . dumb-jump-go-prompt)))
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
-)
+  )
 
 (use-package buffer-terminator
   :ensure t
@@ -252,22 +255,22 @@
   :commands (dired-sidebar-toggle-sidebar)
   :config
   (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil)
-)
+  )
 
 (use-package rime
   :ensure t
   :config
-   ;; 默认值
+  ;; 默认值
   (setq rime-translate-keybindings
-  '("C-f" "C-b" "C-n" "C-p" "C-g" "C-`" "<left>" "<right>" "<up>" "<down>" "<prior>" "<next>" "<delete>"))
-   (setq default-input-method "rime")
-	(setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
-	(setq rime-posframe-properties
-      (list :background-color "#333333"
-            :foreground-color "#dcdccc"
-            :internal-border-width 10))
-     (setq rime-show-candidate 'posframe)
-)
+        '("C-f" "C-b" "C-n" "C-p" "C-g" "C-`" "<left>" "<right>" "<up>" "<down>" "<prior>" "<next>" "<delete>"))
+  (setq default-input-method "rime")
+  (setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
+  (setq rime-posframe-properties
+        (list :background-color "#333333"
+              :foreground-color "#dcdccc"
+              :internal-border-width 10))
+  (setq rime-show-candidate 'posframe)
+  )
 
 
 (use-package i18n-quick

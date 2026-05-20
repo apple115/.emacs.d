@@ -21,7 +21,7 @@
   ;; (setq lsp-bridge-remote-python-command "~/.")
   ;; (setq lsp-bridge-remote-python-file "")
 
-  (setq acm-enable-icon nil)
+  ;; (setq acm-enable-icon nil)
   (setq acm-enable-copilot nil)
   (setq acm-enable-yas nil)
   (setq acm-enable-citre nil)
@@ -117,7 +117,6 @@
     "gd"  'lsp-bridge-find-def
     "gr" 'lsp-bridge-find-references
     )
-
 
   ;; 设置lsp-bridge-ref-mode 使其符合evil 用户的操作
   (with-eval-after-load 'lsp-bridge-ref
