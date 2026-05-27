@@ -161,14 +161,12 @@
              :lisp-dir "lisp")))
 
 (use-package ghostel
-  :config
+  :defer t
+  :init
   (setq ghostel-shell
         (cond
          ;; Windows
-         (+is-win-p
-          (or (executable-find "pwsh.exe")
-              (executable-find "powershell.exe")
-              "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"))
+         (+is-win-p "pwsh")
          ;; macOS (Homebrew fish)
          (+is-mac-p
           (or (executable-find "/opt/homebrew/bin/fish")
@@ -178,11 +176,15 @@
          (t
           (or (executable-find "/usr/bin/fish")
               (executable-find "fish")))))
+  ;; Windows 使用 kiennq/ghostel fork 的 release
+  (when +is-win-p
+    (setq ghostel-github-release-url "https://github.com/kiennq/ghostel/releases"))
+  :config
   ;; 从 ghostel 安装路径加载 evil-ghostel
   (with-eval-after-load 'evil
     (use-package evil-ghostel
       :ensure t
-      :hook(ghostel-mode . evil-ghostel-mode)))
+      :hook (ghostel-mode . evil-ghostel-mode)))
 )
 
 ;; Vterm (已禁用，使用 ghostel 替代)
