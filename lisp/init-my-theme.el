@@ -16,7 +16,24 @@
     (dim      . "#928374")    ; 灰色 - UI元素
     (error    . "#cc241d")    ; 红色
     (warning  . "#d79921")    ; 黄色
-    (search    . "#d79921")    ; 搜索背景))
+    (search   . "#d79921")    ; 搜索背景
+    ;; ANSI 终端颜色 (ghostel / comint)
+    (ansi-black        . "#282828")
+    (ansi-red          . "#cc241d")
+    (ansi-green        . "#98971a")
+    (ansi-yellow       . "#d79921")
+    (ansi-blue         . "#458588")
+    (ansi-magenta      . "#b16286")
+    (ansi-cyan         . "#689d6a")
+    (ansi-white        . "#a89984")
+    (ansi-bright-black . "#928374")
+    (ansi-bright-red   . "#fb4934")
+    (ansi-bright-green . "#b8bb26")
+    (ansi-bright-yellow . "#fabd2f")
+    (ansi-bright-blue  . "#83a598")
+    (ansi-bright-magenta . "#d3869b")
+    (ansi-bright-cyan  . "#8ec07c")
+    (ansi-bright-white . "#ebdbb2")
     ))
 
 ;; 应用主题设置
@@ -130,7 +147,25 @@
     `(dired-set-id ((t (:background nil
                         :foreground ,(cdr (assoc 'warning my-gruvbox-colors))
                         :underline t))))
-	`(dired-special ((t (:background nil :foreground ,(cdr (assoc 'const my-gruvbox-colors))))))
+    `(dired-special ((t (:background nil :foreground ,(cdr (assoc 'const my-gruvbox-colors))))))
+
+    ;; ghostel / ANSI 终端颜色
+    `(ghostel-color-black        ((t (:foreground ,(cdr (assoc 'ansi-black my-gruvbox-colors))))))
+    `(ghostel-color-red          ((t (:foreground ,(cdr (assoc 'ansi-red my-gruvbox-colors))))))
+    `(ghostel-color-green        ((t (:foreground ,(cdr (assoc 'ansi-green my-gruvbox-colors))))))
+    `(ghostel-color-yellow       ((t (:foreground ,(cdr (assoc 'ansi-yellow my-gruvbox-colors))))))
+    `(ghostel-color-blue         ((t (:foreground ,(cdr (assoc 'ansi-blue my-gruvbox-colors))))))
+    `(ghostel-color-magenta      ((t (:foreground ,(cdr (assoc 'ansi-magenta my-gruvbox-colors))))))
+    `(ghostel-color-cyan         ((t (:foreground ,(cdr (assoc 'ansi-cyan my-gruvbox-colors))))))
+    `(ghostel-color-white        ((t (:foreground ,(cdr (assoc 'ansi-white my-gruvbox-colors))))))
+    `(ghostel-color-bright-black ((t (:foreground ,(cdr (assoc 'ansi-bright-black my-gruvbox-colors))))))
+    `(ghostel-color-bright-red   ((t (:foreground ,(cdr (assoc 'ansi-bright-red my-gruvbox-colors))))))
+    `(ghostel-color-bright-green ((t (:foreground ,(cdr (assoc 'ansi-bright-green my-gruvbox-colors))))))
+    `(ghostel-color-bright-yellow ((t (:foreground ,(cdr (assoc 'ansi-bright-yellow my-gruvbox-colors))))))
+    `(ghostel-color-bright-blue  ((t (:foreground ,(cdr (assoc 'ansi-bright-blue my-gruvbox-colors))))))
+    `(ghostel-color-bright-magenta ((t (:foreground ,(cdr (assoc 'ansi-bright-magenta my-gruvbox-colors))))))
+    `(ghostel-color-bright-cyan  ((t (:foreground ,(cdr (assoc 'ansi-bright-cyan my-gruvbox-colors))))))
+    `(ghostel-color-bright-white ((t (:foreground ,(cdr (assoc 'ansi-bright-white my-gruvbox-colors))))))
   ))
 
 ;; 禁用字体变体
