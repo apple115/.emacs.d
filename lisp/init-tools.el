@@ -158,7 +158,6 @@
    `(ghostel :url ,(if +is-win-p
                        "https://github.com/kiennq/ghostel"
                      "https://github.com/dakra/ghostel")
-             :rev "master"
              :lisp-dir "lisp")))
 
 (use-package ghostel
