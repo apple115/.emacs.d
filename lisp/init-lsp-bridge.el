@@ -28,7 +28,9 @@
   ;; (setq lsp-bridge-remote-python-command "~/.")
   ;; (setq lsp-bridge-remote-python-file "")
 
-  ;; (setq acm-enable-icon nil)
+  (if +is-win-p
+      (setq acm-enable-icon nil))
+
   (setq acm-enable-copilot nil)
   (setq acm-enable-yas nil)
   (setq acm-enable-citre nil)
@@ -38,25 +40,25 @@
   (setq lsp-bridge-find-def-fallback-function 'citre-jump)
   (setq lsp-bridge-find-ref-fallback-function 'citre-jump-to-reference)
   (setq lsp-bridge-get-project-path-by-filepath
-    (lambda (filepath)
-      (let ((root nil))
-        ;; 按优先级检测项目根目录
-        (or
-         ;; Go 项目
-         (setq root (locate-dominating-file filepath "go.mod"))
-         ;; Node.js/Vue/React 项目
-         (setq root (locate-dominating-file filepath "package.json"))
-         ;; Python 项目
-         (setq root (locate-dominating-file filepath "setup.py"))
-         (setq root (locate-dominating-file filepath "pyproject.toml"))
-         ;; Rust 项目
-         (setq root (locate-dominating-file filepath "Cargo.toml"))
-         ;; Git 仓库
-         (setq root (locate-dominating-file filepath ".git"))
-         ;; .dir-locals.el
-         (setq root (locate-dominating-file filepath ".dir-locals.el")))
-        (when root
-          (expand-file-name root)))))
+        (lambda (filepath)
+          (let ((root nil))
+            ;; 按优先级检测项目根目录
+            (or
+             ;; Go 项目
+             (setq root (locate-dominating-file filepath "go.mod"))
+             ;; Node.js/Vue/React 项目
+             (setq root (locate-dominating-file filepath "package.json"))
+             ;; Python 项目
+             (setq root (locate-dominating-file filepath "setup.py"))
+             (setq root (locate-dominating-file filepath "pyproject.toml"))
+             ;; Rust 项目
+             (setq root (locate-dominating-file filepath "Cargo.toml"))
+             ;; Git 仓库
+             (setq root (locate-dominating-file filepath ".git"))
+             ;; .dir-locals.el
+             (setq root (locate-dominating-file filepath ".dir-locals.el")))
+            (when root
+              (expand-file-name root)))))
   (setq lsp-bridge-multi-lang-server-extension-list
         '(
           ;; (("jsx"). "typescript_tailwindcss")
@@ -68,25 +70,25 @@
   ;; (setq lsp-bridge-enable-org-babel t) ;;error 与denote冲突
   ;; 检测项目根目录：支持多种项目类型
   (setq lsp-bridge-get-project-path-by-filepath
-    (lambda (filepath)
-      (let ((root nil))
-        ;; 按优先级检测项目根目录
-        (or
-         ;; Go 项目
-         (setq root (locate-dominating-file filepath "go.mod"))
-         ;; Node.js/Vue/React 项目
-         (setq root (locate-dominating-file filepath "package.json"))
-         ;; Python 项目
-         (setq root (locate-dominating-file filepath "setup.py"))
-         (setq root (locate-dominating-file filepath "pyproject.toml"))
-         ;; Rust 项目
-         (setq root (locate-dominating-file filepath "Cargo.toml"))
-         ;; Git 仓库
-         (setq root (locate-dominating-file filepath ".git"))
-         ;; .dir-locals.el
-         (setq root (locate-dominating-file filepath ".dir-locals.el")))
-        (when root
-          (expand-file-name root)))))
+        (lambda (filepath)
+          (let ((root nil))
+            ;; 按优先级检测项目根目录
+            (or
+             ;; Go 项目
+             (setq root (locate-dominating-file filepath "go.mod"))
+             ;; Node.js/Vue/React 项目
+             (setq root (locate-dominating-file filepath "package.json"))
+             ;; Python 项目
+             (setq root (locate-dominating-file filepath "setup.py"))
+             (setq root (locate-dominating-file filepath "pyproject.toml"))
+             ;; Rust 项目
+             (setq root (locate-dominating-file filepath "Cargo.toml"))
+             ;; Git 仓库
+             (setq root (locate-dominating-file filepath ".git"))
+             ;; .dir-locals.el
+             (setq root (locate-dominating-file filepath ".dir-locals.el")))
+            (when root
+              (expand-file-name root)))))
   (setq lsp-bridge-get-language-id
         (lambda (project-path file-path server-name extension-name)
           (cond
@@ -193,7 +195,7 @@
       (kbd "ZQ")      'lsp-bridge-ref-quit))
 
   (global-lsp-bridge-mode)
-)
+  )
 
 (provide 'init-lsp-bridge)
 

@@ -22,15 +22,10 @@
 ;;   ;;(doom-themes-vterm-config)
 ;;   )
 
-(defun my-apply-font()
-  (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :size 12 :weight 'medium))
+(defun my-apple-font()
+  (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :weight 'medium))
   (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :weight 'medium))
 )
-
-;; (defun my-apply-font()
-;;   (set-face-attribute 'default nil :font (font-spec :family "Maple Mono NF CN" :size 12 :weight 'medium) :slant 'italic)
-;; )
-
 
  ;; |大家|
  ;; |aabb|大家
@@ -40,7 +35,7 @@
 ;; 告诉 Emacs：如果键盘信号发得太快，渲染跟不上了，就跳过中间过程，只画最后停下的地方
 (setq fast-but-imprecise-scrolling t)
 
-(my-apply-font)
+(my-apple-font)
 
 (add-hook 'after-make-frame-functions
           (lambda (frame)
