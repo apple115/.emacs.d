@@ -17,7 +17,13 @@
   :load-path "site-lisp/lsp-bridge"
   :config
   ;;(setq lsp-bridge-log-level 'debug)
-  (setq lsp-bridge-python-command (expand-file-name "~/.emacs.d/site-lisp/.venv/bin/python"))
+  ;; uv 管理的虚拟环境 (uv sync 自动生成)
+  (setq lsp-bridge-python-command
+        (expand-file-name
+         (if +is-win-p
+             "site-lisp/lsp-bridge/.venv/Scripts/python.exe"
+           "site-lisp/lsp-bridge/.venv/bin/python")
+         user-emacs-directory))
   ;;remote edit
   ;; (setq lsp-bridge-remote-python-command "~/.")
   ;; (setq lsp-bridge-remote-python-file "")
