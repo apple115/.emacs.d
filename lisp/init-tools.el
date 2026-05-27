@@ -179,6 +179,8 @@
   ;; Windows 使用 kiennq/ghostel fork 的 release
   (when +is-win-p
     (setq ghostel-github-release-url "https://github.com/kiennq/ghostel/releases"))
+  ;; 禁用终端 title 自动重命名 buffer，避免路径过长
+  (setq ghostel-set-title-function nil)
   :config
   ;; 从 ghostel 安装路径加载 evil-ghostel
   (with-eval-after-load 'evil
