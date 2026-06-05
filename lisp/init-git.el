@@ -68,9 +68,21 @@
 ;;       (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
 ;;       (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))))
 
+(use-package vc-msg
+  :ensure t
+  :bind (("C-x v m" . vc-msg-show)           ;; 当前行 commit 信息
+         )   ;; 查看 parent commit
+  :config
+  ;; 显示后自动复制 commit hash 到 kill ring
+  (setq vc-msg-copy-id-to-kill-ring t)
 
+  ;; 如果你装了 magit，可以在弹窗里按 d 直接打开 magit-diff
+  (setq vc-msg-show-commit-function 'magit-show-commit)
+
+  ;; 自定义显示格式（可选）
+  (setq vc-msg-format
+        "Author: %a%nDate: %d%nSummary: %s%nHash: %H"))
 
 (provide 'init-git)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-git.el ends here
