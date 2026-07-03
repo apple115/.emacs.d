@@ -194,7 +194,30 @@
       (kbd "C-c C-k") 'lsp-bridge-ref-quit
       (kbd "ZQ")      'lsp-bridge-ref-quit))
 
-  (global-lsp-bridge-mode)
+  ;; 不全局启用，按需通过命令或右键菜单开启
+  ;; (global-lsp-bridge-mode)
+
+  (defun +lsp-bridge-toggle ()
+    "Toggle `lsp-bridge-mode' in current buffer."
+    (interactive)
+    (if (bound-and-true-p lsp-bridge-mode)
+        (lsp-bridge-mode -1)
+      (lsp-bridge-mode 1)))
+
+  ;; 在右键上下文菜单中加入 LSP Bridge 开关
+  (defun +context-menu-lsp-bridge (menu click)
+    "Add LSP Bridge toggle entry to context MENU."
+    (define-key menu [lsp-bridge-separator]
+      '(menu-item "--single-line"))
+    (define-key menu [lsp-bridge-toggle]
+      `(menu-item
+        ,(format "LSP Bridge (%s)"
+                 (if (bound-and-true-p lsp-bridge-mode) "on" "off"))
+        +lsp-bridge-toggle
+        :button (:toggle . (bound-and-true-p lsp-bridge-mode))))
+    menu)
+
+  (add-hook 'context-menu-functions #'+context-menu-lsp-bridge)
   )
 
 (provide 'init-lsp-bridge)

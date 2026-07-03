@@ -13,16 +13,71 @@
   :custom
   (magit-diff-refine-hunk t)
   (magit-ediff-dwim-show-on-hunks t)
+  ;; 性能优化：减少 status 中 recent commits 数量
+  (magit-log-section-commit-count 5)
+  ;; commit buffer 不显示 diff
+  (magit-commit-show-diff nil)
+  ;; 关闭刷新 verbose 日志
+  (magit-refresh-verbose nil)
   :config
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (setq magit-refresh-status-buffer nil)
+  ;; 禁用 git pager，避免 magit 调用 git 时阻塞
+  (setenv "GIT_PAGER" "cat")
+  ;; 减少 git 锁竞争
+  (setenv "GIT_OPTIONAL_LOCKS" "0")
   ;; Windows 需要指定 git 路径，macOS/Linux 用系统默认
   (when +is-win-p
     (setq magit-git-executable "C:\\Program Files\\Git\\bin\\git.exe"))
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   (remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff)
-)
+
+  ;; 用轻量级 name-status 列表替换 status 里的完整 diff 渲染
+  (defconst my-magit--status-alist
+    '(("M" "modified" . (:foreground "#f9e2af"))
+      ("A" "new file" . (:foreground "#a6e3a1"))
+      ("D" "deleted"  . (:foreground "#f38ba8"))
+      ("R" "renamed"  . (:foreground "#89b4fa"))
+      ("C" "copied"   . (:foreground "#94e2d5"))
+      ("U" "unmerged" . (:foreground "#cba6f7"))))
+
+  (defun my-magit--wash-diff (line)
+    (let* ((parts (split-string line "\t"))
+           (code (car parts))
+           (file (cadr parts))
+           (info (cdr (assoc code my-magit--status-alist)))
+           (status (if info (car info) code))
+           (face (if info (cdr info) 'magit-diff-file-heading)))
+      (when file
+        (magit-insert-section (file file)
+          (insert (propertize
+                   (concat (format "%-10s" status) file "\n")
+                   'font-lock-face face))))))
+
+  (defun my-magit-insert-unstaged-files ()
+    (let ((files (cl-remove-if #'string-empty-p (magit-git-lines "diff" "--name-status"))))
+      (when files
+        (magit-insert-section
+            (unstaged 'unstaged)
+          (magit-insert-heading "Unstaged changes:")
+          (dolist (line files) (my-magit--wash-diff line))))))
+
+  (defun my-magit-insert-staged-files ()
+    (let ((files (cl-remove-if #'string-empty-p (magit-git-lines "diff" "--cached" "--name-status"))))
+      (when files
+        (magit-insert-section
+            (staged 'staged)
+          (magit-insert-heading "Staged changes:")
+          (dolist (line files) (my-magit--wash-diff line))))))
+
+  (setq magit-status-sections-hook
+        '(magit-insert-status-headers
+          magit-insert-untracked-files
+          my-magit-insert-unstaged-files
+          my-magit-insert-staged-files
+          magit-insert-stashes
+          magit-insert-recent-commits)))
 
 ;;; 配置来源 https://github.com/seagle0128/.emacs.d/blob/58a3beb7564c89733572ae361299cf5bb91b4c4c/lisp/init-highlight.el#L230
  ;; Highlight uncommitted changes using VC

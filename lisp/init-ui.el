@@ -25,7 +25,8 @@
 (defun my-apple-font()
   (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :weight 'medium))
   (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :weight 'medium))
-)
+  (setq face-font-rescale-alist
+        '(("LXGW WenKai" . 1.25))))
 
  ;; |大家|
  ;; |aabb|大家
@@ -183,6 +184,9 @@
 
 ;; 在命令行里支持鼠标
 (xterm-mouse-mode 1)
+
+;; 启用鼠标右键上下文菜单
+(context-menu-mode 1)
 
 ;; 退出Emacs时进行确认
 (setq confirm-kill-emacs 'y-or-n-p)
