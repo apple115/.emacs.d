@@ -29,6 +29,9 @@
   ;; automatically when opening a file
   ;; (put 'dired-find-alternate-file 'disabled nil)
   (evil-collection-define-key 'normal 'dired-mode-map
+    ;; 释放鼠标按下事件，恢复 Dired 双击打开
+    (kbd "<down-mouse-1>") nil
+    (kbd "<double-mouse-1>") #'dired-mouse-find-file
     (kbd "q") 'quit-window
     (kbd "o") 'dired-quick-access
     (kbd "c") 'dired-do-compress-to
