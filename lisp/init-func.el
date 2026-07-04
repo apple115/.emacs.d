@@ -36,6 +36,15 @@ regarding the asynchronous search and the arguments."
   (find-file-other-window  (consult--find prompt builder initial))))
 
 ;; ghostel 函数
+(setq ghostel-buffer-name "*t*")
+
+(defun my-ghostel-set-title (title)
+  "Use shell-reported TITLE as the ghostel buffer name."
+  (when (derived-mode-p 'ghostel-mode)
+    (rename-buffer (format "*t: %s*" title) t)))
+
+(setq ghostel-set-title-function #'my-ghostel-set-title)
+
 (defun my-ghostel-apple115-switch ()
   "Create a new ghostel buffer with the fixed name `apple115`."
   (interactive)
@@ -47,21 +56,27 @@ regarding the asynchronous search and the arguments."
       (ghostel--init-buffer buffer "terminal"))
     (switch-to-buffer buffer)))
 
-(defun +new-ghostelN ()
-  "Create a new ghostel terminal with numbered name: term1, term2, ..."
+(defun +ghostel ()
+  "Open or switch to the ghostel terminal for the current directory."
   (interactive)
   (require 'ghostel)
   (ghostel--load-module t)
-  (let ((counter 1)
-        (prefix "term"))
-    (while (get-buffer (concat prefix (number-to-string counter)))
-      (setq counter (1+ counter)))
-    (let* ((name (concat prefix (number-to-string counter)))
-           (buffer (get-buffer-create name)))
-      (unless (with-current-buffer buffer (derived-mode-p 'ghostel-mode))
-        (ghostel--prepare-buffer buffer name)
-        (ghostel--init-buffer buffer name))
-      (switch-to-buffer buffer))))
+  (ghostel))
+
+(defun +ghostel-new ()
+  "Force create a new ghostel terminal, even if one already exists."
+  (interactive)
+  (require 'ghostel)
+  (ghostel--load-module t)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively #'ghostel)))
+
+(defun +ghostel-other ()
+  "Switch to the next ghostel terminal, or create one if none exists."
+  (interactive)
+  (require 'ghostel)
+  (ghostel--load-module t)
+  (ghostel-other))
 
 ;; eshell 函数（自动使用 eat，因为启用了 eat-eshell-mode）
 ;;(defun +new-eshell ()

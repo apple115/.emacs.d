@@ -36,6 +36,11 @@
   :mode (("\\.fish\\'" . fish-mode))
  :ensure t)
 
+
+(use-package zig-mode
+  :mode (("\\.zig\\'" . zig-mode))
+ :ensure t)
+
 (provide 'init-langs)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-langs.el ends here

@@ -19,6 +19,13 @@
                                      "/Entered on/ %U"))
                            )))
 
+
+(setq org-format-latex-options
+      '(:foreground default
+        :background default
+        :scale 1.5
+        :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
+
 (provide 'init-org-capture)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

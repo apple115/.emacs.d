@@ -187,7 +187,7 @@
     (use-package evil-ghostel
       :ensure t
       :hook (ghostel-mode . evil-ghostel-mode)))
-)
+  )
 
 ;; Vterm (已禁用，使用 ghostel 替代)
 ;; (with-eval-after-load 'vterm
@@ -295,7 +295,7 @@
               :foreground-color "#dcdccc"
               :internal-border-width 10))
   (setq rime-show-candidate 'posframe)
-)
+  )
 
 ;; Rimel - 仅在 WSL 中使用（其他环境使用系统输入法或不使用 emacs-rime）
 ;;(when (and (eq system-type 'gnu/linux)
@@ -362,6 +362,10 @@
    "com.apple.keylayout.ABC"
    "com.apple.inputmethod.SCIM.Shuangpin"))
 
+
+(use-package beframe
+  :ensure t
+  )
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

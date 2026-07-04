@@ -111,29 +111,98 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ace-window add-node-modules-path agent-shell auto-yasnippet buffer-terminator
-                cal-china-x citre claude-code claude-code-ide colorful-mode
-                consult-dir consult-notes consult-todo dape denote devdocs
-                dired-rsync dired-sidebar diredfl docker dumb-jump
-                dwim-shell-command eglot-booster eldoc-box embark-consult
-                emmet-mode engine-mode evil-collection evil-ghostel
-                evil-indent-plus evil-matchit evil-nerd-commenter evil-surround
-                evil-textobj-tree-sitter exec-path-from-shell fish-mode flycheck
-                format-all general ghostel go-dlv go-fill-struct go-gen-test
-                go-impl go-tag gotest gptel graphviz-dot-mode haskell-mode
-                i18n-quick ibuffer-project jinx ligature link-hint magit
-                marginalia markdown-mode monet nerd-icons-dired
-                nerd-icons-ibuffer nov ob-go ob-restclient orderless
-                org-auto-tangle org-download org-roam ox-gfm ox-reveal pdf-tools
-                pinyinlib plantuml-mode popper python-mode quickrun
-                rainbow-delimiters rime rimel rust-mode scss-mode shackle sis
-                sudo-edit tabspaces tramp-hlo treesit-auto vertico
-                virtualenvwrapper vlf vterm-toggle web-mode wgrep))
+   '(ace-window add-node-modules-path agent-shell appine auto-yasnippet beframe
+                buffer-terminator cal-china-x cape citre claude-code
+                claude-code-ide clojure-ts-mode colorful-mode compile-angel
+                consult-dir consult-notes consult-todo corfu dape denote devdocs
+                diff-hl dired-rsync dired-sidebar diredfl docker doom-modeline
+                doom-themes dumb-jump dwim-shell-command eglot-booster eldoc-box
+                embark-consult emmet-mode engine-mode evil-collection
+                evil-ghostel evil-indent-plus evil-matchit evil-nerd-commenter
+                evil-surround evil-textobj-tree-sitter exec-path-from-shell
+                fish-mode flycheck format-all general ghostel go-dlv
+                go-fill-struct go-gen-test go-impl go-tag gotest gptel
+                graphviz-dot-mode haskell-mode highlight-parentheses i18n-quick
+                ibuffer-project jinx ligature link-hint magit marginalia
+                markdown-mode mini-modeline msgpack nerd-icons-corfu
+                nerd-icons-dired nerd-icons-ibuffer nov ob-go ob-restclient
+                orderless org-auto-tangle org-download org-roam ox-gfm ox-reveal
+                pdf-tools pinyinlib plantuml-mode popper python-mode quickrun
+                rainbow-delimiters rime rust-mode scss-mode shackle sis
+                smart-mode-line sudo-edit tabspaces tramp-hlo tramp-rpc
+                treesit-auto ultra-scroll vertico virtualenvwrapper vlf
+                vterm-toggle web-mode wgrep zig-mode))
  '(package-vc-selected-packages
-   '((rimel :url "https://github.com/emacs-rime/rimel" :rev "master"))))
+   '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
+     (rimel :url "https://github.com/emacs-rime/rimel" :rev "master"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:background "#fbf1c7" :foreground "#3c3836"))))
+ '(completions-common-part ((t (:foreground "#8f3f71" :weight normal))))
+ '(completions-first-difference ((t (:foreground "#3c3836" :weight normal))))
+ '(consult-highlight-line ((t (:background "#f7efd0" :extend t))))
+ '(consult-preview-match ((t (:foreground "#458588" :background nil))))
+ '(dired-directory ((t (:background nil :foreground "#af3a03" :weight bold))))
+ '(dired-flagged ((t (:foreground "#cc241d" :weight bold))))
+ '(dired-header ((t (:background nil :inherit default))))
+ '(dired-ignored ((t (:foreground "#928374"))))
+ '(dired-perm-write ((t (:background nil :foreground "#cc241d"))))
+ '(dired-set-id ((t (:background nil :foreground "#d79921" :underline t))))
+ '(dired-special ((t (:background nil :foreground "#8f3f71"))))
+ '(dired-symlink ((t (:background nil :foreground "#8f3f71"))))
+ '(error ((t (:foreground "#cc241d"))))
+ '(font-lock-builtin-face ((t (:foreground "#3c3836"))))
+ '(font-lock-comment-delimiter-face ((t (:foreground "#458588"))))
+ '(font-lock-comment-face ((t (:foreground "#458588"))))
+ '(font-lock-constant-face ((t (:foreground "#8f3f71"))))
+ '(font-lock-function-name-face ((t (:foreground "#af3a03"))))
+ '(font-lock-keyword-face ((t (:foreground "#3c3836"))))
+ '(font-lock-number-face ((t (:foreground "#8f3f71"))))
+ '(font-lock-operator-face ((t (:foreground "#3c3836"))))
+ '(font-lock-string-face ((t (:foreground "#79740e"))))
+ '(font-lock-type-face ((t (:foreground "#3c3836"))))
+ '(font-lock-variable-name-face ((t (:foreground "#af3a03"))))
+ '(fringe ((t (:background "#fbf1c7"))))
+ '(ghostel-color-black ((t (:foreground "#282828"))))
+ '(ghostel-color-blue ((t (:foreground "#458588"))))
+ '(ghostel-color-bright-black ((t (:foreground "#928374"))))
+ '(ghostel-color-bright-blue ((t (:foreground "#83a598"))))
+ '(ghostel-color-bright-cyan ((t (:foreground "#8ec07c"))))
+ '(ghostel-color-bright-green ((t (:foreground "#b8bb26"))))
+ '(ghostel-color-bright-magenta ((t (:foreground "#d3869b"))))
+ '(ghostel-color-bright-red ((t (:foreground "#fb4934"))))
+ '(ghostel-color-bright-white ((t (:foreground "#ebdbb2"))))
+ '(ghostel-color-bright-yellow ((t (:foreground "#fabd2f"))))
+ '(ghostel-color-cyan ((t (:foreground "#689d6a"))))
+ '(ghostel-color-green ((t (:foreground "#98971a"))))
+ '(ghostel-color-magenta ((t (:foreground "#b16286"))))
+ '(ghostel-color-red ((t (:foreground "#cc241d"))))
+ '(ghostel-color-white ((t (:foreground "#a89984"))))
+ '(ghostel-color-yellow ((t (:foreground "#d79921"))))
+ '(header-line ((t (:background "#f2e5bc" :foreground "#3c3836" :box nil :underline nil :inherit nil))))
+ '(hl-line ((t (:background "#f7efd0" :extend t))))
+ '(isearch ((t (:background "#d79921" :foreground "#fbf1c7"))))
+ '(lazy-highlight ((t (:background "#f2e5bc" :foreground "#3c3836"))))
+ '(line-number ((t (:foreground "#928374" :background "#fbf1c7"))))
+ '(line-number-current-line ((t (:foreground "#3c3836" :background "#f2e5bc"))))
+ '(minibuffer-prompt ((t (:foreground "#8f3f71"))))
+ '(mode-line ((t (:background "#f9f5d7" :foreground "#3c3836" :box nil))))
+ '(mode-line-inactive ((t (:background "#f2e5bc" :foreground "#928374" :box nil))))
+ '(org-block ((t (:background "#f9f5d7" :foreground "#3c3836"))))
+ '(org-code ((t (:foreground "#79740e"))))
+ '(org-comment ((t (:foreground "#458588"))))
+ '(org-done ((t (:foreground "#79740e"))))
+ '(org-level-1 ((t (:foreground "#3c3836"))))
+ '(org-level-2 ((t (:foreground "#3c3836"))))
+ '(org-level-3 ((t (:foreground "#3c3836"))))
+ '(org-link ((t (:foreground "#8f3f71" :underline t))))
+ '(org-todo ((t (:foreground "#cc241d"))))
+ '(org-verbatim ((t (:foreground "#8f3f71"))))
+ '(region ((t (:background "#f2e5bc"))))
+ '(show-paren-match ((t (:background "#f2e5bc"))))
+ '(show-paren-mismatch ((t (:background "#cc241d" :foreground "#fbf1c7"))))
+ '(vertico-current ((t (:background "#f2e5bc" :extend t))))
+ '(warning ((t (:foreground "#d79921")))))

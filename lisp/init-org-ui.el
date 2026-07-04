@@ -21,6 +21,7 @@
 ;;   :config ; add late to hook
 ;;   (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 
+
 (provide 'init-org-ui)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

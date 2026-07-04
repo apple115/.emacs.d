@@ -86,7 +86,7 @@
     "o" '(:ignore t :wk "open")
     "o o" '(embark-act :wk "embark-act")
     "o e" '(compile :wk "compile")
-    "o t" '(ghostel-other :wk "open ghostel")
+    "o t" '(+ghostel-other :wk "open ghostel")
     "o s" '(async-shell-command :wk "open async shell command")
     "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
     "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
@@ -99,7 +99,8 @@
     "n" '(:ignore t :wk "new")
     "n n" '(denote :wk "new note")
     "n b" '(+hexo-new :wk "new blog")
-    "n t" '(+new-ghostelN :wk "new terminal")
+    "n t" '(+ghostel :wk "terminal")
+    "n T" '(+ghostel-new :wk "new terminal")
     "n a t" '(my-open-termial-kitty :wk "open terminal")
 
   "x" '(:ignore t :wk "fix or delete"))
