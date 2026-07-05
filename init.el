@@ -61,45 +61,30 @@
 ;; 加载各模块化配置
 ;; 不要在`*message*'缓冲区显示加载模块化配置的信息
 (with-temp-message ""
+  ;; 基础
   (require 'init-base)
   (require 'init-custom)
-  (require 'init-edit)
+  (require 'init-emacs)
+  ;; 编辑 / 界面 / 补全
+  (require 'init-editor)
   (require 'init-tools)
   (require 'init-keyboard)
   (require 'init-ui)
+  (require 'init-theme)
   (require 'init-completion)
-  (require 'init-lsp-bridge)  ;; 已切换到 corfu + eglot
+  ;; 编程 / 项目 / 笔记
+  (require 'init-programming)
   (require 'init-langs)
-  (require 'init-write)
-  (require 'init-editer)
-  (require 'init-org-agenda)
-  (require 'init-org-capture)
-  (require 'init-consult)
-  (require 'init-func)
-  (require 'init-dape)
-  (require 'init-compile)
-  (require 'init-docker)
-  (require 'init-windows-manager)
-  (require 'init-web-developer)
-  (require 'init-python)
-  (require 'init-english)
-  (require 'init-sql)
+  (require 'init-org)
   (require 'init-project)
+  ;; 工具 / 其他
+  (require 'init-func)
+  (require 'init-windows)
   (require 'init-chinese)
   (require 'init-ai)
-  (require 'init-emacs)
   (require 'init-git)
-  (require 'init-go)
-  (require 'init-prog)
-  (require 'init-rust)
   (require 'init-my-blog)
-  (require 'init-lsp-bridge)
-  ;; (require 'init-my-theme)
-  (require 'init-my-dark-theme)
-  (require 'init-read)
-  ;; (require 'init-org-ui)
-  ;;(require 'init-eaf)
-  ;; (require 'init-projectile)
+  (require 'init-reading)
   )
  (server-start)
 
@@ -112,27 +97,28 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ace-window add-node-modules-path agent-shell appine auto-yasnippet beframe
-                buffer-terminator cal-china-x cape citre claude-code
+   '(ace-window add-node-modules-path agent-shell annalist appine auto-yasnippet
+                beframe buffer-terminator cal-china-x cape citre claude-code
                 claude-code-ide clojure-ts-mode colorful-mode compile-angel
                 consult-dir consult-notes consult-todo corfu dape denote devdocs
                 diff-hl dired-rsync dired-sidebar diredfl docker doom-modeline
                 doom-themes dumb-jump dwim-shell-command eglot-booster eldoc-box
-                embark-consult emmet-mode engine-mode evil-collection
+                embark-consult emmet-mode engine-mode erlang evil-collection
                 evil-ghostel evil-indent-plus evil-matchit evil-nerd-commenter
                 evil-surround evil-textobj-tree-sitter exec-path-from-shell
-                fish-mode flycheck format-all general ghostel go-dlv
-                go-fill-struct go-gen-test go-impl go-tag gotest gptel
-                graphviz-dot-mode haskell-mode highlight-parentheses i18n-quick
-                ibuffer-project jinx ligature link-hint magit marginalia
-                markdown-mode mini-modeline msgpack nerd-icons-corfu
-                nerd-icons-dired nerd-icons-ibuffer nov ob-go ob-restclient
-                orderless org-auto-tangle org-download org-roam ox-gfm ox-reveal
-                pdf-tools pinyinlib plantuml-mode popper python-mode quickrun
-                rainbow-delimiters rime rust-mode scss-mode shackle sis
-                smart-mode-line sudo-edit tabspaces tramp-hlo tramp-rpc
-                treesit-auto ultra-scroll vertico virtualenvwrapper vlf
-                vterm-toggle web-mode wgrep zig-mode))
+                fish-mode flycheck format-all general go-dlv go-fill-struct
+                go-gen-test go-impl go-tag gotest gptel graphviz-dot-mode
+                haskell-mode highlight-parentheses i18n-quick ibuffer-project
+                jinx ligature link-hint magit marginalia markdown-mode
+                mini-modeline msgpack nerd-icons-corfu nerd-icons-dired
+                nerd-icons-ibuffer nov ob-go ob-restclient orderless
+                org-auto-tangle org-download org-modern org-roam ox-gfm
+                ox-reveal pdf-tools pinyinlib plantuml-mode popper python-mode
+                quickrun rainbow-delimiters realgud rime rust-mode scss-mode
+                shackle sis smart-mode-line sudo-edit tabspaces tramp-hlo
+                tramp-rpc treesit-auto ultra-scroll vc-msg vertico
+                virtualenvwrapper vlf vterm-toggle web-mode wgrep yasnippet-capf
+                zig-mode))
  '(package-vc-selected-packages
    '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
      (rimel :url "https://github.com/emacs-rime/rimel" :rev "master"))))

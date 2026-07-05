@@ -1,8 +1,9 @@
-;;; init-windows-manager.el --- windows manager settings -*- lexical-binding: t -*-
+;;; init-windows.el --- Merged settings -*- lexical-binding: t -*-
 ;;; Commentary:
-;;; windows-manager
-
+;;; Merged from: init-windows-manager.el
 ;;; Code:
+
+;; ---- merged from init-windows-manager.el ----
 (use-package shackle
   :ensure t
   :hook (after-init . shackle-mode)
@@ -78,6 +79,6 @@
   (global-set-key (kbd "M-o") 'ace-window)
 )
 
-(provide 'init-windows-manager)
+(provide 'init-windows)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-windows-manager.el ends here
+;;; init-windows.el ends here

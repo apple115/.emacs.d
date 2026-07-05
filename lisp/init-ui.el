@@ -191,18 +191,18 @@
 ;; 退出Emacs时进行确认
 (setq confirm-kill-emacs 'y-or-n-p)
 
-;;; Line numbers
+;;; Line numbers (currently disabled)
 ;; Explicitly define a width to reduce the cost of on-the-fly computation
-(setq-default display-line-numbers-width 3)
+;; (setq-default display-line-numbers-width 3)
 ;; Show absolute line numbers for narrowed regions to make it easier to tell the
 ;; buffer is narrowed, and where you are, exactly.
-(setq-default display-line-numbers-widen t)
+;; (setq-default display-line-numbers-widen t)
 ;; Line numbers are not displayed when large files are used.
-(setq line-number-display-limit large-file-warning-threshold)
-(setq line-number-display-limit-width 10000)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'conf-mode-hook 'display-line-numbers-mode)
-(add-hook 'text-mode-hook 'display-line-numbers-mode)
+;; (setq line-number-display-limit large-file-warning-threshold)
+;; (setq line-number-display-limit-width 10000)
+;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+;; (add-hook 'conf-mode-hook 'display-line-numbers-mode)
+;; (add-hook 'text-mode-hook 'display-line-numbers-mode)
 
 ;; 配置所有的编码为UTF-8，参考：
 ;; https://thraxys.wordpress.com/2016/01/13/utf-8-in-emacs-everywhere-forever/

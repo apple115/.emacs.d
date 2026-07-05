@@ -1,3 +1,9 @@
+;;; init-reading.el --- Merged settings -*- lexical-binding: t -*-
+;;; Commentary:
+;;; Merged from: init-read.el
+;;; Code:
+
+;; ---- merged from init-read.el ----
 ;;; init-read.el --- Write settings -*- lexical-binding: t -*-
 
 ;;; Commentary:
@@ -12,6 +18,6 @@
   :ensure t
 )
 
-(provide 'init-read)
+(provide 'init-reading)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-read.el ends here
+;;; init-reading.el ends here
