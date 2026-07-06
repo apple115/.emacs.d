@@ -30,6 +30,7 @@
          ("\\.json\\'" . json-ts-mode)
          )
   :config
+  (add-to-list 'treesit-extra-load-path "~/.emacs.d/tree-sitter")
   (setq treesit-language-source-alist
         '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
           (c . ("https://github.com/tree-sitter/tree-sitter-c"))
