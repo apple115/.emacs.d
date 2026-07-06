@@ -1,8 +1,9 @@
-;;; init-tools.el --- Tools settings -*- lexical-binding: t -*-
+;;; init-tools.el --- Merged settings -*- lexical-binding: t -*-
 ;;; Commentary:
-;;; Useful tools to make Emacs efficient!
-
+;;; Merged from: init-tools.el, init-docker.el
 ;;; Code:
+
+;; ---- merged from init-tools.el ----
 
 (use-package which-key
   :ensure nil
@@ -188,34 +189,8 @@
     (use-package evil-ghostel
       :ensure t
       :hook (ghostel-mode . evil-ghostel-mode)))
-)
+  )
 
-;; Vterm (已禁用，使用 ghostel 替代)
-;; (with-eval-after-load 'vterm
-;;   (define-key vterm-mode-map (kbd "C-\\") #'toggle-input-method))
-;; (use-package vterm-toggle
-;;   :ensure t
-;;   :bind (:map vterm-mode-map
-;;               ([(control return)] . vterm-toggle-insert-cd))
-;;   :config
-;;   (setq vterm-toggle-cd-auto-create-buffer nil)
-;;   (defvar vterm-compile-buffer nil)
-;;   (defun vterm-compile ()
-;;     "Compile the program including the current buffer in `vterm'."
-;;     (interactive)
-;;     (setq compile-command (compilation-read-command compile-command))
-;;     (let ((vterm-toggle-use-dedicated-buffer t)
-;;           (vterm-toggle--vterm-dedicated-buffer (if (vterm-toggle--get-window)
-;;                                                     (vterm-toggle-hide)
-;;                                                   vterm-compile-buffer)))
-;;       (with-current-buffer (vterm-toggle-cd)
-;;         (setq vterm-compile-buffer (current-buffer))
-;;         (rename-buffer "*vterm compilation*")
-;;         (compilation-shell-minor-mode 1)
-;;         (vterm-send-M-w)
-;;         (vterm-send-string compile-command t)
-;;         (vterm-send-return))))
-;;   )
 
 ;; Eat - Emulate A Terminal (已禁用)
 ;; (use-package eat
@@ -296,7 +271,7 @@
               :foreground-color "#dcdccc"
               :internal-border-width 10))
   (setq rime-show-candidate 'posframe)
-)
+  )
 
 ;; Rimel - 仅在 WSL 中使用（其他环境使用系统输入法或不使用 emacs-rime）
 ;;(when (and (eq system-type 'gnu/linux)
@@ -363,6 +338,17 @@
    "com.apple.keylayout.ABC"
    "com.apple.inputmethod.SCIM.Shuangpin"))
 
+
+(use-package beframe
+  :ensure t
+  )
+
+;; ---- merged from init-docker.el ----
+(use-package docker
+  :ensure t
+  :bind
+  ("C-c d" . docker)
+)
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

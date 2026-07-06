@@ -22,11 +22,19 @@
 ;;   ;;(doom-themes-vterm-config)
 ;;   )
 
-(defun my-apple-font()
+(defun my-apply-font()
   (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :weight 'medium))
   (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :weight 'medium))
   (setq face-font-rescale-alist
         '(("LXGW WenKai" . 1.25))))
+
+(my-apply-font)
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (select-frame frame)
+            (my-apply-font)))
+
+;;测试一下这个
 
  ;; |大家|
  ;; |aabb|大家
@@ -36,14 +44,6 @@
 ;; 告诉 Emacs：如果键盘信号发得太快，渲染跟不上了，就跳过中间过程，只画最后停下的地方
 (setq fast-but-imprecise-scrolling t)
 
-(my-apple-font)
-
-(add-hook 'after-make-frame-functions
-          (lambda (frame)
-            (select-frame frame)
-            (my-apply-font)))
-
-;;测试一下这个
 
 
 ;; 禁用一些GUI特性
@@ -191,18 +191,18 @@
 ;; 退出Emacs时进行确认
 (setq confirm-kill-emacs 'y-or-n-p)
 
-;;; Line numbers
+;;; Line numbers (currently disabled)
 ;; Explicitly define a width to reduce the cost of on-the-fly computation
-(setq-default display-line-numbers-width 3)
+;; (setq-default display-line-numbers-width 3)
 ;; Show absolute line numbers for narrowed regions to make it easier to tell the
 ;; buffer is narrowed, and where you are, exactly.
-(setq-default display-line-numbers-widen t)
+;; (setq-default display-line-numbers-widen t)
 ;; Line numbers are not displayed when large files are used.
-(setq line-number-display-limit large-file-warning-threshold)
-(setq line-number-display-limit-width 10000)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'conf-mode-hook 'display-line-numbers-mode)
-(add-hook 'text-mode-hook 'display-line-numbers-mode)
+;; (setq line-number-display-limit large-file-warning-threshold)
+;; (setq line-number-display-limit-width 10000)
+;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+;; (add-hook 'conf-mode-hook 'display-line-numbers-mode)
+;; (add-hook 'text-mode-hook 'display-line-numbers-mode)
 
 ;; 配置所有的编码为UTF-8，参考：
 ;; https://thraxys.wordpress.com/2016/01/13/utf-8-in-emacs-everywhere-forever/

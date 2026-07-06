@@ -1,7 +1,9 @@
-;;; init-lsp-bridge.el --- Lsp tools settings -*- lexical-binding: t -*-
+;;; init-programming.el --- Merged settings -*- lexical-binding: t -*-
 ;;; Commentary:
-;;; lsp-bridge is a language server client for Emacs, which provides
+;;; Merged from: init-lsp-bridge.el, init-prog.el, init-compile.el, init-dape.el, init-realgud.el
 ;;; Code:
+
+;; ---- merged from init-lsp-bridge.el ----
 
 (use-package markdown-mode
   :ensure t
@@ -220,7 +222,94 @@
   (add-hook 'context-menu-functions #'+context-menu-lsp-bridge)
   )
 
-(provide 'init-lsp-bridge)
+;; ---- merged from init-prog.el ----
+(use-package devdocs
+  :ensure t
+  :bind
+  (:map prog-mode-map
+        ("<f1>" . +devdocs-search))
+  :config
+  (defun +devdocs-lookup()
+    "devdocs look at symbol at point"
+    (interactive)
+    (devdocs-lookup nil (thing-at-point 'symbol t)))
+  (defun +devdocs-search()
+    "devdocs look at symbol at point"
+    (interactive)
+    (devdocs-search (thing-at-point 'symbol t)))
+)
 
+;; ---- merged from init-compile.el ----
+(setq-default compilation-scroll-output t)
+
+(require 'ansi-color)
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+
+(use-package compile
+  :ensure nil
+  :config
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(go-test "^\\s-*\\(.*\\.go\\):\\([0-9]+\\):" 1 2 nil 2))
+  (add-to-list 'compilation-error-regexp-alist 'go-test)
+  (add-to-list 'compilation-error-regexp-alist
+               '("\\([a-zA-Z0-9\\.]+\\)(\\([0-9]+\\)\\(,\\([0-9]+\\)\\)?) \\(Warning:\\)?"
+                 1 2 (4) (5)))
+  )
+
+(use-package quickrun
+  :ensure t
+  )
+
+;; ---- merged from init-dape.el ----
+(use-package dape
+  :ensure t
+  ;; :preface
+  ;; By default dape shares the same keybinding prefix as `gud'
+  ;; If you do not want to use any prefix, set it to nil.
+  ;; (setq dape-key-prefix "\C-x\C-a")
+
+  ;; :hook
+  ;; Save breakpoints on quit
+  ;; ((kill-emacs . dape-breakpoint-save)
+  ;; Load breakpoints on startup
+  ;;  (after-init . dape-breakpoint-load))
+
+  ;; :init
+  ;; To use window configuration like gud (gdb-mi)
+  ;; (setq dape-buffer-window-arrangement 'gud)
+
+  ;; :config
+  ;; Info buffers to the right
+  ;; (setq dape-buffer-window-arrangement 'right)
+
+  ;; Global bindings for setting breakpoints with mouse
+  ;; (dape-breakpoint-global-mode)
+
+  ;; Pulse source line (performance hit)
+  ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
+
+  ;; To not display info and/or buffers on startup
+  ;; (remove-hook 'dape-start-hook 'dape-info)
+  ;; (remove-hook 'dape-start-hook 'dape-repl)
+
+  ;; To display info and/or repl buffers on stopped
+  ;; (add-hook 'dape-stopped-hook 'dape-info)
+  ;; (add-hook 'dape-stopped-hook 'dape-repl)
+
+  ;; Kill compile buffer on build success
+  ;; (add-hook 'dape-compile-hook 'kill-buffer)
+
+  ;; Save buffers on startup, useful for interpreted languages
+  ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
+
+  ;; Projectile users
+  ;; (setq dape-cwd-fn 'projectile-project-root)
+  )
+
+;; ---- merged from init-realgud.el ----
+(use-package realgud
+ :ensure t)
+
+(provide 'init-programming)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-lsp-bridge.el ends here
+;;; init-programming.el ends here

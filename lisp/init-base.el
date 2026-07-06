@@ -45,7 +45,6 @@
   :config
   (general-evil-setup))
 
-
 (use-package transient
   :ensure t
   :demand t)

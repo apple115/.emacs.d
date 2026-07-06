@@ -20,27 +20,43 @@
                                    (string-trim (buffer-string))))
           :models '(deepseek-chat deepseek-coder))))
 
-(use-package claude-code-ide
-  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
-  :bind ("C-c C-'" . claude-code-ide-menu)
-  :init
-  ;; 在 init 阶段就设置，确保在包加载前生效
-  (setq claude-code-ide-use-side-window nil) ; 使用常规窗口而不是侧边窗口
-  (setq claude-code-ide-show-claude-window-in-ediff nil)
-  ;; 强制使用全屏显示（替换当前窗口）
-  (add-to-list 'display-buffer-alist
-               '("\\*claude-code\\[.*?\\]\\*"
-                 (display-buffer-full-frame)
-                 (inhibit-same-window . t)))
+;; (use-package claude-code-ide
+;;   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+;;   :bind ("C-c C-'" . claude-code-ide-menu)
+;;   :init
+;;   ;; 在 init 阶段就设置，确保在包加载前生效
+;;   (setq claude-code-ide-use-side-window nil) ; 使用常规窗口而不是侧边窗口
+;;   (setq claude-code-ide-show-claude-window-in-ediff nil)
+;;   ;; 强制使用全屏显示（替换当前窗口）
+;;   (add-to-list 'display-buffer-alist
+;;                '("\\*claude-code\\[.*?\\]\\*"
+;;                  (display-buffer-full-frame)
+;;                  (inhibit-same-window . t)))
+;;   :config
+;;   (evil-set-initial-state 'claude-code-ide-mode 'insert)
+;;   (claude-code-ide-emacs-tools-setup)
+;;   ;; 确保设置没有被覆盖
+;;   (setq claude-code-ide-use-side-window nil)
+;;   (setq claude-code-ide-terminal-initialization-delay 0.15)
+;;   (setq claude-code-ide-vterm-anti-flicker t)
+;;   (setq claude-code-ide-vterm-render-delay 0.01)
+;;   )
+
+(use-package inheritenv
+  :vc (:url "https://github.com/purcell/inheritenv" :rev :newest))
+
+(use-package claude-code
+  :ensure t
+  :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
   :config
-  (evil-set-initial-state 'claude-code-ide-mode 'insert)
-  (claude-code-ide-emacs-tools-setup)
-  ;; 确保设置没有被覆盖
-  (setq claude-code-ide-use-side-window nil)
-  (setq claude-code-ide-terminal-initialization-delay 0.15)
-  (setq claude-code-ide-vterm-anti-flicker t)
-  (setq claude-code-ide-vterm-render-delay 0.01)
-  )
+  (claude-code-mode)
+  (setq claude-code-terminal-backend 'ghostel)
+  :bind-keymap ("C-c c" . claude-code-command-map)
+  ;; Optionally define a repeat map so that "M" will cycle thru Claude auto-accept/plan/confirm modes after invoking claude-code-cycle-mode / C-c M.
+  :bind
+  (:repeat-map my-claude-code-map ("M" . claude-code-cycle-mode)))
+
+
 
 ;;; gptel-quick: 选中文字 → minibuffer提问 → popup显示回答
 (defvar +gptel-quick-buffer "*gptel-quick*")
@@ -61,15 +77,15 @@
     (display-buffer +gptel-quick-buffer
                     '(display-buffer-pop-up-window (inhibit-same-window . t)))
     (gptel-request prompt
-      :buffer (get-buffer +gptel-quick-buffer)
-      :stream nil
-      :callback
-      (lambda (response info)
-        (when (stringp response)
-          (with-current-buffer (get-buffer +gptel-quick-buffer)
-            (erase-buffer)
-            (insert (format "# Question: %s\n\n%s" question response))
-            (goto-char (point-min))))))))
+                   :buffer (get-buffer +gptel-quick-buffer)
+                   :stream nil
+                   :callback
+                   (lambda (response info)
+                     (when (stringp response)
+                       (with-current-buffer (get-buffer +gptel-quick-buffer)
+                         (erase-buffer)
+                         (insert (format "# Question: %s\n\n%s" question response))
+                         (goto-char (point-min))))))))
 
 
 (provide 'init-ai)
