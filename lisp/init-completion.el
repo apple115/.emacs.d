@@ -44,6 +44,15 @@
   (vertico-mode t)
   )
 
+(use-package vertico-directory
+  :after vertico
+  :ensure nil
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
 (use-package embark
   :ensure t
   :bind
@@ -184,18 +193,6 @@
 ;; (use-package ht
 ;;   :ensure t
 ;; )
-
-;; (use-package lsp-proxy
-;;  :load-path "site-lisp/lsp-proxy"
-;;  :config
-;;    (with-eval-after-load 'evil-collection
-;;    (evil-collection-define-key 'normal 'lsp-proxy-mode-map
-;;      (kbd "K")  'lsp-proxy-describe-thing-at-point
-;;      (kbd "gd") 'lsp-proxy-find-definition
-;;      (kbd "gr") 'lsp-proxy-find-references
-;;      (kbd "gD") 'lsp-proxy-find-declaration
-;;      (kbd "gi") 'lsp-proxy-find-implementations
-;;      )))
 
 ;; ---- merged from init-consult.el ----
 (use-package consult

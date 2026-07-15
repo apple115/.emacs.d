@@ -78,6 +78,46 @@ regarding the asynchronous search and the arguments."
   (ghostel--load-module t)
   (ghostel-other))
 
+(defun +ghostel-right ()
+  "Open a new ghostel terminal in a window to the right.
+The terminal starts in the directory of the current file or dired buffer."
+  (interactive)
+  (let ((default-directory (or (and (derived-mode-p 'dired-mode)
+                                    default-directory)
+                               (and buffer-file-name
+                                    (file-name-directory buffer-file-name))
+                               default-directory)))
+    (split-window-horizontally)
+    (other-window 1)
+    (+ghostel-new)))
+
+(defun +ghostel-below ()
+  "Open a new ghostel terminal in a window below.
+The terminal starts in the directory of the current file or dired buffer."
+  (interactive)
+  (let ((default-directory (or (and (derived-mode-p 'dired-mode)
+                                    default-directory)
+                               (and buffer-file-name
+                                    (file-name-directory buffer-file-name))
+                               default-directory)))
+    (split-window-vertically)
+    (other-window 1)
+    (+ghostel-new)))
+
+(defun +dired-right ()
+  "Open dired in a new window to the right."
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1)
+  (dired-jump))
+
+(defun +dired-below ()
+  "Open dired in a new window below."
+  (interactive)
+  (split-window-vertically)
+  (other-window 1)
+  (dired-jump))
+
 ;; eshell 函数（自动使用 eat，因为启用了 eat-eshell-mode）
 ;;(defun +new-eshell ()
 ;;  "Create a new eshell buffer with numbered name."
@@ -146,12 +186,28 @@ If NEWNAME is a directory, move file to it."
     (delete-file file)))
 
 (defun +copy-current-filename (file)
-  "Copy the full path to the current FILE."
+  "Copy the full path to the current FILE.
+In Dired, copy the absolute path of the file at point."
   (interactive
-   (list (or buffer-file-name
+   (list (or (and (derived-mode-p 'dired-mode)
+                  (dired-get-filename nil t))
+             buffer-file-name
              (user-error "No file is visiting"))))
   (kill-new file)
   (message "Copying '%s' to clipboard" file))
+
+(defun +copy-project-relative-path ()
+  "Copy the project-relative path of current FILE, or absolute path if no project.
+In Dired, use the file at point."
+  (interactive)
+  (let ((file (or (and (derived-mode-p 'dired-mode)
+                       (dired-get-filename nil t))
+                  buffer-file-name
+                  (user-error "No file is visiting"))))
+    (kill-new (or (when-let ((root (project-root (project-current))))
+                    (file-relative-name file root))
+                  file))
+    (message "Copied path: %s" (current-kill 0))))
 
 
 (defun +format-code-and-flycheck()

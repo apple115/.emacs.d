@@ -15,8 +15,9 @@
   (:map markdown-mode-map
         ("C-c C-e" . markdown-do)))
 
-(use-package lsp-bridge
-  :load-path "site-lisp/lsp-bridge"
+(when (eq my-lsp-provider 'lsp-bridge)
+  (use-package lsp-bridge
+    :load-path "site-lisp/lsp-bridge"
   :config
   ;;(setq lsp-bridge-log-level 'debug)
   ;; uv 管理的虚拟环境 (uv sync 自动生成)
@@ -220,7 +221,61 @@
     menu)
 
   (add-hook 'context-menu-functions #'+context-menu-lsp-bridge)
-  )
+  ))
+
+(when (eq my-lsp-provider 'lsp-proxy)
+  (let ((proxy-dir (expand-file-name "site-lisp/lsp-proxy" user-emacs-directory)))
+    (if (file-directory-p proxy-dir)
+        (use-package lsp-proxy
+          :load-path "site-lisp/lsp-proxy"
+          :config
+          ;; 显式指定二进制路径，缺失时才自动下载
+          (setq lsp-proxy-server-path
+                (expand-file-name (if +is-win-p "emacs-lsp-proxy.exe" "emacs-lsp-proxy")
+                                  (expand-file-name "lsp-proxy" user-emacs-directory)))
+          (unless (file-exists-p lsp-proxy-server-path)
+            (lsp-proxy-install-server))
+
+          ;; 性能调优：按需求注释掉某一行
+          (setq lsp-proxy--send-changes-idle-time 0.2)   ; 批量发送改动，减少服务器压力
+          (setq lsp-proxy-idle-delay 0.3)                ; 默认 0.5，延迟触发
+          (setq lsp-proxy-max-completion-item 15)        ; 减少补全候选数量
+          (setq lsp-proxy-diagnostics-max-push-count 30) ; 限制单次推送诊断数
+          (setq lsp-proxy-enable-symbol-highlighting nil); 关闭光标处符号高亮
+          (setq lsp-proxy-enable-hover-eldoc nil)        ; 关闭自动 hover，手动 K 查看
+          (setq lsp-proxy-inline-completion-enable-predicates nil) ; 关闭 inline 补全
+          (setq lsp-proxy-xref-optimization-strategy 'lazy)        ; 大文件 xref 最省资源
+          (setq lsp-proxy-large-file-threshold (* 5 1024 1024))    ; 5MB 即走大文件逻辑
+          (setq lsp-proxy-log-buffer-max nil)            ; 关闭日志 buffer
+
+          ;; 在你常用的 mode 里自动启动
+          (dolist (hook '(go-ts-mode-hook
+                          rust-ts-mode-hook
+                          python-mode-hook
+                          python-ts-mode-hook
+                          typescript-ts-mode-hook
+                          tsx-ts-mode-hook
+                          js-ts-mode-hook
+                          web-mode-hook))
+            (add-hook hook #'lsp-proxy-mode))
+
+          ;; evil 键位，尽量保持和 lsp-bridge 一致
+          (with-eval-after-load 'evil
+            (evil-define-key 'normal lsp-proxy-mode-map
+              (kbd "K")  'lsp-proxy-describe-thing-at-point
+              (kbd "gd") 'lsp-proxy-find-definition
+              (kbd "gr") 'lsp-proxy-find-references
+              (kbd "gD") 'lsp-proxy-find-declaration
+              (kbd "gi") 'lsp-proxy-find-implementations)
+
+            (+leader-keys
+              :keymaps 'lsp-proxy-mode-map
+              "l"  '(:ignore t :which-key "LSP")
+              "lr" 'lsp-proxy-rename
+              "la" 'lsp-proxy-execute-code-action
+              "lf" 'lsp-proxy-format-buffer
+              "ld" 'lsp-proxy-show-project-diagnostics)))
+      (message "lsp-proxy 未克隆，请先运行 git submodule add https://github.com/jadestrong/lsp-proxy.git site-lisp/lsp-proxy"))))
 
 ;; ---- merged from init-prog.el ----
 (use-package devdocs

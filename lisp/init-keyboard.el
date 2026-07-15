@@ -15,8 +15,15 @@
 (+leader-keys
   "SPC" '(consult-buffer :wk "find file")
   "=" '(format-all-buffer :wk "format")
-  "/" '(split-window-horizontally :wk"split window horizontally")
-  "-" '(split-window-vertically :wk"split window vertically")
+  "/" '(:ignore t :wk "split right")
+  "/ /" '(split-window-horizontally :wk "split window right")
+  "/ t" '(+ghostel-right :wk "terminal right")
+  "/ d" '(+dired-right :wk "dired right")
+
+  "-" '(:ignore t :wk "split below")
+  "- -" '(split-window-vertically :wk "split window below")
+  "- t" '(+ghostel-below :wk "terminal below")
+  "- d" '(+dired-below :wk "dired below")
   "[" '(dired-sidebar-toggle-sidebar :wk"open dired-siderbar")
   "." '(find-file :wk "find file")
   "s ." '(sudo-edit-find-file :wk "Sudo find file")
@@ -47,8 +54,11 @@
   "f /" '(+consult-fd-other-window :wk "find file on other window")
   "f R" '(+rename-current-file :wk "rename and move current file")
   "f D" '(+delete-current-file :wk "delete current file")
-  "f y" '(+copy-current-filename :wk "copy current filename")
   "f U" '(sudo-edit :wk "Sudo edit file")
+
+  "p" '(:ignore t :wk "project")
+  "p y" '(+copy-project-relative-path :wk "copy project-relative path")
+  "p Y" '(+copy-current-filename :wk "copy absolute path")
 
   "s" '(:ignore t :wk "Search")
   "s s" '(link-hint-open-link :wk "search link")

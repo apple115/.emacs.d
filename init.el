@@ -70,7 +70,7 @@
   (require 'init-tools)
   (require 'init-keyboard)
   (require 'init-ui)
-  (require 'init-theme)
+  ;; (require 'init-theme)
   (require 'init-completion)
   ;; 编程 / 项目 / 笔记
   (require 'init-programming)
@@ -81,6 +81,7 @@
   (require 'init-func)
   (require 'init-windows)
   (require 'init-chinese)
+  (require 'init-theme)
   (require 'init-ai)
   (require 'init-git)
   (require 'init-my-blog)
@@ -96,29 +97,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ace-window add-node-modules-path agent-shell annalist appine auto-yasnippet
-                beframe buffer-terminator cal-china-x cape citre claude-code
-                claude-code-ide clojure-ts-mode colorful-mode compile-angel
-                consult-dir consult-notes consult-todo corfu dape denote devdocs
-                diff-hl dired-rsync dired-sidebar diredfl docker doom-modeline
-                doom-themes dumb-jump dwim-shell-command eglot-booster eldoc-box
-                embark-consult emmet-mode engine-mode erlang evil-collection
-                evil-ghostel evil-indent-plus evil-matchit evil-nerd-commenter
-                evil-surround evil-textobj-tree-sitter exec-path-from-shell
-                fish-mode flycheck format-all general go-dlv go-fill-struct
-                go-gen-test go-impl go-tag gotest gptel graphviz-dot-mode
-                haskell-mode highlight-parentheses i18n-quick ibuffer-project
-                jinx ligature link-hint magit marginalia markdown-mode
-                mini-modeline msgpack nerd-icons-corfu nerd-icons-dired
-                nerd-icons-ibuffer nov ob-go ob-restclient orderless
-                org-auto-tangle org-download org-modern org-roam ox-gfm
-                ox-reveal pdf-tools pinyinlib plantuml-mode popper python-mode
-                quickrun rainbow-delimiters realgud rime rust-mode scss-mode
-                shackle sis smart-mode-line sudo-edit tabspaces tramp-hlo
-                tramp-rpc treesit-auto ultra-scroll vc-msg vertico
-                virtualenvwrapper vlf vterm-toggle web-mode wgrep yasnippet-capf
-                zig-mode))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
    '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
      (rimel :url "https://github.com/emacs-rime/rimel" :rev "master"))))

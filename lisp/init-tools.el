@@ -18,10 +18,13 @@
         which-key-min-display-lines 5
         which-key-side-window-slot -10
         which-key-side-window-max-height 0.25
-        which-key-idle-delay 0.8
+        which-key-idle-delay 1.5
         which-key-max-description-length 25
         which-key-allow-imprecise-window-fit t
-        which-key-separator " → " ))
+        ;; which-key-separator " → "
+        which-key-allow-regexps nil
+        )
+  )
 
 
 (use-package treesit
@@ -152,14 +155,12 @@
   (add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
   )
 
-;; Ghostel - 跨平台终端模拟器
+;; Ghostel - 跨平台终端模拟器（0.43.0+ 官方已支持 Windows）
 ;; 由于 ghostel 主文件在 lisp/ 子目录，use-package :vc 不支持 :lisp-dir
 ;; 需用底层 package-vc-install 预先安装
 (unless (package-installed-p 'ghostel)
   (package-vc-install
-   `(ghostel :url ,(if +is-win-p
-                       "https://github.com/kiennq/ghostel"
-                     "https://github.com/dakra/ghostel")
+   `(ghostel :url "https://github.com/dakra/ghostel"
              :lisp-dir "lisp")))
 
 (use-package ghostel
@@ -178,9 +179,6 @@
          (t
           (or (executable-find "/usr/bin/fish")
               (executable-find "fish")))))
-  ;; Windows 使用 kiennq/ghostel fork 的 release
-  (when +is-win-p
-    (setq ghostel-github-release-url "https://github.com/kiennq/ghostel/releases"))
   ;; 禁用终端 title 自动重命名 buffer，避免路径过长
   (setq ghostel-set-title-function nil)
   :config
