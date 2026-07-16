@@ -151,6 +151,17 @@
     "gr" 'lsp-bridge-find-references
     )
 
+  ;; 让 evil 在跳转前记录位置，便于 Ctrl-o 返回
+  (dolist (cmd '(lsp-bridge-find-def
+                 lsp-bridge-find-def-other-window
+                 lsp-bridge-find-type-def
+                 lsp-bridge-find-type-def-other-window
+                 lsp-bridge-find-impl
+                 lsp-bridge-find-impl-other-window
+                 lsp-bridge-find-references
+                 lsp-bridge-find-def-return))
+    (evil-add-command-properties cmd :jump t))
+
   ;; 设置lsp-bridge-ref-mode 使其符合evil 用户的操作
   (with-eval-after-load 'lsp-bridge-ref
     (evil-set-initial-state 'lsp-bridge-ref-mode 'motion)
@@ -267,6 +278,14 @@
               (kbd "gr") 'lsp-proxy-find-references
               (kbd "gD") 'lsp-proxy-find-declaration
               (kbd "gi") 'lsp-proxy-find-implementations)
+
+            ;; 让 evil 在跳转前记录位置，便于 Ctrl-o 返回
+            (dolist (cmd '(lsp-proxy-find-definition
+                           lsp-proxy-find-references
+                           lsp-proxy-find-declaration
+                           lsp-proxy-find-type-definition
+                           lsp-proxy-find-implementations))
+              (evil-add-command-properties cmd :jump t))
 
             (+leader-keys
               :keymaps 'lsp-proxy-mode-map
