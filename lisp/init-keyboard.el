@@ -18,11 +18,13 @@
   "/" '(:ignore t :wk "split right")
   "/ /" '(split-window-horizontally :wk "split window right")
   "/ t" '(+ghostel-right :wk "terminal right")
+  "/ e" '(+eshell-right :wk "eshell right")
   "/ d" '(+dired-right :wk "dired right")
 
   "-" '(:ignore t :wk "split below")
   "- -" '(split-window-vertically :wk "split window below")
   "- t" '(+ghostel-below :wk "terminal below")
+  "- e" '(+eshell-below :wk "eshell below")
   "- d" '(+dired-below :wk "dired below")
   "[" '(dired-sidebar-toggle-sidebar :wk"open dired-siderbar")
   "." '(find-file :wk "find file")
@@ -49,6 +51,7 @@
 
   "g"'(:ignore t :wk "git")
   "g g" '(magit-status :wk"magit-status")
+  "g m" '(my-git-timemachine :wk"git-timemachine")
 
   "f" '(:ignore t :wk "file")
   "f /" '(+consult-fd-other-window :wk "find file on other window")
@@ -68,6 +71,7 @@
   "a o" '(sanityinc/consult-ripgrep-at-point :wk "search at point")
   "a d" '(+devdocs-search :wk "search docs at point")
   "a q" '(+gptel-quick :wk "AI quick ask")
+  "a k" '(+ghostel-kimi-yolo :wk "kimi --yolo")
 
   "b" '(:ignore t :wk "buffer")
   "b b" '(consult-buffer :wk "buffer-switch")

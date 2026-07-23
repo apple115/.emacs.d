@@ -1,4 +1,5 @@
 ;;; init-org.el --- Merged settings -*- lexical-binding: t -*-
+
 ;;; Commentary:
 ;;; Merged from: init-write.el, init-org-agenda.el, init-org-capture.el, init-org-ui.el
 ;;; Code:
@@ -148,24 +149,6 @@
   :hook (org-mode . org-auto-tangle-mode)
   )
 
-;; agenda
-;; (add-hook 'org-agenda-mode-hook
-;;           (lambda ()
-;;             (evil-set-initial-state 'org-agenda-mode 'normal)))
-
-;; ;; capture
-;; (add-hook 'org-capture-mode-hook
-;;           (lambda ()
-;;             (evil-set-initial-state 'org-capture-mode 'normal)))
-
-(with-eval-after-load 'evil-collection-mode
-  (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "/") #'org-agenda-filter)
-  (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "tab") #'org-agenda-goto)
-  (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "q") #'org-agenda-quit)
-  (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "j") #'org-agenda-next-line)
-  (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "k") #'org-agenda-previous-line)
-  (evil-collection-define-key 'normal 'org-agenda-mode-map (kbd "gr") #'org-agenda-redo-all)
-  )
 
 (use-package denote
   :ensure t
@@ -256,17 +239,6 @@
   )
 
 
-;; (use-package org-appear
-;;   :ensure t
-;;   :hook (org-mode . org-appear-mode)
-;;   :config
-;;   (setq org-appear-autolinks t)
-;;   (setq org-appear-autosubmarkers t)
-;;   (setq org-appear-autoentities t)
-;;   (setq org-appear-autokeywords t)
-;;   (setq org-appear-inside-latex t)
-;;   )
-
 (use-package ox-reveal
   :ensure t
   :config
@@ -274,16 +246,6 @@
   (reveal-mode 1)
   )
 
-(use-package hexo
-  :load-path "./site-lisp/hexo.el"
-  :config
-  (defun hexo-my-blog ()
-    (interactive)
-    (hexo "~/blog/"))
-  ;; (evil-collection-define-key 'normal 'hexo-mode-map (kbd "RET") #'hexo-command-open-file)
-  ;; (evil-collection-define-key 'normal 'hexo-mode-map (kbd "q") #'quit-window)
-  ;; (evil-collection-define-key 'normal 'hexo-mode-map (kbd "D") #'hexo-command-delete-file)
-  )
 
 (use-package jinx
   :ensure t
@@ -372,7 +334,7 @@
 
 (use-package org-agenda
   :ensure nil
-  :hook (org-agenda-finalize . org-agenda-to-appt)
+  ;; :hook (org-agenda-finalize . org-agenda-to-appt)
   :config
   ;; 日程模式的日期格式设置
   (setq org-agenda-format-date 'org-agenda-format-date-aligned)
@@ -471,15 +433,15 @@ This function makes sure that dates are aligned for easy reading."
   (setq org-time-stamp-formats '("<%Y-%m-%d %A>" . "<%Y-%m-%d %A %H:%M>"))
   ;; 不同日程类别间的间隔
   (setq org-cycle-separator-lines 2)
-  :custom
-  ;; 设置需要被日程监控的org文件
-  (org-agenda-files
+  (setq org-agenda-files
    (list (expand-file-name "tasks.org" org-directory)
-         (expand-file-name "diary.org" org-directory)
-         (expand-file-name "habits.org" org-directory)
-         (expand-file-name "projects.org" org-directory)
+         ;; (expand-file-name "diary.org" org-directory)
+         ;; (expand-file-name "habits.org" org-directory)
+         ;; (expand-file-name "projects.org" org-directory)
          ;; (expand-file-name "config.org" user-emacs-directory)
          ))
+  :custom
+  ;; 设置需要被日程监控的org文件
   ;; 设置org的日记文件
   ;; (org-agenda-diary-file (expand-file-name "diary.org" org-directory))
   ;; 日记插入精确时间戳

@@ -93,7 +93,10 @@
   :ensure t
   :config
   (setq completion-styles '(orderless flex)
-        completion-category-overrides '((eglot (styles . (orderless flex))))))
+        completion-category-overrides
+        '((file (styles hotfuzz partial-completion))
+          (consult-grep (styles hotfuzz))
+          (eglot (styles orderless flex)))))
 
 (use-package marginalia
   :ensure t
@@ -240,6 +243,10 @@
   :ensure t ; only need to install it, embark loads it after consult if found
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
+;; 安装 hotfuzz；具体类别绑定在 orderless 的 `completion-category-overrides' 里设置。
+(use-package hotfuzz
+  :ensure t)
 
 ;; (setq read-file-name-function #'consult-find-file-with-preview)
 ;; (defun consult-find-file-with-preview (prompt &optional dir default mustmatch initial pred)

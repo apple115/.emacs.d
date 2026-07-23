@@ -220,15 +220,27 @@
   :custom
   (buffer-terminator-verbose nil)
 
-  ;; Set the inactivity timeout (in seconds) after which buffers are considered
-  ;; inactive (default is 30 minutes):
-  (buffer-terminator-inactivity-timeout (* 30 60)) ; 30 minutes
-
-  ;; Define how frequently the cleanup process should run (default is every 10
-  ;; minutes):
-  (buffer-terminator-interval (* 10 60)) ; 10 minutes
+  ;; 每 30 分钟触发一次清理扫描。
+  (buffer-terminator-interval (* 30 60))
 
   :config
+  ;; 只保留特殊 buffer、进程 buffer 和可见 buffer，
+  ;; 移除 (kill-buffer-property . inactive) 规则，普通文件 buffer 不再被清理。
+  (setq buffer-terminator-rules-alist
+        '((keep-buffer-property . special)
+          (keep-buffer-property . process)
+          (keep-buffer-property . visible)))
+
+  ;; 只清理当前没显示在窗口里的 dired buffer。
+  (defun my/cleanup-invisible-dired-buffers ()
+    "Kill dired buffers that are not currently visible."
+    (dolist (buf (buffer-list))
+      (when (and (buffer-live-p buf)
+                 (eq (buffer-local-value 'major-mode buf) 'dired-mode)
+                 (not (get-buffer-window buf 'visible)))
+        (kill-buffer buf))))
+
+  (add-hook 'buffer-terminator-before-hook #'my/cleanup-invisible-dired-buffers)
   (buffer-terminator-mode 1))
 
 ;;(use-package tramp-hlo
@@ -332,9 +344,15 @@
    (org-ts-mode . sis-inline-mode)
    (org-ts-mode . sis-context-mode))
   :config
-  (sis-ism-lazyman-config
-   "com.apple.keylayout.ABC"
-   "com.apple.inputmethod.SCIM.Shuangpin"))
+  (when +is-mac-p
+    (sis-ism-lazyman-config
+    "com.apple.keylayout.ABC"
+    "com.apple.inputmethod.SCIM.Shuangpin")
+    )
+  (when +is-win-p
+    (setq sis--ism 'w32)
+    )
+)
 
 
 (use-package beframe
@@ -347,6 +365,71 @@
   :bind
   ("C-c d" . docker)
 )
+
+(use-package bookmark
+  :ensure nil
+  :defer t
+  :init
+  ;; 自定义书签文件路径（如果存在）
+  (let ((file "~/.emacs.bmk"))
+    (when (file-exists-p file)
+      (setq bookmark-default-file file)))
+
+  :config
+  (defun my-build-bookmark-candidate (bookmark)
+    "Re-shape BOOKMARK for completing-read display."
+    (let* ((key (cond
+                 ((and (assoc 'filename bookmark)
+                       (cdr (assoc 'filename bookmark)))
+                  (format "%s (%s)"
+                          (car bookmark)
+                          (cdr (assoc 'filename bookmark))))
+                 ((and (assoc 'location bookmark)
+                       (cdr (assoc 'location bookmark)))
+                  (format "%s (%s)"
+                          (car bookmark)
+                          (cdr (assoc 'location bookmark))))
+                 (t
+                  (car bookmark)))))
+      (cons key bookmark)))
+
+  (defun my-bookmark-set ()
+    "Set and save bookmark.
+If bookmark with same file name already exists, override it quietly."
+    (interactive)
+    (bookmark-maybe-load-default-file)
+    (let* ((filename (cond
+                      ((eq major-mode 'eww-mode)
+                       (eww-current-url))
+                      (t
+                       buffer-file-name)))
+           existing-bookmark)
+      (when (setq existing-bookmark
+                  (cl-find-if (lambda (b)
+                                (let* ((f (cdr (assoc 'filename (cdr b)))))
+                                  (when (and f (file-exists-p f))
+                                    (setq f (file-truename f)))
+                                  (string= f filename)))
+                              bookmark-alist))
+        (setq existing-bookmark (car existing-bookmark)))
+      (bookmark-set existing-bookmark)
+      (bookmark-save)
+      (when existing-bookmark
+        (message "Saved into existing bookmark \"%s\"" existing-bookmark))))
+
+  (defun my-bookmark-goto ()
+    "Open bookmark with completing-read."
+    (interactive)
+    (bookmark-maybe-load-default-file)
+    (let* ((cands (delq nil (mapcar #'my-build-bookmark-candidate
+                                    (and (boundp 'bookmark-alist)
+                                         bookmark-alist))))
+           (selected (completing-read "Bookmarks: " cands)))
+      (when selected
+        (bookmark-jump (cdr (assoc selected cands))))))
+  )
+
+(setq eww-retrieve-command '("readable"))
 
 (provide 'init-tools)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

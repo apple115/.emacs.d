@@ -17,22 +17,24 @@
             )
   :config
     (defun my/project-files-in-directory (dir)
-    "Use `fd' to list files in DIR."
-    (let* ((default-directory dir)
-            (localdir (file-local-name (expand-file-name dir)))
-            (command (format "fd -H -t f -0 . %s" localdir)))
+      "Use `fd' to list files in DIR."
+      (let* ((default-directory dir)
+             (localdir (file-local-name (expand-file-name dir)))
+             (command (format "fd -H -t f -0 . %s" (shell-quote-argument localdir))))
         (project--remote-file-names
-        (sort (split-string (shell-command-to-string command) "\0" t)
-            #'string<))))
+         (sort (split-string (shell-command-to-string command) "\0" t)
+               #'string<))))
 
-  ;; (cl-defmethod project-files ((project (head local)) &optional dirs)
-  ;;   "Override `project-files' to use `fd' in local projects."
-  ;;   (mapcan #'my/project-files-in-directory
-  ;;           (or dirs (list (project-root project)))))
+    ;; 用 fd 覆盖 project.el 默认的 find 命令，避免 Windows 上调用到系统 FIND.exe。
+    (cl-defmethod project-files ((project (head local)) &optional dirs)
+      "Override `project-files' to use `fd' in local projects."
+      (mapcan #'my/project-files-in-directory
+              (or dirs (list (project-root project)))))
 
-  ;;   (cl-defmethod project-root ((project (head local)))
-  ;;   "Extract the root directory from a 'local' project object."
-  ;;   (cdr project))
+    (cl-defmethod project-files ((project (head vc)) &optional dirs)
+      "Override `project-files' to use `fd' in vc projects."
+      (mapcan #'my/project-files-in-directory
+              (or dirs (list (project-root project)))))
 
 ;; 确保这一段存在
 ;;如果一个项目的类型是 local，请这样找到它的根目录
@@ -55,7 +57,7 @@
         (format "%s\\|%s"
                 vc-ignore-dir-regexp
                 tramp-file-name-regexp))
-  (setq project-vc-ignores'("nix/store/"  "node_modules/"  "go/pkg/"  ".direnv/" "vendor/"))
+  (setq project-vc-ignores'("nix/store/"  "node_modules/"  "go/pkg/"  ".direnv/" "vendor/" ".git/"))
   )
 
 ;; 添加启动
