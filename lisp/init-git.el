@@ -28,7 +28,11 @@
   (setenv "GIT_OPTIONAL_LOCKS" "0")
   ;; Windows 需要指定 git 路径，macOS/Linux 用系统默认
   (when +is-win-p
-    (setq magit-git-executable "C:\\Program Files\\Git\\bin\\git.exe"))
+    (setq magit-git-executable "C:\\Program Files\\Git\\bin\\git.exe")
+    ;; 指向 Git for Windows 的 diff
+    (setq ediff-diff-program "C:/Program Files/Git/usr/bin/diff.exe")
+    (setq ediff-diff3-program "C:/Program Files/Git/usr/bin/diff3.exe")
+    )
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   (remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff)
@@ -137,6 +141,52 @@
   ;; 自定义显示格式（可选）
   (setq vc-msg-format
         "Author: %a%nDate: %d%nSummary: %s%nHash: %H"))
+
+;;https://github.com/redguardtoo/emacs.d/blob/d59ab36d22cdf913918f94f25d8ad0b41ecd02e7/lisp/init-git.el#L152
+;;参考大佬的代码写的等价的
+(use-package git-timemachine
+  :ensure t
+  :defer t
+  :commands (my-git-timemachine
+              my-git-timemachine-show-selected-revision)
+  :init
+  (defun my-git-timemachine--format-revision (rev)
+    "Format a git-timemachine revision for completing-read display.
+
+REV is a list from `git-timemachine--revisions' with structure:
+  (HASH AUTHOR DATE SUBJECT RELATIVE-TIME ...)."
+    (let ((hash (substring-no-properties (nth 0 rev) 0 7))
+          (subject (nth 5 rev))
+          (reltime (nth 6 rev)))
+      (concat hash " | " subject " | " reltime)))
+
+  (defun my-git-timemachine-show-selected-revision ()
+    "Show a specific file revision via `completing-read'.
+
+Presents all revisions of the current file in a list, allowing
+quick jump to any historical version without sequential n/p navigation."
+    (interactive)
+    (let* ((revisions (git-timemachine--revisions))
+           (collection (mapcar
+                        (lambda (rev)
+                          (cons (my-git-timemachine--format-revision rev) rev))
+                        revisions))
+           (selected (completing-read "Select revision: " collection
+                                   ;; nil nil nil nil
+                                   ;; predicate require-match initial hist
+                                   )))
+      (when (and selected (not (string-empty-p selected)))
+        (git-timemachine-show-revision
+         (cdr (assoc selected collection))))))
+
+  (defun my-git-timemachine ()
+    "Open git-timemachine with `completing-read' revision selector.
+Unlike the default sequential navigation, this jumps directly to
+a chosen commit from the file's history."
+    (interactive)
+    (git-timemachine--start #'my-git-timemachine-show-selected-revision))
+  )
+
 
 (provide 'init-git)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
