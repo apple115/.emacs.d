@@ -107,33 +107,6 @@
   :config
   (setq global-evil-matchit-mode 1))
 
-(use-package evil-textobj-tree-sitter
-  :ensure t
-  :after evil
-  :config
-  (define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "call.outer"))
-  (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "call.inner"))
-  (define-key evil-outer-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "class.outer"))
-  (define-key evil-inner-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "class.inner"))
-  (define-key evil-outer-text-objects-map "l" (evil-textobj-tree-sitter-get-textobj "loop.outer"))
-  (define-key evil-inner-text-objects-map "l" (evil-textobj-tree-sitter-get-textobj "loop.inner"))
-  (define-key evil-outer-text-objects-map "m" (evil-textobj-tree-sitter-get-textobj "function.outer"))
-  (define-key evil-inner-text-objects-map "m" (evil-textobj-tree-sitter-get-textobj "function.inner"))
-  ;; Goto start of next function
-  (define-key evil-normal-state-map
-              (kbd "]m")
-              (lambda ()
-                (interactive)
-                (evil-textobj-tree-sitter-goto-textobj "function.outer")))
-
-  ;; Goto start of previous function
-  (define-key evil-normal-state-map
-              (kbd "[m")
-              (lambda ()
-                (interactive)
-                (evil-textobj-tree-sitter-goto-textobj "function.outer" t)))
-  )
-
 (setq x-select-request-type nil)
 
 (use-package avy
