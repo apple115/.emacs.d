@@ -544,3 +544,22 @@ file-types = ["go"]
 language-id = "go"
 roots = ["go.work", "go.mod"]
 language-servers = [ "gopls" ]
+
+[language-server.vtsls.config.vtsls.tsserver]
+globalPlugins = [
+  { name = "@vue/typescript-plugin", location = "~/scoop/persist/nodejs/bin/node_modules/@vue/typescript-plugin", languages = ["vue"], enableForWorkspaceTypeScriptVersions = true, configNamespace = "typescript" }
+]
+
+[language-server.vue-language-server]
+command = "vue-language-server"
+args = ["--stdio"]
+
+[[language]]
+name = "vue"
+roots = ["package.json"]
+language-id = "vue"
+file-types = ["vue"]
+language-servers = [
+  { name = "vue-language-server", except-features = ["goto-definition", "goto-implementation", "goto-type-definition", "goto-declaration", "goto-reference"] },
+  "vtsls"
+]
