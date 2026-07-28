@@ -70,8 +70,8 @@
 
   "a o" '(sanityinc/consult-ripgrep-at-point :wk "search at point")
   "a d" '(+devdocs-search :wk "search docs at point")
-  "a q" '(+gptel-quick :wk "AI quick ask")
   "a k" '(+ghostel-kimi-yolo :wk "kimi --yolo")
+  "a a" '(+ghostel-kimi-yolo :wk "omp --yolo")
 
   "b" '(:ignore t :wk "buffer")
   "b b" '(consult-buffer :wk "buffer-switch")

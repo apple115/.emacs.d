@@ -11,20 +11,23 @@
                             (fullscreen)))
 
 
-;; (use-package doom-themes
-;;   :ensure t
-;;   :config
-;;   ;; Global settings (defaults)
-;;   (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
-;; 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;   (load-theme 'doom-gruvbox-light t)
-;;   (doom-themes-treemacs-config)
-;;   ;;(doom-themes-vterm-config)
-;;   )
 
 (defun my-apply-font()
   (set-face-attribute 'default nil :font (font-spec :family "JetBrains Mono" :weight 'medium))
   (set-fontset-font t '(#x2ff0 . #x9fff) (font-spec :family "LXGW WenKai" :weight 'medium))
+
+  (when (member "Segoe UI Emoji" (font-family-list))
+  (set-fontset-font
+    t 'symbol (font-spec :family "Segoe UI Emoji") nil 'prepend))
+
+ (cond
+   ((member "Apple Symbols" (font-family-list))
+    (set-fontset-font t '(#x2980 . #x29FF) (font-spec :family "Apple Symbols") nil 'prepend))
+   ((member "Segoe UI Symbol" (font-family-list))
+    (set-fontset-font t '(#x2980 . #x29FF) (font-spec :family "Segoe UI Symbol") nil 'prepend))
+   ((member "Cambria Math" (font-family-list))
+    (set-fontset-font t '(#x2980 . #x29FF) (font-spec :family "Cambria Math") nil 'prepend)))
+
   (setq face-font-rescale-alist
         '(("LXGW WenKai" . 1.25))))
 

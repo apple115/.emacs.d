@@ -155,16 +155,11 @@
   (add-to-list 'colorful-extra-color-keyword-functions '(js-jsx-mode . colorful-add-color-names))
   )
 
-;; Ghostel - 跨平台终端模拟器（0.43.0+ 官方已支持 Windows）
-;; 由于 ghostel 主文件在 lisp/ 子目录，use-package :vc 不支持 :lisp-dir
-;; 需用底层 package-vc-install 预先安装
-(unless (package-installed-p 'ghostel)
-  (package-vc-install
-   `(ghostel :url "https://github.com/dakra/ghostel"
-             :lisp-dir "lisp")))
 
 (use-package ghostel
-  :defer t
+  :vc (:url "https://github.com/dakra/ghostel"
+	:lisp-dir "lisp"
+	:rev :newest)
   :init
   (setq ghostel-shell
         (cond
@@ -182,24 +177,21 @@
   ;; 禁用终端 title 自动重命名 buffer，避免路径过长
   (setq ghostel-set-title-function nil)
   :config
-  ;; 从 ghostel 安装路径加载 evil-ghostel
-  (with-eval-after-load 'evil
-    (use-package evil-ghostel
-      :ensure t
-      :hook (ghostel-mode . evil-ghostel-mode)))
-  )
 
+(use-package ghostel-compile
+  :hook (after-init . ghostel-compile-global-mode))
 
-;; Eat - Emulate A Terminal (已禁用)
-;; (use-package eat
-;;   :ensure t
-;;   :custom
-;;   (eat-term-name "xterm-256color")
-;;   (eat-kill-buffer-on-exit t)
-;;   :config
-;;   (eat-eshell-mode)
-;;   (eat-eshell-visual-command-mode)
-;; )
+(use-package ghostel-comint
+  :hook (after-init . ghostel-comint-global-mode))
+)
+
+(use-package evil-ghostel
+  :vc (:url "https://github.com/dakra/ghostel"
+       :lisp-dir "extensions/evil-ghostel"
+       :rev :newest)
+  :after (ghostel evil)
+  :hook (ghostel-mode . evil-ghostel-mode))
+
 
 (use-package dwim-shell-command
   :ensure t)
@@ -355,11 +347,7 @@
 )
 
 
-(use-package beframe
-  :ensure t
-  )
 
-;; ---- merged from init-docker.el ----
 (use-package docker
   :ensure t
   :bind

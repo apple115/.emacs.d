@@ -72,6 +72,8 @@
   (require 'init-ui)
   ;; (require 'init-theme)
   (require 'init-completion)
+
+  (require 'init-chinese)
   ;; 编程 / 项目 / 笔记
   (require 'init-programming)
   (require 'init-langs)
@@ -80,14 +82,15 @@
   ;; 工具 / 其他
   (require 'init-func)
   (require 'init-windows)
-  (require 'init-chinese)
   (require 'init-theme)
   (require 'init-ai)
   (require 'init-git)
   (require 'init-my-blog)
   (require 'init-reading)
   )
- (server-start)
+
+(unless (server-running-p)
+  (server-start))
 
 (provide 'init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -97,7 +100,27 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil)
+ '(org-agenda-files nil nil nil "Customized with use-package org-agenda")
+ '(package-selected-packages
+   '(ace-window add-node-modules-path affe agent-shell auto-yasnippet beframe
+                buffer-terminator cal-china-x cape citre claude-code
+                claude-code-ide colorful-mode consult-dir consult-notes
+                consult-todo dape denote devdocs dired-rsync dired-sidebar
+                diredfl docker dumb-jump dwim-shell-command elfeed-protocol
+                embark-consult emmet-mode engine-mode erlang evil-collection
+                evil-escape evil-ghostel evil-indent-plus evil-matchit
+                evil-nerd-commenter evil-surround evil-textobj-tree-sitter
+                exec-path-from-shell fish-mode flycheck format-all general
+                git-timemachine go-dlv go-fill-struct go-gen-test go-impl go-tag
+                gotest gptel graphviz-dot-mode haskell-mode hotfuzz i18n-quick
+                ibuffer-project jinx ligature link-hint magit marginalia
+                markdown-mode nerd-icons-dired nerd-icons-ibuffer nov ob-go
+                ob-restclient orderless org-auto-tangle org-download org-modern
+                org-roam ox-gfm ox-reveal pdf-tools pinyinlib plantuml-mode
+                popper protobuf-mode python-mode quickrun rainbow-delimiters
+                realgud rime rust-mode scss-mode shackle sis sudo-edit tabspaces
+                vc-msg vertico virtualenvwrapper vlf web-mode wgrep
+                yasnippet-capf zig-mode))
  '(package-vc-selected-packages
    '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
      (rimel :url "https://github.com/emacs-rime/rimel" :rev "master"))))

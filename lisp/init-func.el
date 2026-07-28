@@ -104,6 +104,45 @@ The terminal starts in the directory of the current file or dired buffer."
     (other-window 1)
     (+ghostel-new)))
 
+(defun +ghostel-kimi-yolo ()
+  "Open a new ghostel terminal and run `kimi --yolo'.
+If inside a project, use the project root as the working directory;
+otherwise use `default-directory' of the current buffer."
+  (interactive)
+  (require 'ghostel)
+  (ghostel--load-module t)
+  (let* ((default-directory (or (when-let ((project (project-current nil)))
+                                  (project-root project))
+                                default-directory))
+         (buffer (ghostel '(4))))
+    (run-at-time 0.5 nil
+                 (lambda ()
+                   (when (buffer-live-p buffer)
+                     (with-current-buffer buffer
+                       (ghostel-send-string "kimi --yolo")
+                       (ghostel-send-key "return")))))
+    buffer))
+
+
+(defun +ghostel-omp-yolo ()
+  "Open a new ghostel terminal and run `omp --yolo'.
+If inside a project, use the project root as the working directory;
+otherwise use `default-directory' of the current buffer."
+  (interactive)
+  (require 'ghostel)
+  (ghostel--load-module t)
+  (let* ((default-directory (or (when-let ((project (project-current nil)))
+                                  (project-root project))
+                                default-directory))
+         (buffer (ghostel '(4))))
+    (run-at-time 0.5 nil
+                 (lambda ()
+                   (when (buffer-live-p buffer)
+                     (with-current-buffer buffer
+                       (ghostel-send-string "omp --yolo")
+                       (ghostel-send-key "return")))))
+    buffer))
+
 (defun +dired-right ()
   "Open dired in a new window to the right."
   (interactive)
@@ -117,6 +156,36 @@ The terminal starts in the directory of the current file or dired buffer."
   (split-window-vertically)
   (other-window 1)
   (dired-jump))
+
+(defun +eshell-right ()
+  "Open a new eshell in a window to the right.
+The eshell starts in the directory of the current file or dired buffer."
+  (interactive)
+  (require 'eshell)
+  (let ((default-directory (or (and (derived-mode-p 'dired-mode)
+                                    default-directory)
+                               (and buffer-file-name
+                                    (file-name-directory buffer-file-name))
+                               default-directory)))
+    (split-window-horizontally)
+    (other-window 1)
+    (let ((eshell-buffer-name (generate-new-buffer-name "*eshell*")))
+      (eshell))))
+
+(defun +eshell-below ()
+  "Open a new eshell in a window below.
+The eshell starts in the directory of the current file or dired buffer."
+  (interactive)
+  (require 'eshell)
+  (let ((default-directory (or (and (derived-mode-p 'dired-mode)
+                                    default-directory)
+                               (and buffer-file-name
+                                    (file-name-directory buffer-file-name))
+                               default-directory)))
+    (split-window-vertically)
+    (other-window 1)
+    (let ((eshell-buffer-name (generate-new-buffer-name "*eshell*")))
+      (eshell))))
 
 ;; eshell 函数（自动使用 eat，因为启用了 eat-eshell-mode）
 ;;(defun +new-eshell ()
@@ -391,7 +460,6 @@ and convert it to Org using the pandoc utility."
 ;; Enable proxy
 (enable-http-proxy)
 (enable-socks-proxy)
-
 
 
 (winner-mode +1)
