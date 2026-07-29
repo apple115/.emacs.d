@@ -235,30 +235,25 @@
   (add-hook 'buffer-terminator-before-hook #'my/cleanup-invisible-dired-buffers)
   (buffer-terminator-mode 1))
 
-;;(use-package tramp-hlo
-;;    :ensure t
-;;    :config
-;;    (tramp-hlo-setup)
-;;)
+(use-package dired-subtree
+  :ensure t
+  :commands (dired-subtree-toggle dired-subtree-cycle)
+  :config
+  (setq dired-subtree-line-prefix " ")
+  (setq dired-subtree-use-backgrounds nil))
 
 (use-package dired-sidebar
   :ensure t
   :commands (dired-sidebar-toggle-sidebar)
   :config
-  (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil)
-  )
+  (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil))
+
 ;; (use-package tramp-hlo
 ;;     :ensure t
 ;;     :config
 ;;     (tramp-hlo-setup)
 ;; )
 
-(use-package dired-sidebar
-  :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
-  :config
-  (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil)
-  )
 
 (use-package rime
   :ensure t
@@ -345,8 +340,6 @@
     (setq sis--ism 'w32)
     )
 )
-
-
 
 (use-package docker
   :ensure t

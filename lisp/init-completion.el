@@ -197,7 +197,6 @@
 ;;   :ensure t
 ;; )
 
-;; ---- merged from init-consult.el ----
 (use-package consult
  :ensure t
  :general
@@ -210,13 +209,13 @@
   "s n" '(consult-notes :wk "search notes")
   "s i" '(consult-imenu :wk "find imenu")
   "s f" '(consult-fd :wk "find file")
-  "s e" '(consult-flymake :wk "search diagnostic")
+  "s e" '(consult-flycheck :wk "search diagnostic")
   "s l" '(consult-line :wk "search line in buffer")
   "s d" '(consult-dir :wk "search dir")
   "s r" '(consult-recent-file :wk "search recent file")
-  "s r" '(consult-recent-file :wk "search recent file")
  )
  :config
+ ;;来源鱼purcell emacs 超级有用的代码 非常喜欢
 (defmacro sanityinc/no-consult-preview (&rest cmds)
       `(with-eval-after-load 'consult
          (consult-customize ,@cmds :preview-key "M-p")))
@@ -239,6 +238,9 @@
     (setq consult-locate-command "mdfind -name ARG OPTS")
 )
 
+(use-package consult-flycheck
+  :ensure t)
+
 (use-package embark-consult
   :ensure t ; only need to install it, embark loads it after consult if found
   :hook
@@ -247,17 +249,6 @@
 ;; 安装 hotfuzz；具体类别绑定在 orderless 的 `completion-category-overrides' 里设置。
 (use-package hotfuzz
   :ensure t)
-
-;; (setq read-file-name-function #'consult-find-file-with-preview)
-;; (defun consult-find-file-with-preview (prompt &optional dir default mustmatch initial pred)
-;;   (let ((default-directory (or dir default-directory))
-;;         (minibuffer-completing-file-name t))
-;;     (consult--read #'read-file-name-internal :state (consult--file-preview)
-;;                    :prompt prompt
-;;                    :initial initial
-;;                    :require-match mustmatch
-;;                    :predicate pred))
-;;   )
 
 (use-package consult-dir
   :ensure t

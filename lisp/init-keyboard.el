@@ -34,17 +34,6 @@
   "'" '(popper-cycle :wk "cycle-pop")
   "i" '(org-capture-inbox :wk "capture-inbox")
 
-  "1" 'sort-tab-select-visible-tab
-  "2" 'sort-tab-select-visible-tab
-  "3" 'sort-tab-select-visible-tab
-  "4" 'sort-tab-select-visible-tab
-  "5" 'sort-tab-select-visible-tab
-  "6" 'sort-tab-select-visible-tab
-  "7" 'sort-tab-select-visible-tab
-  "8" 'sort-tab-select-visible-tab
-  "9" 'sort-tab-select-visible-tab
-  "0" 'sort-tab-select-visible-tab
-
   "w" '(:ignore :wk "window")
   "w 0" '(delete-window :wk "delete-window")
   "w 9" '(delete-other-windows :wk "delete-other-windows")
@@ -97,25 +86,25 @@
   "t k" '(tab-close :wk "close current tab")
   "t t" '(tab-switch :wk "switch tab")
 
-    "o" '(:ignore t :wk "open")
-    "o o" '(embark-act :wk "embark-act")
-    "o e" '(compile :wk "compile")
-    "o t" '(+ghostel-other :wk "open ghostel")
-    "o s" '(async-shell-command :wk "open async shell command")
-    "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
-    "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
-    "o b" '(hexo-my-blog  :wk "open hexo")
-    "o f" '(dwim-shell-commands-macos-reveal-in-finder)
+  "o" '(:ignore t :wk "open")
+  "o o" '(embark-act :wk "embark-act")
+  "o e" '(compile :wk "compile")
+  "o t" '(+ghostel-other :wk "open ghostel")
+  "o s" '(async-shell-command :wk "open async shell command")
+  "o c" '((lambda () (interactive) (org-capture)) :wk "open org-capture")
+  "o a" '((lambda () (interactive) (org-agenda)) :wk "open org-agenda")
+  "o b" '(hexo-my-blog  :wk "open hexo")
+  "o f" '(dwim-shell-commands-macos-reveal-in-finder)
 
   "d" '(:ignore t :wk "dired")
   "d d" '(pwd :wk "pwd")
 
-    "n" '(:ignore t :wk "new")
-    "n n" '(denote :wk "new note")
-    "n b" '(+hexo-new :wk "new blog")
-    "n t" '(+ghostel :wk "terminal")
-    "n T" '(+ghostel-new :wk "new terminal")
-    "n a t" '(my-open-termial-kitty :wk "open terminal")
+  "n" '(:ignore t :wk "new")
+  "n n" '(denote :wk "new note")
+  "n b" '(+hexo-new :wk "new blog")
+  "n t" '(+ghostel :wk "terminal")
+  "n T" '(+ghostel-new :wk "new terminal")
+  "n a t" '(my-open-termial-kitty :wk "open terminal")
 
   "x" '(:ignore t :wk "fix or delete"))
 
