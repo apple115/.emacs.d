@@ -48,6 +48,8 @@
 (setq use-file-dialog nil)
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-hook 'window-size-change-functions 'frame-hide-title-bar-when-maximized)
+;; (add-to-list 'default-frame-alist '(undecorated . t))
 ;; 将lisp目录放到加载路径的前面以加快启动速度
 (let
     ((dir
@@ -100,30 +102,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files nil nil nil "Customized with use-package org-agenda")
- '(package-selected-packages
-   '(ace-window add-node-modules-path affe agent-shell auto-yasnippet beframe
-                buffer-terminator cal-china-x cape citre claude-code
-                claude-code-ide colorful-mode consult-dir consult-flycheck
-                consult-notes consult-todo dape denote devdocs dired-rsync
-                dired-sidebar diredfl docker dumb-jump dwim-shell-command
-                elfeed-protocol embark-consult emmet-mode engine-mode erlang
-                evil-collection evil-escape evil-ghostel evil-indent-plus
-                evil-matchit evil-nerd-commenter evil-surround
-                evil-textobj-tree-sitter exec-path-from-shell fish-mode flycheck
-                format-all general git-timemachine go-dlv go-fill-struct
-                go-gen-test go-impl go-tag gotest gptel graphviz-dot-mode
-                haskell-mode hotfuzz i18n-quick ibuffer-project jinx ligature
-                link-hint magit marginalia markdown-mode nerd-icons-dired
-                nerd-icons-ibuffer nov ob-go ob-restclient orderless
-                org-auto-tangle org-download org-modern org-roam ox-gfm
-                ox-reveal pdf-tools pinyinlib plantuml-mode popper protobuf-mode
-                python-mode quickrun rainbow-delimiters realgud rime rust-mode
-                scss-mode shackle sis sudo-edit tabspaces vc-msg vertico
-                virtualenvwrapper vlf web-mode wgrep yasnippet-capf zig-mode))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
-   '((claude-code :url "https://github.com/stevemolitor/claude-code.el")
-     (rimel :url "https://github.com/emacs-rime/rimel" :rev "master"))))
+   '((i18n-quick :url "https://github.com/apple115/i18n-quick.el")
+     (evil-ghostel :url "https://github.com/dakra/ghostel" :lisp-dir
+                   "extensions/evil-ghostel")
+     (ghostel :url "https://github.com/dakra/ghostel" :lisp-dir "lisp"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

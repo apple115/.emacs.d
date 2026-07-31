@@ -3,7 +3,8 @@
 ;;; my personal custom settings
 ;;; Code:
 
-(defcustom my-org-directory (expand-file-name (if +is-win-p "~/org" "~/Documents/LocalNotes/org"))
+(defcustom my-org-directory (expand-file-name (cond ((or +is-win-p +is-wsl-p) "~/org")
+                                                   (t "~/Documents/LocalNotes/org")))
   "Set org directory."
   :group 'my
   :type 'string)
