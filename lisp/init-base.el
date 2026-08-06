@@ -58,5 +58,58 @@
 (when +is-wsl-p
   (set-clipboard-coding-system 'gbk-dos))
 
+;; ---- TUI (emacs -nw) 下系统剪贴板桥接 ----
+(require 'cl-lib)
+;; 只用 Linux 原生工具，按 PATH 可用性选择：wl-clipboard (WSLg 下直接桥接
+;; Windows 剪贴板) → xclip → xsel。全部不可用时优雅降级（paste 返回 nil）。
+;;
+;; 为什么不用 Windows exe (powershell/clip/win32yank)：WSL 里 emacs 同步
+;; call-process 调 .exe 在 interop/binfmt 异常时会卡死 Emacs（实测），
+;; 且 /bin/sh 无法 exec .exe；wl-clipboard 无此风险。
+;; 仅在 TUI 生效；GUI 帧下函数内 guard 自动跳过，不影响原生剪贴板。
+(defconst my-tui-clipboard-readers
+  '(("wl-paste" . nil)
+    ("xclip" . ("-selection" "clipboard" "-o"))
+    ("xsel" . ("--clipboard" "--output")))
+  "读取剪贴板的命令及参数，按优先级排列。")
+
+(defconst my-tui-clipboard-writers
+  '(("wl-copy" . nil)
+    ("xclip" . ("-selection" "clipboard"))
+    ("xsel" . ("--clipboard" "--input")))
+  "写入剪贴板的命令及参数，按优先级排列。")
+
+(defun my-tui-clipboard--find (table)
+  "在 TABLE 中找到 PATH 里第一个可用的命令，返回 (CMD . ARGS)。"
+  (cl-some (lambda (entry)
+             (let ((path (executable-find (car entry))))
+               (when path (cons path (cdr entry)))))
+           table))
+
+(defun my-tui-clipboard-copy (text &optional _push)
+  "把 TEXT 写入系统剪贴板（仅 TUI）。"
+  (when (and text (not (display-graphic-p)))
+    (let ((entry (my-tui-clipboard--find my-tui-clipboard-writers)))
+      (when entry
+        (with-temp-buffer
+          (insert text)
+          (apply #'call-process-region (point-min) (point-max) (car entry)
+                 nil nil nil (cdr entry)))))))
+
+(defun my-tui-clipboard-paste ()
+  "从系统剪贴板读取文本（仅 TUI）；无可用后端时返回 nil。"
+  (when (not (display-graphic-p))
+    (let ((entry (my-tui-clipboard--find my-tui-clipboard-readers)))
+      (when entry
+        (with-temp-buffer
+          (apply #'call-process (car entry) nil t nil (cdr entry))
+          (let ((s (buffer-string)))
+            (when (string-match-p "[^[:space:]]" s)
+              (string-trim-right s "[\r\n]+"))))))))
+
+(when (and +is-wsl-p (not (display-graphic-p)))
+  (setq interprogram-cut-function #'my-tui-clipboard-copy)
+  (setq interprogram-paste-function #'my-tui-clipboard-paste))
+
 (provide 'init-base)
 ;;; init-base.el ends here

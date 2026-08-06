@@ -137,11 +137,11 @@
         (t 'dark)))
 
 (defun my-theme-mode ()
-  "当前显示环境应使用的亮暗模式。GUI 默认保持亮色。"
+  "当前显示环境应使用的亮暗模式。GUI 默认深色（dark）。"
   (if (display-graphic-p)
       (if (memq my-theme-selection '(dark light))
           my-theme-selection
-        'light)
+        'dark)
     (my-terminal-background-mode)))
 
 (defun my-theme--ansi-p ()
@@ -346,6 +346,22 @@
   "重新应用主题。"
   (interactive)
   (my-theme-apply))
+
+(defun my-theme-toggle ()
+  "在亮色与暗色主题间切换（GUI 与 TUI 通用）。"
+  (interactive)
+  (setq my-theme-selection
+        (if (eq (my-theme-mode) 'dark) 'light 'dark))
+  (my-theme-apply)
+  (message "Theme: %s" (if (eq (my-theme-mode) 'dark) "dark" "light")))
+
+(defun my-theme-select (mode)
+  "选择主题模式：`auto'（TUI 自动检测亮暗）/ `dark' / `light'。"
+  (interactive
+   (list (intern (completing-read "Theme mode: " '("auto" "dark" "light") nil t))))
+  (setq my-theme-selection mode)
+  (my-theme-apply)
+  (message "Theme mode: %s" mode))
 
 (defun my-theme--recheck-terminal ()
   "OSC 11 应答异步到达后，检测结果变化则重新应用。"

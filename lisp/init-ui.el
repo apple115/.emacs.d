@@ -188,6 +188,9 @@
 ;; 在命令行里支持鼠标
 (xterm-mouse-mode 1)
 
+;; Emacs 30：鼠标点击精确到字符左右半区（TUI 下光标定位更准）
+(setq mouse-prefer-closest-glyph t)
+
 ;; 启用鼠标右键上下文菜单
 (context-menu-mode 1)
 
@@ -272,15 +275,17 @@
      (format-mode-line "%l:%c"))))
 
 (defun my-header-line-tui ()
-  "TUI 极简 header-line：无彩色块，状态字母 + 缓冲名 + 分支 + 行列。"
+  "TUI 极简 header-line：状态字母 + 缓冲名 + 分支 + 行列，
+底部画一条分隔线（整行 underline，pad 到满行宽）。"
   (let* ((state (if (bound-and-true-p evil-state)
                     (upcase (substring (symbol-name evil-state) 0 1))
                   " "))
          (git (my-header-line-vc))
-         (pos (format-mode-line "%l:%c")))
-    (concat " " state " " (format-mode-line "%b") git
-            (propertize " " 'display `(space :align-to (- right 8)))
-            pos)))
+         (content (concat " " state " " (format-mode-line "%b") git " "
+                          (format-mode-line "%l:%c")))
+         (pad (max 1 (- (frame-width) (string-width content)))))
+    (propertize (concat content (make-string pad ?\s))
+                'face '(:underline t))))
 
 ;; --- 4. 设置与隐藏 ---
 ;; GUI 用彩色状态块版；TUI 用极简无色版（渲染时按帧类型分派）
@@ -289,6 +294,11 @@
                            (my-header-line-render)
                          (my-header-line-tui)))))
 (setq-default mode-line-format nil)
+
+;; TUI：终端窗口标题跟随当前文件（xterm OSC 2，Windows Terminal 支持）
+(when (not (display-graphic-p))
+  (setq xterm-set-window-title t)
+  (setq frame-title-format '("%b" (:eval (my-header-line-vc)))))
 
 ;; 只有在这些动作发生时才更新，而不是每次移动光标都更新
 (dolist (hook '(evil-normal-state-entry-hook
