@@ -246,16 +246,19 @@
     ""))
 ;; --- 2. 状态块颜色逻辑 (保持 Evil 用户的直观感) ---
 (defun my-header-line-evil-face ()
-  (cond ((evil-normal-state-p) '(:background "#d5c4a1" :foreground "#3c3836" ))
-        ((evil-insert-state-p) '(:background "#b8bb26" :foreground "#fbf1c7" ))
-        ((evil-visual-state-p) '(:background "#d3869b" :foreground "#fbf1c7" ))
-        (t '(:background "#ebdbb2" :foreground "#3c3836"))))
+  (let ((chip-bg (my-theme-color 'chip-normal-bg))
+        (chip-fg (my-theme-color 'chip-fg)))
+    (cond ((evil-insert-state-p) (list :background (my-theme-color 'chip-insert-bg)
+                                       :foreground chip-fg))
+          ((evil-visual-state-p) (list :background (my-theme-color 'chip-visual-bg)
+                                       :foreground chip-fg))
+          (t (list :background chip-bg :foreground chip-fg)))))
 
 (defun my-header-line-render ()
   (let* ((buffer-name (propertize (format-mode-line " %b ") 'face '(:weight bold)))
-         (git-info (propertize (my-header-line-vc) 'face '(:foreground "#ecbe7b")))
+         (git-info (propertize (my-header-line-vc) 'face (list :foreground (my-theme-color 'def))))
          (im-info (if current-input-method
-                            (propertize (concat " " current-input-method-title) 'face '(:foreground "#8ec07c"))
+                            (propertize (concat " " current-input-method-title) 'face (list :foreground (my-theme-color 'cyan)))
                             ""))
          (evil-tag (propertize (concat " " (upcase (symbol-name evil-state)) " ")
                                'face (my-header-line-evil-face))))
@@ -268,8 +271,23 @@
      (propertize " " 'display `(space :align-to (- right 8)))
      (format-mode-line "%l:%c"))))
 
+(defun my-header-line-tui ()
+  "TUI 极简 header-line：无彩色块，状态字母 + 缓冲名 + 分支 + 行列。"
+  (let* ((state (if (bound-and-true-p evil-state)
+                    (upcase (substring (symbol-name evil-state) 0 1))
+                  " "))
+         (git (my-header-line-vc))
+         (pos (format-mode-line "%l:%c")))
+    (concat " " state " " (format-mode-line "%b") git
+            (propertize " " 'display `(space :align-to (- right 8)))
+            pos)))
+
 ;; --- 4. 设置与隐藏 ---
-(setq-default header-line-format '((:eval (my-header-line-render))))
+;; GUI 用彩色状态块版；TUI 用极简无色版（渲染时按帧类型分派）
+(setq-default header-line-format
+              '((:eval (if (display-graphic-p)
+                           (my-header-line-render)
+                         (my-header-line-tui)))))
 (setq-default mode-line-format nil)
 
 ;; 只有在这些动作发生时才更新，而不是每次移动光标都更新

@@ -38,13 +38,14 @@
   (remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff)
 
   ;; 用轻量级 name-status 列表替换 status 里的完整 diff 渲染
+  ;; 颜色取自主题调色板（见 init-theme.el 的 `my-theme-color'）
   (defconst my-magit--status-alist
-    '(("M" "modified" . (:foreground "#f9e2af"))
-      ("A" "new file" . (:foreground "#a6e3a1"))
-      ("D" "deleted"  . (:foreground "#f38ba8"))
-      ("R" "renamed"  . (:foreground "#89b4fa"))
-      ("C" "copied"   . (:foreground "#94e2d5"))
-      ("U" "unmerged" . (:foreground "#cba6f7"))))
+    `(("M" "modified" . (:foreground ,(my-theme-color 'warning)))
+      ("A" "new file" . (:foreground ,(my-theme-color 'string)))
+      ("D" "deleted"  . (:foreground ,(my-theme-color 'error)))
+      ("R" "renamed"  . (:foreground ,(my-theme-color 'comment)))
+      ("C" "copied"   . (:foreground ,(my-theme-color 'cyan)))
+      ("U" "unmerged" . (:foreground ,(my-theme-color 'const)))))
 
   (defun my-magit--wash-diff (line)
     (let* ((parts (split-string line "\t"))

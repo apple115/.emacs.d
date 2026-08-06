@@ -64,38 +64,14 @@
   (setq prefix-help-command #'embark-prefix-help-command)
   )
 
-; Support Pinyin
-;; (use-package pinyinlib
-;;   :ensure t
-;;   :after orderless
-;;   :autoload pinyinlib-build-regexp-strin
-;;   :init
-;;   (defun completion--regex-pinyin (str)
-;;     (orderless-regexp (pinyinlib-build-regexp-string str)))
-;;   (add-to-list 'orderless-matching-styles 'completion--regex-pinyin))
-                                        ; Support Pinyin
-(use-package pinyinlib
-  :ensure t
-  :after orderless
-  :autoload pinyinlib-build-regexp-string
-  :init
-  (defun completion--regex-pinyin (str)
-    (orderless-regexp (pinyinlib-build-regexp-string str)))
-  (add-to-list 'orderless-matching-styles 'completion--regex-pinyin))
-
-(use-package citre
-  :ensure t
-  :init
-  (require 'citre-config)
-  )
 
 (use-package orderless
   :ensure t
   :config
   (setq completion-styles '(orderless flex)
         completion-category-overrides
-        '((file (styles hotfuzz partial-completion))
-          (consult-grep (styles hotfuzz))
+        '((file (styles partial-completion))
+          (consult-grep (styles))
           (eglot (styles orderless flex)))))
 
 (use-package marginalia

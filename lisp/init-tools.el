@@ -248,37 +248,31 @@
   :config
   (setq dired-sidebar-pop-to-sidebar-on-toggle-open nil))
 
-;; (use-package tramp-hlo
-;;     :ensure t
-;;     :config
-;;     (tramp-hlo-setup)
-;; )
-
-
-(use-package rime
+;;
+(use-package rimel
   :ensure t
+  :demand t
+  :init
+  ;; 必须在 liberime 加载(require 时自动启动)之前设置,放 :config 就晚了
+  (setq liberime-shared-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
+  ;; 用户词库用独立目录,避免和 fcitx5 抢 wanxiang.userdb 的 LevelDB 锁;
+  ;; 词库通过 Rime 同步功能(sync_dir)合并,见 installation.yaml 里的 sync_dir
+  (setq liberime-user-data-dir (expand-file-name "~/.emacs.d/rime"))
   :config
-  ;; 默认值
-  (setq rime-translate-keybindings
-        '("C-f" "C-b" "C-n" "C-p" "C-g" "C-`" "<left>" "<right>" "<up>" "<down>" "<prior>" "<next>" "<delete>"))
-  (setq default-input-method "rime")
-  (setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime"))
-  (setq rime-posframe-properties
-        (list :background-color "#333333"
-              :foreground-color "#dcdccc"
-              :internal-border-width 10))
-  (setq rime-show-candidate 'posframe)
-  )
+  (setq default-input-method "rimel")
+  (setq rimel-schema "wanxiang")
+  (setq rimel-posframe-style 'horizontal)
+  ;;
 
-;; Rimel - 仅在 WSL 中使用（其他环境使用系统输入法或不使用 emacs-rime）
-;;(when (and (eq system-type 'gnu/linux)
-;;          (file-exists-p "/proc/version")
-;;          (with-temp-buffer
-;;             (insert-file-contents-literally "/proc/version")
-;;             (re-search-forward "microsoft\\|WSL" nil t)))
-;; (use-package rimel
-;;   :ensure t))
+   (setq rimel-disable-predicates
+        '(rimel-predicate-prog-in-code-p
+            rimel-predicate-after-alphabet-char-p
+            rimel-predicate-current-uppercase-letter-p
+            rimel-predicate-evil-mode-p))
 
+    ;; Org 用户可以添加
+   (add-to-list 'rimel-disable-predicates 'rimel-predicate-org-in-src-block-p)
+)
 
 (use-package i18n-quick
   :vc (:url "https://github.com/apple115/i18n-quick.el" :rev "master")
@@ -292,14 +286,14 @@
   )
 
 ;; tramp-rpc 需要升级 Tramp 版本，暂时禁用
-;; (use-package tramp-rpc
-;;   :load-path "site-lisp/emacs-tramp-rpc/lisp"
-;;   :config
-;;   (use-package msgpack
-;;     :ensure t)
-;;   (setq tramp-rpc-deploy-git-build-policy 'release)
-;;   (setq diff-hl-disable-on-remote t)
-;;   )
+(use-package tramp-rpc
+  :after tramp
+  :vc (:url "https://github.com/ArthurHeymans/emacs-tramp-rpc"
+       :rev :newest
+       :lisp-dir "lisp")
+  config
+   (setq diff-hl-disable-on-remote t)
+  )
 
 (use-package appine
   ;; 核心：仅在 macOS (darwin) 系统下启用，其他系统直接跳过此配置

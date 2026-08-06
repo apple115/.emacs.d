@@ -69,15 +69,15 @@
 (setq evil-esc-delay 0)
  )
 
-(use-package evil-escape
-  :ensure t
-  :after evil
-  :init
-  (setq evil-escape-key-sequence "kj"
-        evil-escape-delay 0.2
-        evil-escape-excluded-major-modes '(wdired-mode))
-  :config
-  (evil-escape-mode 1))
+;; (use-package evil-escape
+;;   :ensure t
+;;   :after evil
+;;   :init
+;;   (setq evil-escape-key-sequence "kj"
+;;         evil-escape-delay 0.2
+;;         evil-escape-excluded-major-modes '(wdired-mode))
+;;   :config
+;;   (evil-escape-mode 1))
 
 (use-package evil-indent-plus
   :ensure t
